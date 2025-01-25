@@ -1,15 +1,14 @@
 package dev.matsem.bpm
 
-import androidx.compose.foundation.VerticalScrollbar
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Contrast
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.matsem.bpm.design.theme.BpmTheme
@@ -29,27 +28,66 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App() {
     val state by MainComponent.state.collectAsState()
     val actions = MainComponent
+    val isSystemInDarkTheme = isSystemInDarkTheme() // Stores initial state of dark mode and stores in [darkMode] state.
+    var darkMode by remember { mutableStateOf(isSystemInDarkTheme) }
 
-    BpmTheme(isDark = false) {
-        Surface(modifier = Modifier.fillMaxSize(), color = BpmTheme.colorScheme.background) {
-            val scrollState = rememberScrollState()
-            Box {
-                Column(modifier = Modifier.verticalScroll(scrollState)) {
-                    VerticalSpacer(Grid.d4)
-                    Text(
-                        "tempo-desktop 0.0.1",
-                        style = BpmTheme.typography.labelMedium,
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
-                    )
-                    VerticalSpacer(Grid.d4)
-                    FavouritesSection(state.favouriteIssues, actions, Modifier.padding(horizontal = Grid.d3))
-                    VerticalSpacer(Grid.d4)
-                    TrackersSection(state.trackers, actions, Modifier.padding(horizontal = Grid.d3))
-                }
-                VerticalScrollbar(
-                    adapter = rememberScrollbarAdapter(scrollState),
-                    modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
+    BpmTheme(isDark = darkMode) {
+        Scaffold(
+            bottomBar = {
+                BottomAppBar(
+                    actions = {
+                        IconButton(onClick = { /* do something */ }) {
+                            Icon(Icons.Rounded.Search, contentDescription = "Search issues")
+                        }
+                        IconButton(onClick = {
+                            darkMode = !darkMode
+                        }) {
+                            Icon(
+                                Icons.Rounded.Contrast,
+                                contentDescription = "Toggle dark mode",
+                            )
+                        }
+                        IconButton(onClick = { /* do something */ }) {
+                            Icon(
+                                Icons.Filled.Settings,
+                                contentDescription = "Settings",
+                            )
+                        }
+                        Text(
+                            "tempo-desktop 0.0.1",
+                            style = BpmTheme.typography.labelMedium,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
+                        )
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = { /* do something */ },
+                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                        ) {
+                            Icon(Icons.Rounded.Add, "Add tracker")
+                        }
+                    }
                 )
+            }
+        ) { contentPadding ->
+            Surface(
+                modifier = Modifier.fillMaxSize().padding(contentPadding),
+                color = BpmTheme.colorScheme.background
+            ) {
+                val scrollState = rememberScrollState()
+                Box {
+                    Column(modifier = Modifier.verticalScroll(scrollState)) {
+                        VerticalSpacer(Grid.d4)
+                        FavouritesSection(state.favouriteIssues, actions, Modifier.padding(horizontal = Grid.d3))
+                        VerticalSpacer(Grid.d4)
+                        TrackersSection(state.trackers, actions, Modifier.padding(horizontal = Grid.d3))
+                    }
+                    VerticalScrollbar(
+                        adapter = rememberScrollbarAdapter(scrollState),
+                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
+                    )
+                }
             }
         }
     }

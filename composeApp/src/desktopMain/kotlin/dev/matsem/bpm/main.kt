@@ -11,12 +11,11 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import javax.swing.SwingUtilities
 
 fun main() = application {
     var isOpen by remember { mutableStateOf(true) }
     val windowState = rememberWindowState(
-        size = DpSize(600.dp, 400.dp),
+        size = DpSize(480.dp, 640.dp),
     )
 
     if (isOpen) {
