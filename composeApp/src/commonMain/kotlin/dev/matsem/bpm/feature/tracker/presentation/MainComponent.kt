@@ -16,7 +16,6 @@ interface MainActions {
     fun onNewTracker(issue: Issue)
     fun onResumeTracker(tracker: Tracker)
     fun onPauseTracker(tracker: Tracker)
-    fun onCommitTracker(tracker: Tracker)
 }
 
 data class MainState(
@@ -76,9 +75,5 @@ object MainComponent : MainActions {
                 )
             )
         )
-    }
-
-    override fun onCommitTracker(tracker: Tracker) {
-        println("Not yet implemented")
     }
 }

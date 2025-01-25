@@ -2,11 +2,11 @@ package dev.matsem.bpm.feature.tracker.ui
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Icon
@@ -16,9 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
-import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForTimer
@@ -34,11 +34,18 @@ fun TrackerRow(
     modifier: Modifier = Modifier,
     onResume: () -> Unit,
     onPause: () -> Unit,
-    onCommit: () -> Unit,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused by interactionSource.collectIsFocusedAsState()
+    val focusedColor = when (isFocused) {
+        true -> BpmTheme.colorScheme.surfaceContainerHigh
+        false -> Color.Unspecified
+    }
+
     Row(
         modifier = modifier
-            .background(BpmTheme.colorScheme.surface)
+            .focusable(interactionSource = interactionSource)
+            .background(focusedColor)
             .padding(vertical = Grid.d2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -71,31 +78,28 @@ fun TrackerRow(
                 )
             }
 
-            Crossfade(tracker.state.isRunning) { isRunning ->
-                when (isRunning) {
-                    true -> {
-                        IconButton(
-                            onClick = onPause,
-                            modifier = Modifier.size(Grid.d7),
-                            colors = IconButtonDefaults.outlinedIconButtonColors(
-                                contentColor = BpmTheme.colorScheme.onSurfaceVariant
-                            )
-                        ) {
+            IconButton(
+                onClick = {
+                    if (tracker.state.isRunning) {
+                        onPause()
+                    } else {
+                        onResume()
+                    }
+                },
+                modifier = Modifier.size(Grid.d7),
+                colors = IconButtonDefaults.outlinedIconButtonColors(
+                    contentColor = BpmTheme.colorScheme.onSurfaceVariant
+                )
+            ) {
+                Crossfade(tracker.state.isRunning) { isRunning ->
+                    when(isRunning) {
+                        true -> {
                             Icon(
                                 imageVector = Icons.Rounded.Pause,
                                 contentDescription = "Pause"
                             )
                         }
-                    }
-
-                    false -> {
-                        IconButton(
-                            onClick = onResume,
-                            modifier = Modifier.size(Grid.d7),
-                            colors = IconButtonDefaults.outlinedIconButtonColors(
-                                contentColor = BpmTheme.colorScheme.onSurfaceVariant
-                            )
-                        ) {
+                        false -> {
                             Icon(
                                 imageVector = Icons.Rounded.PlayArrow,
                                 contentDescription = "Resume"
@@ -103,19 +107,6 @@ fun TrackerRow(
                         }
                     }
                 }
-            }
-
-            HorizontalSpacer(Grid.d2)
-            IconButton(
-                onClick = onCommit,
-                modifier = Modifier.size(Grid.d7),
-                colors = IconButtonDefaults.filledIconButtonColors(),
-                enabled = tracker.state.duration.isPositive()
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Check,
-                    contentDescription = "Commit"
-                )
             }
         }
     }
@@ -134,7 +125,6 @@ private fun TrackerRowPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     onResume = {},
                     onPause = {},
-                    onCommit = {}
                 )
             }
         }

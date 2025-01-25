@@ -14,7 +14,7 @@ import dev.matsem.bpm.feature.tracker.model.TrackerMock
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun FavouriteIssueCard(
+fun FavouriteIssueChip(
     issue: Issue,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
@@ -30,12 +30,12 @@ fun FavouriteIssueCard(
 
 @Composable
 @Preview
-private fun FavouriteIssueRowPreview() {
+private fun FavouriteIssueChipPreview() {
 
     Showcase(isDark = false) {
         Column(verticalArrangement = Arrangement.spacedBy(Grid.d1)) {
             for (issue in TrackerMock.mapNotNull { it.issue }) {
-                FavouriteIssueCard(
+                FavouriteIssueChip(
                     issue = issue,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d4),
                     onClick = {}

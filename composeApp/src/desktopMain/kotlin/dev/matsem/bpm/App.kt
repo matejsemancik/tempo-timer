@@ -16,7 +16,7 @@ import dev.matsem.bpm.feature.tracker.model.Issue
 import dev.matsem.bpm.feature.tracker.model.Tracker
 import dev.matsem.bpm.feature.tracker.presentation.MainActions
 import dev.matsem.bpm.feature.tracker.presentation.MainComponent
-import dev.matsem.bpm.feature.tracker.ui.FavouriteIssueCard
+import dev.matsem.bpm.feature.tracker.ui.FavouriteIssueChip
 import dev.matsem.bpm.feature.tracker.ui.TrackerRow
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -58,12 +58,13 @@ fun App() {
                         )
                     },
                     floatingActionButton = {
-                        FloatingActionButton(
+                        ExtendedFloatingActionButton(
                             onClick = { /* do something */ },
                             containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                             elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                         ) {
                             Icon(Icons.Rounded.Add, "Add tracker")
+                            Text("Timer")
                         }
                     }
                 )
@@ -76,7 +77,7 @@ fun App() {
                 val scrollState = rememberScrollState()
                 Box {
                     Column(modifier = Modifier.verticalScroll(scrollState)) {
-                        VerticalSpacer(Grid.d4)
+                        VerticalSpacer(Grid.d2)
                         FavouritesSection(state.favouriteIssues, actions, Modifier.padding(horizontal = Grid.d3))
                         VerticalSpacer(Grid.d4)
                         TrackersSection(state.trackers, actions, Modifier.padding(horizontal = Grid.d3))
@@ -110,7 +111,7 @@ fun FavouritesSection(
             verticalArrangement = Arrangement.spacedBy(Grid.d1_5)
         ) {
             for (issue in issues) {
-                FavouriteIssueCard(
+                FavouriteIssueChip(
                     issue = issue,
                     onClick = { actions.onNewTracker(issue) }
                 )
@@ -127,7 +128,7 @@ fun TrackersSection(
 ) {
     Column(modifier) {
         Text(
-            "⏳ Trackers",
+            "⏳ Timers",
             style = BpmTheme.typography.titleMedium,
             modifier = Modifier.fillMaxWidth()
         )
@@ -138,7 +139,6 @@ fun TrackersSection(
                 modifier = Modifier.fillMaxWidth(),
                 onResume = { actions.onResumeTracker(tracker) },
                 onPause = { actions.onPauseTracker(tracker) },
-                onCommit = { actions.onCommitTracker(tracker) }
             )
         }
     }
