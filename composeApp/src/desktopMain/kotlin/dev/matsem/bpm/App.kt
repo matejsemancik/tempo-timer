@@ -4,9 +4,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Contrast
-import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -43,7 +41,7 @@ fun App() {
                             darkMode = !darkMode
                         }) {
                             Icon(
-                                Icons.Rounded.Contrast,
+                                if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
                                 contentDescription = "Toggle dark mode",
                             )
                         }

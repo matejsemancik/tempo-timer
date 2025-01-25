@@ -42,6 +42,11 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "dev.matsem.bpm"
             packageVersion = "1.0.0"
+
         }
+
+        jvmArgs(
+            "-Dapple.awt.application.appearance=system"
+        )
     }
 }
