@@ -1,5 +1,6 @@
 package dev.matsem.bpm.feature.tracker.presentation
 
+import androidx.compose.ui.util.trace
 import dev.matsem.bpm.feature.tracker.model.Issue
 import dev.matsem.bpm.feature.tracker.model.Tracker
 import dev.matsem.bpm.feature.tracker.model.TrackerMock
@@ -16,6 +17,7 @@ interface MainActions {
     fun onNewTracker(issue: Issue)
     fun onResumeTracker(tracker: Tracker)
     fun onPauseTracker(tracker: Tracker)
+    fun onDeleteTracker(tracker: Tracker)
 }
 
 data class MainState(
@@ -46,7 +48,6 @@ object MainComponent : MainActions {
     }
 
     override fun onResumeTracker(tracker: Tracker) = _state.update { state ->
-        println("onResumeTracker ${tracker.issue?.key}")
         val idx = state.trackers.indexOf(tracker).takeIf { it >= 0 } ?: return@update state
         state.copy(
             trackers = state.trackers.set(
@@ -57,7 +58,6 @@ object MainComponent : MainActions {
     }
 
     override fun onPauseTracker(tracker: Tracker) = _state.update { state ->
-        println("onPauseTracker ${tracker.issue?.key}")
         val idx = state.trackers.indexOf(tracker).takeIf { it >= 0 } ?: return@update state
         if (tracker.state.startedAt == null) {
             return@update state
@@ -75,5 +75,9 @@ object MainComponent : MainActions {
                 )
             )
         )
+    }
+
+    override fun onDeleteTracker(tracker: Tracker) = MainComponent._state.update { state ->
+        state.copy(trackers = state.trackers.remove(tracker))
     }
 }

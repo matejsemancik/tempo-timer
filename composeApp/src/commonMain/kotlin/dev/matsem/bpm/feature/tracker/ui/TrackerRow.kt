@@ -1,11 +1,11 @@
 package dev.matsem.bpm.feature.tracker.ui
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -16,7 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.*
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
@@ -28,13 +31,17 @@ import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.seconds
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackerRow(
     tracker: Tracker,
     modifier: Modifier = Modifier,
     onResume: () -> Unit,
     onPause: () -> Unit,
+    onOpenDetail: () -> Unit,
+    onDelete: () -> Unit,
 ) {
+    val focusRequester = remember { FocusRequester() }
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusedColor = when (isFocused) {
@@ -44,7 +51,27 @@ fun TrackerRow(
 
     Row(
         modifier = modifier
+            .combinedClickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = focusRequester::requestFocus,
+                onDoubleClick = onOpenDetail
+            )
+            .focusRequester(focusRequester)
             .focusable(interactionSource = interactionSource)
+            .onKeyEvent { keyEvent ->
+                return@onKeyEvent when {
+                    keyEvent.key == Key.Backspace && keyEvent.type == KeyEventType.KeyDown -> {
+                        onDelete()
+                        true
+                    }
+                    keyEvent.key == Key.Enter && keyEvent.type == KeyEventType.KeyDown -> {
+                        onOpenDetail()
+                        true
+                    }
+                    else -> false
+                }
+            }
             .background(focusedColor)
             .padding(vertical = Grid.d2),
         verticalAlignment = Alignment.CenterVertically,
@@ -92,13 +119,14 @@ fun TrackerRow(
                 )
             ) {
                 Crossfade(tracker.state.isRunning) { isRunning ->
-                    when(isRunning) {
+                    when (isRunning) {
                         true -> {
                             Icon(
                                 imageVector = Icons.Rounded.Pause,
                                 contentDescription = "Pause"
                             )
                         }
+
                         false -> {
                             Icon(
                                 imageVector = Icons.Rounded.PlayArrow,
@@ -125,6 +153,8 @@ private fun TrackerRowPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     onResume = {},
                     onPause = {},
+                    onOpenDetail = {},
+                    onDelete = {},
                 )
             }
         }
