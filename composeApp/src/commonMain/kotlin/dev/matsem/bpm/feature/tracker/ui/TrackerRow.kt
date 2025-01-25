@@ -20,6 +20,7 @@ import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.centeredVertically
+import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForTimer
 import dev.matsem.bpm.feature.tracker.model.Tracker
 import dev.matsem.bpm.feature.tracker.model.TrackerMock
 import kotlinx.coroutines.delay
@@ -49,11 +50,11 @@ fun TrackerRow(
         // Action Row
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (tracker.state.duration.isPositive()) {
-                var timer by remember { mutableStateOf(tracker.state.duration.toString(DurationUnit.SECONDS)) }
+                var timer by remember { mutableStateOf(tracker.state.duration.formatForTimer()) }
                 LaunchedEffect(tracker.state.isRunning) {
                     while (tracker.state.isRunning) {
                         delay(1.seconds)
-                        timer = tracker.state.duration.toString(DurationUnit.SECONDS)
+                        timer = tracker.state.duration.formatForTimer()
                     }
                 }
 

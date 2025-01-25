@@ -63,6 +63,9 @@ val TrackerMock = listOf(
             type = IssueType.Subtask,
             key = "MTSM-19",
             title = "[AN] Spraviť robotu",
+        ),
+        state = TrackerState(
+            finishedDuration = 60.minutes,
         )
     ),
     Tracker(
@@ -70,6 +73,9 @@ val TrackerMock = listOf(
             type = IssueType.Story,
             key = "MTSM-140",
             title = "Robenie roboty",
+        ),
+        state = TrackerState(
+            finishedDuration = 120.minutes + 30.seconds,
         )
     ),
     Tracker(
