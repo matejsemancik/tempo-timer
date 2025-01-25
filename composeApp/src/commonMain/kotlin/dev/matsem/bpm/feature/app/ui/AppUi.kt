@@ -25,8 +25,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun AppUi() {
-    val state by TrackerModel.state.collectAsState()
-    val actions = TrackerModel
     val isSystemInDarkTheme = isSystemInDarkTheme() // Stores initial state of dark mode and stores in [darkMode] state.
     var darkMode by remember { mutableStateOf(isSystemInDarkTheme) }
     val focusManager = LocalFocusManager.current
@@ -105,8 +103,7 @@ fun AppUi() {
             }
         ) { contentPadding ->
             TrackerScreenUi(
-                state = state,
-                actions = actions,
+                screen = TrackerModel,
                 modifier = Modifier.fillMaxSize().padding(contentPadding)
             )
         }
@@ -133,7 +130,7 @@ fun SettingsSheet(
         sheetState = sheetState,
         shape = BpmTheme.shapes.small,
         dragHandle = {
-            SheetDragHandle(
+            SheetHeader(
                 title = "Settings",
                 modifier = Modifier.fillMaxWidth(),
                 onClose = { coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { onDismissRequest() } })
@@ -145,7 +142,7 @@ fun SettingsSheet(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SheetDragHandle(
+fun SheetHeader(
     modifier: Modifier = Modifier,
     title: String? = null,
     onClose: () -> Unit

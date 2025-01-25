@@ -8,59 +8,60 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.datetime.Clock
 
-object TrackerModel : TrackerActions {
+internal object TrackerModel : TrackerScreen {
 
     private val _state = MutableStateFlow(TrackerState())
-    val state: StateFlow<TrackerState> = _state
+    override val state: StateFlow<TrackerState> = _state
+    override val actions: TrackerActions = object : TrackerActions {
+        override fun onNewTimer(issue: Issue) {
+            if (_state.value.timers.any { it.issue == issue }) {
+                return
+            }
 
-    override fun onNewTimer(issue: Issue) {
-        if (_state.value.timers.any { it.issue == issue }) {
-            return
+            _state.update { state ->
+                state.copy(
+                    timers = state.timers.add(
+                        Timer(
+                            issue = issue,
+                            state = TimerState(startedAt = Clock.System.now())
+                        )
+                    )
+                )
+            }
         }
 
-        _state.update { state ->
+        override fun onResumeTimer(timer: Timer) = _state.update { state ->
+            val idx = state.timers.indexOf(timer).takeIf { it >= 0 } ?: return@update state
             state.copy(
-                timers = state.timers.add(
-                    Timer(
-                        issue = issue,
-                        state = TimerState(startedAt = Clock.System.now())
+                timers = state.timers.set(
+                    idx,
+                    timer.copy(state = timer.state.copy(startedAt = Clock.System.now()))
+                )
+            )
+        }
+
+        override fun onPauseTimer(timer: Timer) = _state.update { state ->
+            val idx = state.timers.indexOf(timer).takeIf { it >= 0 } ?: return@update state
+            if (timer.state.startedAt == null) {
+                return@update state
+            }
+
+            val durationToAdd = Clock.System.now() - timer.state.startedAt
+            state.copy(
+                timers = state.timers.set(
+                    idx,
+                    timer.copy(
+                        state = timer.state.copy(
+                            startedAt = null,
+                            finishedDuration = timer.state.finishedDuration + durationToAdd
+                        )
                     )
                 )
             )
         }
-    }
 
-    override fun onResumeTimer(timer: Timer) = _state.update { state ->
-        val idx = state.timers.indexOf(timer).takeIf { it >= 0 } ?: return@update state
-        state.copy(
-            timers = state.timers.set(
-                idx,
-                timer.copy(state = timer.state.copy(startedAt = Clock.System.now()))
-            )
-        )
-    }
-
-    override fun onPauseTimer(timer: Timer) = _state.update { state ->
-        val idx = state.timers.indexOf(timer).takeIf { it >= 0 } ?: return@update state
-        if (timer.state.startedAt == null) {
-            return@update state
+        override fun onDeleteTimer(timer: Timer) = TrackerModel._state.update { state ->
+            state.copy(timers = state.timers.remove(timer))
         }
-
-        val durationToAdd = Clock.System.now() - timer.state.startedAt
-        state.copy(
-            timers = state.timers.set(
-                idx,
-                timer.copy(
-                    state = timer.state.copy(
-                        startedAt = null,
-                        finishedDuration = timer.state.finishedDuration + durationToAdd
-                    )
-                )
-            )
-        )
-    }
-
-    override fun onDeleteTimer(timer: Timer) = TrackerModel._state.update { state ->
-        state.copy(timers = state.timers.remove(timer))
     }
 }

@@ -2,7 +2,7 @@ package dev.matsem.bpm.feature.tracker.formatting
 
 import kotlin.time.Duration
 
-object DurationFormatter {
+internal object DurationFormatter {
 
     private const val SecondsInMinute = 60
     private const val MinutesInHour = 60
