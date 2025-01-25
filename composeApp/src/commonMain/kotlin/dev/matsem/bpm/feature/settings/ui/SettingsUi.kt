@@ -16,7 +16,6 @@ import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.VerticalSpacer
 import dev.matsem.bpm.feature.settings.presentation.SettingsActions
-import dev.matsem.bpm.feature.settings.presentation.SettingsModel
 import dev.matsem.bpm.feature.settings.presentation.SettingsScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsState
 import dev.matsem.bpm.feature.settings.ui.widget.ApiKeyTextField
