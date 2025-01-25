@@ -44,9 +44,6 @@ val TrackerMock = listOf(
             key = "MTSM-1",
             title = "Dojebaný payment button",
         ),
-        state = TrackerState(
-            startedAt = Clock.System.now().minus(10.seconds)
-        )
     ),
     Tracker(
         issue = Issue(
@@ -54,9 +51,6 @@ val TrackerMock = listOf(
             key = "MTSM-4",
             title = "Spraviť robotu",
         ),
-        state = TrackerState(
-            finishedDuration = 10.minutes,
-        )
     ),
     Tracker(
         issue = Issue(
@@ -64,9 +58,6 @@ val TrackerMock = listOf(
             key = "MTSM-19",
             title = "[AN] Spraviť robotu",
         ),
-        state = TrackerState(
-            finishedDuration = 60.minutes,
-        )
     ),
     Tracker(
         issue = Issue(
@@ -74,9 +65,6 @@ val TrackerMock = listOf(
             key = "MTSM-140",
             title = "Robenie roboty",
         ),
-        state = TrackerState(
-            finishedDuration = 120.minutes + 30.seconds,
-        )
     ),
     Tracker(
         issue = Issue(

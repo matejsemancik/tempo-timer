@@ -38,6 +38,7 @@ fun main() = application {
         icon = TrayIcon,
         state = trayState,
         onAction = {
+            println("onAction")
             isOpen = true
         },
         menu = {

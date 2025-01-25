@@ -3,6 +3,7 @@ package dev.matsem.bpm.feature.tracker.ui
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
@@ -38,8 +39,7 @@ fun TrackerRow(
     Row(
         modifier = modifier
             .background(BpmTheme.colorScheme.surface)
-            .clickable { }
-            .padding(horizontal = Grid.d4, vertical = Grid.d2),
+            .padding(vertical = Grid.d2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         tracker.issue?.let {
