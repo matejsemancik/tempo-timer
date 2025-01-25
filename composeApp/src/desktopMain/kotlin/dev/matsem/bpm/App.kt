@@ -115,9 +115,9 @@ fun App() {
                 Box {
                     Column(modifier = Modifier.verticalScroll(scrollState)) {
                         VerticalSpacer(Grid.d2)
-                        FavouritesSection(state.favouriteIssues, actions, Modifier.padding(horizontal = Grid.d3))
+                        FavouritesSection(state.favouriteIssues, actions)
                         VerticalSpacer(Grid.d4)
-                        TrackersSection(state.trackers, actions, Modifier.padding(horizontal = Grid.d3))
+                        TrackersSection(state.trackers, actions)
                     }
                     VerticalScrollbar(
                         adapter = rememberScrollbarAdapter(scrollState),
@@ -136,7 +136,7 @@ fun FavouritesSection(
     actions: MainActions,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier) {
+    Column(modifier.padding(horizontal = Grid.d3)) {
         Text(
             "⭐ Favourites",
             style = BpmTheme.typography.titleMedium,
@@ -167,13 +167,14 @@ fun TrackersSection(
         Text(
             "⏳ Timers",
             style = BpmTheme.typography.titleMedium,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
         )
         VerticalSpacer(Grid.d2)
         for (tracker in trackers) {
             TrackerRow(
                 tracker = tracker,
                 modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = Grid.d3),
                 onResume = { actions.onResumeTracker(tracker) },
                 onPause = { actions.onPauseTracker(tracker) },
                 onDelete = { actions.onDeleteTracker(tracker) },

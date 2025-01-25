@@ -1,11 +1,13 @@
 package dev.matsem.bpm.feature.tracker.ui
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -20,6 +22,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.unit.dp
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
@@ -36,12 +39,12 @@ import kotlin.time.Duration.Companion.seconds
 fun TrackerRow(
     tracker: Tracker,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     onResume: () -> Unit,
     onPause: () -> Unit,
     onOpenDetail: () -> Unit,
     onDelete: () -> Unit,
 ) {
-    val focusRequester = remember { FocusRequester() }
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusedColor = when (isFocused) {
@@ -54,26 +57,27 @@ fun TrackerRow(
             .combinedClickable(
                 interactionSource = interactionSource,
                 indication = null,
-                onClick = focusRequester::requestFocus,
+                onClick = {},
                 onDoubleClick = onOpenDetail
             )
-            .focusRequester(focusRequester)
-            .focusable(interactionSource = interactionSource)
             .onKeyEvent { keyEvent ->
                 return@onKeyEvent when {
                     keyEvent.key == Key.Backspace && keyEvent.type == KeyEventType.KeyDown -> {
                         onDelete()
                         true
                     }
+
                     keyEvent.key == Key.Enter && keyEvent.type == KeyEventType.KeyDown -> {
                         onOpenDetail()
                         true
                     }
+
                     else -> false
                 }
             }
             .background(focusedColor)
-            .padding(vertical = Grid.d2),
+            .padding(vertical = Grid.d2)
+            .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         tracker.issue?.let {
