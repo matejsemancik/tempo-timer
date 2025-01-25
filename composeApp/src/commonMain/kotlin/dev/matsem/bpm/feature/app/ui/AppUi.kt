@@ -6,22 +6,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.LightMode
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.style.TextAlign
+import dev.matsem.bpm.design.sheet.GenericModalBottomSheet
+import dev.matsem.bpm.design.sheet.SheetHeader
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
+import dev.matsem.bpm.feature.settings.presentation.SettingsModel
+import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
 import dev.matsem.bpm.feature.tracker.presentation.TrackerModel
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
 fun AppUi() {
@@ -109,54 +115,22 @@ fun AppUi() {
         }
 
         if (isSettingsOpen) {
-            SettingsSheet(
-                onDismissRequest = { isSettingsOpen = false }
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SettingsSheet(
-    onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val sheetState = rememberModalBottomSheetState()
-    val coroutineScope = rememberCoroutineScope()
-    ModalBottomSheet(
-        onDismissRequest = onDismissRequest,
-        modifier = modifier,
-        sheetState = sheetState,
-        shape = BpmTheme.shapes.small,
-        dragHandle = {
-            SheetHeader(
-                title = "Settings",
-                modifier = Modifier.fillMaxWidth(),
-                onClose = { coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { onDismissRequest() } })
-        }
-    ) {
-        Text("This is da sheet", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SheetHeader(
-    modifier: Modifier = Modifier,
-    title: String? = null,
-    onClose: () -> Unit
-) {
-    TopAppBar(
-        colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = Color.Transparent),
-        modifier = modifier,
-        title = { title?.let { Text(title) } },
-        actions = {
-            IconButton(
-                onClick = onClose,
+            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+            val coroutineScope = rememberCoroutineScope()
+            GenericModalBottomSheet(
+                onDismissRequest = { isSettingsOpen = false },
+                sheetState = sheetState,
+                header = {
+                    SheetHeader(
+                        title = "Settings",
+                        onClose = {
+                            coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { isSettingsOpen = false }
+                        }
+                    )
+                }
             ) {
-                Icon(Icons.Rounded.Close, contentDescription = "Close")
+                SettingsScreenUi(SettingsModel)
             }
         }
-    )
+    }
 }
