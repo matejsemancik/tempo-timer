@@ -20,10 +20,6 @@ fun App() {
     val state by MainComponent.state.collectAsState()
     val actions = MainComponent
 
-    LaunchedEffect(state) {
-        println(state)
-    }
-
     BpmTheme(isDark = false) {
         Surface(modifier = Modifier.fillMaxSize(), color = BpmTheme.colorScheme.background) {
             val scrollState = rememberScrollState()
