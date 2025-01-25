@@ -64,13 +64,15 @@ fun SettingsScreenUi(
 
         Row(modifier = Modifier.fillMaxWidth().padding(Grid.d3), horizontalArrangement = Arrangement.End) {
             OutlinedButton(
-                onClick = {}
+                onClick = {},
+                shape = BpmTheme.shapes.small
             ) {
                 Text("Sign out")
             }
             HorizontalSpacer(Grid.d2)
             Button(
-                onClick = {}
+                onClick = {},
+                shape = BpmTheme.shapes.small
             ) {
                 Text("Save")
             }
