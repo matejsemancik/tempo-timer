@@ -2,8 +2,6 @@ package dev.matsem.bpm
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Add
@@ -14,7 +12,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.Group
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.input.key.*
+import androidx.compose.ui.platform.LocalFocusManager
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.VerticalSpacer
@@ -34,9 +34,40 @@ fun App() {
     val actions = MainComponent
     val isSystemInDarkTheme = isSystemInDarkTheme() // Stores initial state of dark mode and stores in [darkMode] state.
     var darkMode by remember { mutableStateOf(isSystemInDarkTheme) }
+    val focusManager = LocalFocusManager.current
 
     BpmTheme(isDark = darkMode) {
         Scaffold(
+            modifier = Modifier.onPreviewKeyEvent { keyEvent ->
+                // Let user use arrow keys on the main screen in addition to TAB key for focusing elements
+                if (keyEvent.type != KeyEventType.KeyDown) {
+                    return@onPreviewKeyEvent false
+                }
+
+                return@onPreviewKeyEvent when (keyEvent.key) {
+                    Key.DirectionDown -> {
+                        focusManager.moveFocus(FocusDirection.Down)
+                        true
+                    }
+
+                    Key.DirectionUp -> {
+                        focusManager.moveFocus(FocusDirection.Up)
+                        true
+                    }
+
+                    Key.DirectionLeft -> {
+                        focusManager.moveFocus(FocusDirection.Left)
+                        true
+                    }
+
+                    Key.DirectionRight -> {
+                        focusManager.moveFocus(FocusDirection.Right)
+                        true
+                    }
+
+                    else -> false
+                }
+            },
             bottomBar = {
                 BottomAppBar(
                     actions = {
@@ -139,22 +170,17 @@ fun TrackersSection(
             modifier = Modifier.fillMaxWidth()
         )
         VerticalSpacer(Grid.d2)
-        Column {
-            for (tracker in trackers) {
-                TrackerRow(
-                    tracker = tracker,
-                    modifier = Modifier.fillMaxWidth(),
-                    onResume = { actions.onResumeTracker(tracker) },
-                    onPause = { actions.onPauseTracker(tracker) },
-                    onDelete = { actions.onDeleteTracker(tracker) },
-                    onOpenDetail = {
-                        println("onOpenDetail: ${tracker.issue?.key}")
-                    },
-                )
-            }
-        }
-        Column {
-
+        for (tracker in trackers) {
+            TrackerRow(
+                tracker = tracker,
+                modifier = Modifier.fillMaxWidth(),
+                onResume = { actions.onResumeTracker(tracker) },
+                onPause = { actions.onPauseTracker(tracker) },
+                onDelete = { actions.onDeleteTracker(tracker) },
+                onOpenDetail = {
+                    println("onOpenDetail: ${tracker.issue?.key}")
+                },
+            )
         }
     }
 }
