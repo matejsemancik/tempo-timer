@@ -31,6 +31,9 @@ import kotlin.time.DurationUnit
 fun TrackerRow(
     tracker: Tracker,
     modifier: Modifier = Modifier,
+    onResume: () -> Unit,
+    onPause: () -> Unit,
+    onCommit: () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -72,7 +75,7 @@ fun TrackerRow(
                 when (isRunning) {
                     true -> {
                         IconButton(
-                            onClick = {},
+                            onClick = onPause,
                             modifier = Modifier.size(Grid.d7),
                             colors = IconButtonDefaults.outlinedIconButtonColors(
                                 contentColor = BpmTheme.colorScheme.onSurfaceVariant
@@ -87,7 +90,7 @@ fun TrackerRow(
 
                     false -> {
                         IconButton(
-                            onClick = {},
+                            onClick = onResume,
                             modifier = Modifier.size(Grid.d7),
                             colors = IconButtonDefaults.outlinedIconButtonColors(
                                 contentColor = BpmTheme.colorScheme.onSurfaceVariant
@@ -104,14 +107,14 @@ fun TrackerRow(
 
             HorizontalSpacer(Grid.d2)
             IconButton(
-                onClick = {},
+                onClick = onCommit,
                 modifier = Modifier.size(Grid.d7),
                 colors = IconButtonDefaults.filledIconButtonColors(),
                 enabled = tracker.state.duration.isPositive()
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Check,
-                    contentDescription = "Finish"
+                    contentDescription = "Commit"
                 )
             }
         }
@@ -128,7 +131,10 @@ private fun TrackerRowPreview() {
             for (tracker in TrackerMock) {
                 TrackerRow(
                     tracker = tracker,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    onResume = {},
+                    onPause = {},
+                    onCommit = {}
                 )
             }
         }
