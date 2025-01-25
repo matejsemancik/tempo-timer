@@ -1,7 +1,6 @@
 package dev.matsem.bpm.feature.tracker.presentation
 
 import dev.matsem.bpm.feature.tracker.model.Tracker
-import dev.matsem.bpm.feature.tracker.model.TrackerLog
 import dev.matsem.bpm.feature.tracker.model.TrackerMock
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
@@ -41,11 +40,12 @@ object MainComponent : MainActions {
         if (tracker.state.startedAt == null) {
             return@update state
         }
-        val newLogs = tracker.state.finishedLogs + TrackerLog(start = tracker.state.startedAt, end = Clock.System.now())
+
+        val durationToAdd = Clock.System.now() - tracker.state.startedAt
         state.copy(
             trackers = state.trackers.set(
                 idx,
-                tracker.copy(state = tracker.state.copy(startedAt = null, finishedLogs = newLogs))
+                tracker.copy(state = tracker.state.copy(startedAt = null, finishedDuration = tracker.state.finishedDuration + durationToAdd))
             )
         )
     }

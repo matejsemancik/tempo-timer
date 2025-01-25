@@ -11,33 +11,29 @@ data class Tracker(
     val state: TrackerState = TrackerState()
 )
 
-data class TrackerLog(
-    val start: Instant,
-    val end: Instant,
-) {
-    init {
-        require(end > start) { "end time must be greater than start time" }
-    }
-}
-
+/**
+ * State of the time tracker.
+ *
+ * @param finishedDuration Duration already tracked into this tracker, not including any running timer
+ * @param startedAt If timer is running, contains an [Instant] of when the timer was started.
+ */
 data class TrackerState(
-    val finishedLogs: List<TrackerLog> = emptyList(),
+    val finishedDuration: Duration = 0.seconds,
     val startedAt: Instant? = null
 ) {
     val isRunning: Boolean
         get() = startedAt != null
 
+    /**
+     * A total duration of Tracker, including all previous timers + any currently running timer.
+     */
     val duration: Duration
         get() {
-            val finishedLogsDuration = finishedLogs.map {
-                it.end.minus(it.start)
-            }.fold(0.seconds) { acc, duration -> acc + duration}
-
             val runningDuration = startedAt?.let {
                 Clock.System.now() - startedAt
             } ?: 0.seconds
 
-            return finishedLogsDuration + runningDuration
+            return finishedDuration + runningDuration
         }
 }
 
@@ -59,9 +55,7 @@ val TrackerMock = listOf(
             title = "Spraviť robotu",
         ),
         state = TrackerState(
-            finishedLogs = listOf(
-                TrackerLog(start = Clock.System.now().minus(20.minutes), end = Clock.System.now())
-            )
+            finishedDuration = 10.minutes,
         )
     ),
     Tracker(
