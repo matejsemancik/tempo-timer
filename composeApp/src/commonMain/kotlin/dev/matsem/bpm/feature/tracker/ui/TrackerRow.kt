@@ -26,7 +26,6 @@ import dev.matsem.bpm.feature.tracker.model.TrackerMock
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.DurationUnit
 
 @Composable
 fun TrackerRow(
