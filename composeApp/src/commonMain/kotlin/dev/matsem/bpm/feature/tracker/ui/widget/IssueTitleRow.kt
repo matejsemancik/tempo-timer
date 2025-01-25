@@ -1,4 +1,4 @@
-package dev.matsem.bpm.feature.tracker.ui
+package dev.matsem.bpm.feature.tracker.ui.widget
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +14,7 @@ import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.VerticalSpacer
 import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.tracker.model.Issue
+import dev.matsem.bpm.feature.tracker.ui.widget.IssueTypeIcon
 
 @Composable
 fun IssueTitleRow(

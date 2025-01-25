@@ -1,4 +1,4 @@
-package dev.matsem.bpm.feature.tracker.ui
+package dev.matsem.bpm.feature.tracker.ui.widget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

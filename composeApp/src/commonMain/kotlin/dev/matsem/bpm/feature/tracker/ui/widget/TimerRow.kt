@@ -1,4 +1,4 @@
-package dev.matsem.bpm.feature.tracker.ui
+package dev.matsem.bpm.feature.tracker.ui.widget
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -28,16 +28,17 @@ import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForTimer
-import dev.matsem.bpm.feature.tracker.model.Tracker
-import dev.matsem.bpm.feature.tracker.model.TrackerMock
+import dev.matsem.bpm.feature.tracker.model.Timer
+import dev.matsem.bpm.feature.tracker.model.TimerMocks
+import dev.matsem.bpm.feature.tracker.ui.widget.IssueTitleRow
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TrackerRow(
-    tracker: Tracker,
+fun TimerRow(
+    tracker: Timer,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     onResume: () -> Unit,
@@ -151,8 +152,8 @@ private fun TrackerRowPreview() {
 
     Showcase(isDark = false) {
         Column {
-            for (tracker in TrackerMock) {
-                TrackerRow(
+            for (tracker in TimerMocks) {
+                TimerRow(
                     tracker = tracker,
                     modifier = Modifier.fillMaxWidth(),
                     onResume = {},

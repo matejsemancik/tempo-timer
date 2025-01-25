@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -11,11 +12,13 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import dev.matsem.bpm.feature.app.ui.AppUi
 
 fun main() = application {
     var isOpen by remember { mutableStateOf(true) }
     val windowState = rememberWindowState(
         size = DpSize(480.dp, 640.dp),
+        position = WindowPosition(Alignment.Center)
     )
 
     if (isOpen) {
@@ -27,7 +30,7 @@ fun main() = application {
             title = "Tempo Desktop",
             resizable = true,
         ) {
-            App()
+            AppUi()
         }
     }
 

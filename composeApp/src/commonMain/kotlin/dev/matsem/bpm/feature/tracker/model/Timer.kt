@@ -3,21 +3,20 @@ package dev.matsem.bpm.feature.tracker.model
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-data class Tracker(
+data class Timer(
     val issue: Issue?,
-    val state: TrackerState = TrackerState()
+    val state: TimerState = TimerState()
 )
 
 /**
  * State of the time tracker.
  *
- * @param finishedDuration Duration already tracked into this tracker, not including any running timer
+ * @param finishedDuration Duration already tracked into this timer, not including any running timer.
  * @param startedAt If timer is running, contains an [Instant] of when the timer was started.
  */
-data class TrackerState(
+data class TimerState(
     val finishedDuration: Duration = 0.seconds,
     val startedAt: Instant? = null
 ) {
@@ -25,7 +24,7 @@ data class TrackerState(
         get() = startedAt != null
 
     /**
-     * A total duration of Tracker, including all previous timers + any currently running timer.
+     * A total duration of timer, including all previously tracked time + currently tracked time.
      */
     val duration: Duration
         get() {
@@ -37,36 +36,36 @@ data class TrackerState(
         }
 }
 
-val TrackerMock = listOf(
-    Tracker(
+val TimerMocks = listOf(
+    Timer(
         issue = Issue(
             type = IssueType.Bug,
             key = "MTSM-1",
             title = "Dojebaný payment button",
         ),
     ),
-    Tracker(
+    Timer(
         issue = Issue(
             type = IssueType.Task,
             key = "MTSM-4",
             title = "Spraviť robotu",
         ),
     ),
-    Tracker(
+    Timer(
         issue = Issue(
             type = IssueType.Subtask,
             key = "MTSM-19",
             title = "[AN] Spraviť robotu",
         ),
     ),
-    Tracker(
+    Timer(
         issue = Issue(
             type = IssueType.Story,
             key = "MTSM-140",
             title = "Robenie roboty",
         ),
     ),
-    Tracker(
+    Timer(
         issue = Issue(
             type = IssueType.Epic,
             key = "MTSM-5",

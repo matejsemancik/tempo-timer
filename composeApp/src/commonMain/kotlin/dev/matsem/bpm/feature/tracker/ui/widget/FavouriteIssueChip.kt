@@ -1,4 +1,4 @@
-package dev.matsem.bpm.feature.tracker.ui
+package dev.matsem.bpm.feature.tracker.ui.widget
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,8 @@ import dev.matsem.bpm.design.layout.ClickableDesignCard
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.feature.tracker.model.Issue
-import dev.matsem.bpm.feature.tracker.model.TrackerMock
+import dev.matsem.bpm.feature.tracker.model.TimerMocks
+import dev.matsem.bpm.feature.tracker.ui.widget.IssueTitleRow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -34,7 +35,7 @@ private fun FavouriteIssueChipPreview() {
 
     Showcase(isDark = false) {
         Column(verticalArrangement = Arrangement.spacedBy(Grid.d1)) {
-            for (issue in TrackerMock.mapNotNull { it.issue }) {
+            for (issue in TimerMocks.mapNotNull { it.issue }) {
                 FavouriteIssueChip(
                     issue = issue,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d4),
