@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun RowScope.horizontalSpacer(size: Dp) = Spacer(Modifier.width(size))
+fun RowScope.HorizontalSpacer(size: Dp) = Spacer(Modifier.width(size))
 
 @Composable
-fun ColumnScope.verticalSpacer(size: Dp) = Spacer(Modifier.height(size))
+fun ColumnScope.VerticalSpacer(size: Dp) = Spacer(Modifier.height(size))

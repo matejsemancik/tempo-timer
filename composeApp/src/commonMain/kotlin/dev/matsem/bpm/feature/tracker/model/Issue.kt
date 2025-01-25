@@ -1,9 +1,15 @@
-package dev.matsem.bpm.tracker.model
+package dev.matsem.bpm.feature.tracker.model
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+
+data class Issue(
+    val type: IssueType,
+    val key: String,
+    val title: String,
+)
 
 enum class IssueType(val color: Color, val icon: ImageVector) {
     Bug(color = Color(0xffE5493A), icon = Icons.Filled.FiberManualRecord),

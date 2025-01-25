@@ -3,6 +3,8 @@ package dev.matsem.bpm.design.theme
 import androidx.compose.ui.unit.dp
 
 object Grid {
+    val d0 = 0.dp
+    val d0_25 = 1.dp
     val d0_5 = 2.dp
     val d1 = 4.dp
     val d1_5 = 6.dp
