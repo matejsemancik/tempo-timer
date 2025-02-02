@@ -1,9 +1,6 @@
 package dev.matsem.bpm
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -13,8 +10,20 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import dev.matsem.bpm.feature.app.ui.AppUi
+import dev.matsem.bpm.injection.AppInjection
+import org.koin.compose.KoinContext
 
-fun main() = application {
+fun main() {
+    AppInjection.initializeInjection()
+    application {
+        KoinContext {
+            MainApplication()
+        }
+    }
+}
+
+@Composable
+fun ApplicationScope.MainApplication() {
     var isOpen by remember { mutableStateOf(true) }
     val windowState = rememberWindowState(
         size = DpSize(480.dp, 640.dp),

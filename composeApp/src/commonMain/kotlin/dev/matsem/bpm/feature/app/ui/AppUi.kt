@@ -34,7 +34,6 @@ fun AppUi() {
     val isSystemInDarkTheme = isSystemInDarkTheme() // Stores initial state of dark mode and stores in [darkMode] state.
     var darkMode by remember { mutableStateOf(isSystemInDarkTheme) }
     val focusManager = LocalFocusManager.current
-
     var isSettingsOpen by remember { mutableStateOf(false) }
 
     BpmTheme(isDark = darkMode) {
@@ -109,7 +108,6 @@ fun AppUi() {
             }
         ) { contentPadding ->
             TrackerScreenUi(
-                screen = TrackerModel,
                 modifier = Modifier.fillMaxSize().padding(contentPadding)
             )
         }
@@ -129,7 +127,7 @@ fun AppUi() {
                     )
                 }
             ) {
-                SettingsScreenUi(SettingsModel)
+                SettingsScreenUi()
             }
         }
     }

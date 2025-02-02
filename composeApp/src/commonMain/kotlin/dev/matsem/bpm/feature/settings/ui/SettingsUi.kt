@@ -18,11 +18,12 @@ import dev.matsem.bpm.feature.settings.presentation.SettingsScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsState
 import dev.matsem.bpm.feature.settings.ui.widget.SettingsTextField
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 
 @Composable
 fun SettingsScreenUi(
-    screen: SettingsScreen,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    screen: SettingsScreen = koinInject(),
 ) {
     val state by screen.state.collectAsStateWithLifecycle()
     SettingsScreenUi(state, screen.actions, modifier)

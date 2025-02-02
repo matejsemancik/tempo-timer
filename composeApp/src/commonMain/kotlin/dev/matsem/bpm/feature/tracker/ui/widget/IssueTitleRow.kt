@@ -13,7 +13,7 @@ import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.VerticalSpacer
 import dev.matsem.bpm.design.tooling.centeredVertically
-import dev.matsem.bpm.feature.tracker.model.Issue
+import dev.matsem.bpm.data.model.domain.Issue
 import dev.matsem.bpm.feature.tracker.ui.widget.IssueTypeIcon
 
 @Composable

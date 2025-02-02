@@ -1,14 +1,14 @@
 package dev.matsem.bpm.feature.tracker.presentation
 
-import dev.matsem.bpm.feature.tracker.model.Issue
-import dev.matsem.bpm.feature.tracker.model.Timer
-import dev.matsem.bpm.feature.tracker.model.TimerState
+import dev.matsem.bpm.data.model.domain.Issue
+import dev.matsem.bpm.data.model.domain.Timer
+import dev.matsem.bpm.data.model.domain.TimerState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.datetime.Clock
 
-internal object TrackerModel : TrackerScreen {
+internal class TrackerModel : TrackerScreen {
 
     private val _state = MutableStateFlow(TrackerState())
     override val state: StateFlow<TrackerState> = _state
@@ -60,7 +60,7 @@ internal object TrackerModel : TrackerScreen {
             )
         }
 
-        override fun onDeleteTimer(timer: Timer) = TrackerModel._state.update { state ->
+        override fun onDeleteTimer(timer: Timer) = _state.update { state ->
             state.copy(timers = state.timers.remove(timer))
         }
     }

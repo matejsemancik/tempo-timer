@@ -1,4 +1,4 @@
-package dev.matsem.bpm.feature.tracker.model
+package dev.matsem.bpm.data.model.domain
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant

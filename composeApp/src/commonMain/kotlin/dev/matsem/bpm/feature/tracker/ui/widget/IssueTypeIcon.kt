@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
-import dev.matsem.bpm.feature.tracker.model.IssueType
+import dev.matsem.bpm.data.model.domain.IssueType
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

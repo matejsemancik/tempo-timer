@@ -1,8 +1,8 @@
 package dev.matsem.bpm.feature.tracker.presentation
 
-import dev.matsem.bpm.feature.tracker.model.Issue
-import dev.matsem.bpm.feature.tracker.model.Timer
-import dev.matsem.bpm.feature.tracker.model.TimerMocks
+import dev.matsem.bpm.data.model.domain.Issue
+import dev.matsem.bpm.data.model.domain.Timer
+import dev.matsem.bpm.data.model.domain.TimerMocks
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList

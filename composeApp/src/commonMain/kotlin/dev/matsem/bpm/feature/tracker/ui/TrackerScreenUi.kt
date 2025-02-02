@@ -15,19 +15,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.VerticalSpacer
-import dev.matsem.bpm.feature.tracker.model.Issue
-import dev.matsem.bpm.feature.tracker.model.Timer
+import dev.matsem.bpm.data.model.domain.Issue
+import dev.matsem.bpm.data.model.domain.Timer
 import dev.matsem.bpm.feature.tracker.presentation.TrackerActions
 import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
 import dev.matsem.bpm.feature.tracker.presentation.TrackerState
 import dev.matsem.bpm.feature.tracker.ui.widget.FavouriteIssueChip
 import dev.matsem.bpm.feature.tracker.ui.widget.TimerRow
 import kotlinx.collections.immutable.ImmutableList
+import org.koin.compose.koinInject
 
 @Composable
 fun TrackerScreenUi(
-    screen: TrackerScreen,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    screen: TrackerScreen = koinInject(),
 ) {
     val state by screen.state.collectAsStateWithLifecycle()
     TrackerScreenUi(

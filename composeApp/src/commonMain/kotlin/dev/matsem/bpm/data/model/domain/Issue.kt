@@ -1,4 +1,4 @@
-package dev.matsem.bpm.feature.tracker.model
+package dev.matsem.bpm.data.model.domain
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
