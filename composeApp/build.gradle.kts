@@ -36,8 +36,10 @@ kotlin {
 
             // network
             implementation(libs.ktorfit.lib)
-            implementation(libs.ktor.plugin.contentNegotiation)
             implementation(libs.ktor.serialization.json)
+            implementation(libs.ktor.plugin.contentNegotiation)
+            implementation(libs.ktor.plugin.logging)
+            implementation(libs.ktor.plugin.auth)
         }
 
         desktopMain.dependencies {

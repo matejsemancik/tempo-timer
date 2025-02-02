@@ -7,6 +7,7 @@ internal object AppInjection {
     fun initializeInjection() {
         startKoin {
             modules(
+                dataModule(),
                 featureModule(),
                 networkModule()
             )

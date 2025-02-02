@@ -1,11 +1,10 @@
 package dev.matsem.bpm.data.model.network.jira
 
-import dev.matsem.bpm.data.model.network.jira.AvatarUrlsBean
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class User(
+data class JiraUser(
 
     @SerialName("accountId")
     val accountId: String,
@@ -16,6 +15,6 @@ data class User(
     @SerialName("avatarUrls")
     val avatarUrls: AvatarUrlsBean,
 
-    @SerialName("displayUrl")
+    @SerialName("displayName")
     val displayName: String
 )

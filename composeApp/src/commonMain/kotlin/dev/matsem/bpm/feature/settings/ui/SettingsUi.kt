@@ -56,8 +56,8 @@ fun SettingsScreenUi(
         VerticalSpacer(Grid.d2)
         SettingsTextField(
             label = "Jira URL",
-            value = state.jiraUrl,
-            onValueChanged = actions::onJiraUrlInput,
+            value = state.jiraHostname,
+            onValueChanged = actions::onJiraHostnameInput,
             modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3),
             prefix = { Text("https://") },
             suffix = { Text(".atlassian.net") }
@@ -85,7 +85,7 @@ fun SettingsScreenUi(
 
         Row(modifier = Modifier.fillMaxWidth().padding(Grid.d3), horizontalArrangement = Arrangement.End) {
             Button(
-                onClick = {},
+                onClick = actions::onLoginClick,
                 shape = BpmTheme.shapes.small
             ) {
                 Text("Sign In")
@@ -101,10 +101,11 @@ fun SettingsScreenUiPreview() {
         SettingsScreenUi(
             SettingsState(),
             object : SettingsActions {
-                override fun onJiraUrlInput(input: String) = Unit
+                override fun onJiraHostnameInput(input: String) = Unit
                 override fun onJiraEmailInput(input: String) = Unit
                 override fun onJiraApiKeyInput(input: String) = Unit
                 override fun onTempoApiKeyInput(input: String) = Unit
+                override fun onLoginClick() = Unit
             },
             Modifier.fillMaxWidth()
         )

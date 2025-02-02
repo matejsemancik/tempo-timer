@@ -20,9 +20,7 @@ import dev.matsem.bpm.design.sheet.GenericModalBottomSheet
 import dev.matsem.bpm.design.sheet.SheetHeader
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
-import dev.matsem.bpm.feature.settings.presentation.SettingsModel
 import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
-import dev.matsem.bpm.feature.tracker.presentation.TrackerModel
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
