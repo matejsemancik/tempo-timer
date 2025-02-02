@@ -67,15 +67,22 @@ internal class SettingsModel(
 
     private fun login() {
         coroutineScope.launch {
-            val state = _state.value as? SettingsState.SignedOut ?: return@launch
-            credentialsRepo.signIn(
-                Credentials(
-                    baseUrl = "https://${state.jiraHostname}.atlassian.net/rest/api/3/",
-                    email = state.jiraEmail,
-                    jiraApiToken = state.jiraApiToken,
-                    tempoApiToken = state.tempoApiToken
-                )
-            )
+            val currentState = _state.value as? SettingsState.SignedOut ?: return@launch
+
+            _state.update { currentState.copy(isLoading = true) }
+
+//            runCatching {
+//                credentialsRepo.signIn(
+//                    Credentials(
+//                        baseUrl = "https://${currentState.jiraHostname}.atlassian.net/rest/api/3/",
+//                        email = currentState.jiraEmail,
+//                        jiraApiToken = currentState.jiraApiToken,
+//                        tempoApiToken = currentState.tempoApiToken
+//                    )
+//                )
+//            }.onFailure {
+//                _state.update { currentState.copy(isLoading = false) }
+//            }
         }
     }
 

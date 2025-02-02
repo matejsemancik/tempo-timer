@@ -1,4 +1,4 @@
-rootProject.name = "bpm"
+rootProject.name = "bpm-tracker"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -28,4 +28,4 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
+include(":desktopApp")

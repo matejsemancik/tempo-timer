@@ -7,7 +7,8 @@ sealed interface SettingsState {
         val jiraHostname: String = "",
         val jiraEmail: String = "",
         val jiraApiToken: String = "",
-        val tempoApiToken: String = ""
+        val tempoApiToken: String = "",
+        val isLoading: Boolean = false,
     ) : SettingsState
 
     data class SignedIn(

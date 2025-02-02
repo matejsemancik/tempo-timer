@@ -1,13 +1,10 @@
 package dev.matsem.bpm.feature.settings.ui
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +14,8 @@ import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import dev.matsem.bpm.data.model.domain.User
+import dev.matsem.bpm.design.button.DesignButton
+import dev.matsem.bpm.design.button.DesignOutlinedButton
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
@@ -60,19 +59,19 @@ private fun ColumnScope.SignedOutSection(
     modifier: Modifier = Modifier
 ) {
     Text(
-        "🔐 Credentials",
+        text = "🔐 Credentials",
         style = BpmTheme.typography.titleMedium,
         modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
     )
     VerticalSpacer(Grid.d1)
     Text(
-        "Sign In by providing necessary credentials.",
+        text = "Sign In by providing necessary credentials.",
         style = BpmTheme.typography.bodyMedium,
         modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
     )
     VerticalSpacer(Grid.d1)
     Text(
-        "Jira API token is used to sync your profile and search issues. Tempo API token is used to synchronize worklogs with Tempo.\nInstructions on how to generate TBD.",
+        text = "Jira API token is used to sync your profile and search issues. Tempo API token is used to synchronize worklogs with Tempo.\nInstructions on how to generate TBD.",
         style = BpmTheme.typography.labelMedium,
         modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
     )
@@ -107,12 +106,11 @@ private fun ColumnScope.SignedOutSection(
     )
 
     Row(modifier = Modifier.fillMaxWidth().padding(Grid.d3), horizontalArrangement = Arrangement.End) {
-        Button(
+        DesignButton(
+            text = "Sign In",
+            isLoading = state.isLoading,
             onClick = actions::onLoginClick,
-            shape = BpmTheme.shapes.small
-        ) {
-            Text("Sign In")
-        }
+        )
     }
 }
 
@@ -145,12 +143,10 @@ private fun ColumnScope.SignedInSection(
                 color = BpmTheme.colorScheme.outline
             )
         }
-        OutlinedButton(
+        DesignOutlinedButton(
+            text = "Sign Out",
             onClick = actions::onLogoutClick,
-            shape = BpmTheme.shapes.small
-        ) {
-            Text("Sign Out")
-        }
+        )
     }
     VerticalSpacer(Grid.d4)
 }
@@ -179,7 +175,13 @@ fun SettingsScreenUiPreview_SignedOut() {
 fun SettingsScreenUiPreview_SignedIn() {
     Showcase {
         SettingsScreenUi(
-            SettingsState.SignedIn(User(email = "emanuel@bacigala.sk", displayName = "Emanuel Bacigala", avatarUrl = "")),
+            SettingsState.SignedIn(
+                User(
+                    email = "emanuel@bacigala.sk",
+                    displayName = "Emanuel Bacigala",
+                    avatarUrl = ""
+                )
+            ),
             object : SettingsActions {
                 override fun onJiraHostnameInput(input: String) = Unit
                 override fun onJiraEmailInput(input: String) = Unit
