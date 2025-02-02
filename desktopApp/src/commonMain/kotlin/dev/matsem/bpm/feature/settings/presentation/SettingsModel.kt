@@ -1,12 +1,12 @@
 package dev.matsem.bpm.feature.settings.presentation
 
 import dev.matsem.bpm.data.model.domain.Credentials
-import dev.matsem.bpm.data.repo.CredentialsRepo
+import dev.matsem.bpm.data.repo.SessionRepo
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 internal class SettingsModel(
-    private val credentialsRepo: CredentialsRepo,
+    private val sessionRepo: SessionRepo,
 ) : SettingsScreen {
 
     companion object {
@@ -18,7 +18,7 @@ internal class SettingsModel(
     override val state: StateFlow<SettingsState> = _state
         .onStart {
             coroutineScope.launch {
-                credentialsRepo.getUser().collect { user ->
+                sessionRepo.getUser().collect { user ->
                     _state.update {
                         when (user) {
                             null -> SettingsState.SignedOut()
@@ -72,7 +72,7 @@ internal class SettingsModel(
             _state.update { currentState.copy(isLoading = true) }
 
             runCatching {
-                credentialsRepo.signIn(
+                sessionRepo.signIn(
                     Credentials(
                         baseUrl = "https://${currentState.jiraHostname}.atlassian.net/rest/api/3/",
                         email = currentState.jiraEmail,
@@ -88,7 +88,7 @@ internal class SettingsModel(
 
     private fun logout() {
         coroutineScope.launch {
-            credentialsRepo.signOut()
+            sessionRepo.signOut()
         }
     }
 }

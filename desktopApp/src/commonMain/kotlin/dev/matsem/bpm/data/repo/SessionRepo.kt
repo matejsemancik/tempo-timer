@@ -10,7 +10,7 @@ import org.koin.core.component.getScopeName
 import org.koin.core.context.GlobalContext
 import org.koin.core.scope.Scope
 
-interface CredentialsRepo : ClearableRepo {
+interface SessionRepo : ClearableRepo {
     fun isSignedIn(): Flow<Boolean>
     suspend fun signIn(credentials: Credentials)
     suspend fun signOut()
@@ -18,7 +18,7 @@ interface CredentialsRepo : ClearableRepo {
     fun getUser(): Flow<User?>
 }
 
-internal class CredentialsRepoImpl : CredentialsRepo {
+internal class SessionRepoImpl : SessionRepo {
     private var credentialsScope: Scope? = null
     private val user = MutableStateFlow<User?>(null)
     private val credentials = MutableStateFlow<Credentials?>(null)
