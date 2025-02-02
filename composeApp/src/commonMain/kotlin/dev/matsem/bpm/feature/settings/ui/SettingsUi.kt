@@ -1,8 +1,10 @@
 package dev.matsem.bpm.feature.settings.ui
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
@@ -11,12 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
 import dev.matsem.bpm.data.model.domain.User
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
+import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.VerticalSpacer
+import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.settings.presentation.SettingsActions
 import dev.matsem.bpm.feature.settings.presentation.SettingsScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsState
@@ -40,12 +46,6 @@ fun SettingsScreenUi(
     modifier: Modifier = Modifier
 ) {
     Column(modifier.verticalScroll(rememberScrollState())) {
-        Text(
-            "🔐 Credentials",
-            style = BpmTheme.typography.titleMedium,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
-        )
-        VerticalSpacer(Grid.d1)
         when (state) {
             is SettingsState.SignedOut -> SignedOutSection(state, actions)
             is SettingsState.SignedIn -> SignedInSection(state, actions)
@@ -59,6 +59,12 @@ private fun ColumnScope.SignedOutSection(
     actions: SettingsActions,
     modifier: Modifier = Modifier
 ) {
+    Text(
+        "🔐 Credentials",
+        style = BpmTheme.typography.titleMedium,
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
+    )
+    VerticalSpacer(Grid.d1)
     Text(
         "Sign In by providing necessary credentials.",
         style = BpmTheme.typography.bodyMedium,
@@ -117,10 +123,28 @@ private fun ColumnScope.SignedInSection(
     modifier: Modifier = Modifier
 ) {
     Row(Modifier.fillMaxWidth().padding(horizontal = Grid.d3), verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            text = "Signed in as: ${state.user.displayName}",
-            modifier = Modifier.weight(1f),
+        AsyncImage(
+            model = state.user.avatarUrl,
+            contentDescription = null,
+            modifier = Modifier
+                .size(Grid.d9)
+                .clip(CircleShape)
+                .background(BpmTheme.colorScheme.inverseOnSurface)
         )
+        HorizontalSpacer(Grid.d2)
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = state.user.displayName,
+                style = BpmTheme.typography.bodyLarge.centeredVertically(),
+                color = BpmTheme.colorScheme.onSurface
+            )
+            VerticalSpacer(Grid.d0_5)
+            Text(
+                text = state.user.email,
+                style = BpmTheme.typography.labelLarge.centeredVertically(),
+                color = BpmTheme.colorScheme.outline
+            )
+        }
         OutlinedButton(
             onClick = actions::onLogoutClick,
             shape = BpmTheme.shapes.small
@@ -155,7 +179,7 @@ fun SettingsScreenUiPreview_SignedOut() {
 fun SettingsScreenUiPreview_SignedIn() {
     Showcase {
         SettingsScreenUi(
-            SettingsState.SignedIn(User(email = "me@matsem.dev", displayName = "Janko Mrkvička", avatarUrl = "")),
+            SettingsState.SignedIn(User(email = "emanuel@bacigala.sk", displayName = "Emanuel Bacigala", avatarUrl = "")),
             object : SettingsActions {
                 override fun onJiraHostnameInput(input: String) = Unit
                 override fun onJiraEmailInput(input: String) = Unit

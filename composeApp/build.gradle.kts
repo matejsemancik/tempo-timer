@@ -40,6 +40,10 @@ kotlin {
             implementation(libs.ktor.plugin.contentNegotiation)
             implementation(libs.ktor.plugin.logging)
             implementation(libs.ktor.plugin.auth)
+
+            // coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
         }
 
         desktopMain.dependencies {
