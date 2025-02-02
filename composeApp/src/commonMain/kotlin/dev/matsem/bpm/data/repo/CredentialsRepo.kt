@@ -14,8 +14,8 @@ interface CredentialsRepo : ClearableRepo {
     fun isSignedIn(): Flow<Boolean>
     suspend fun signIn(credentials: Credentials)
     suspend fun signOut()
-    suspend fun syncUser(): User
-    fun getUser(): Flow<User>
+    suspend fun syncUser()
+    fun getUser(): Flow<User?>
 }
 
 internal class CredentialsRepoImpl : CredentialsRepo {
@@ -26,6 +26,7 @@ internal class CredentialsRepoImpl : CredentialsRepo {
 
     private val jiraApi: JiraApi
         get() = credentialsScope?.get<JiraApi>() ?: error("Scope is not initialized")
+
     override suspend fun signIn(credentials: Credentials) {
         credentialsScope?.close()
         credentialsScope = GlobalContext.get().createScope(credentials.getScopeId(), credentials.getScopeName(), credentials)
@@ -37,9 +38,13 @@ internal class CredentialsRepoImpl : CredentialsRepo {
         clear()
     }
 
-    override suspend fun syncUser(): User = jiraApi.getMyself().toDomainModel()
+    override suspend fun syncUser() {
+        this.user.update {
+            jiraApi.getMyself().toDomainModel()
+        }
+    }
 
-    override fun getUser(): Flow<User> = user.filterNotNull()
+    override fun getUser(): Flow<User?> = user
 
     override fun clear() {
         this.credentials.update { null }

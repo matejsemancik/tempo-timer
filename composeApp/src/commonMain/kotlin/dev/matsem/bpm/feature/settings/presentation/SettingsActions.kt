@@ -7,4 +7,5 @@ interface SettingsActions {
     fun onTempoApiKeyInput(input: String)
 
     fun onLoginClick()
+    fun onLogoutClick()
 }
