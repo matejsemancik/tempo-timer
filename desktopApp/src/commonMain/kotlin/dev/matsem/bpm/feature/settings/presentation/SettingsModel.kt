@@ -71,18 +71,18 @@ internal class SettingsModel(
 
             _state.update { currentState.copy(isLoading = true) }
 
-//            runCatching {
-//                credentialsRepo.signIn(
-//                    Credentials(
-//                        baseUrl = "https://${currentState.jiraHostname}.atlassian.net/rest/api/3/",
-//                        email = currentState.jiraEmail,
-//                        jiraApiToken = currentState.jiraApiToken,
-//                        tempoApiToken = currentState.tempoApiToken
-//                    )
-//                )
-//            }.onFailure {
-//                _state.update { currentState.copy(isLoading = false) }
-//            }
+            runCatching {
+                credentialsRepo.signIn(
+                    Credentials(
+                        baseUrl = "https://${currentState.jiraHostname}.atlassian.net/rest/api/3/",
+                        email = currentState.jiraEmail,
+                        jiraApiToken = currentState.jiraApiToken,
+                        tempoApiToken = currentState.tempoApiToken
+                    )
+                )
+            }.onFailure {
+                _state.update { currentState.copy(isLoading = false) }
+            }
         }
     }
 
