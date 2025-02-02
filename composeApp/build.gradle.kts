@@ -49,6 +49,7 @@ kotlin {
                 exclude("org.jetbrains.compose.material")
             }
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.ktor.engine.okhttp)
         }
     }
 }

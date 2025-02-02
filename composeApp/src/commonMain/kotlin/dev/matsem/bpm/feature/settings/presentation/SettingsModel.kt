@@ -39,8 +39,8 @@ internal class SettingsModel(private val credentialsRepo: CredentialsRepo) : Set
                 Credentials(
                     baseUrl = "https://${state.jiraHostname}.atlassian.net/rest/api/3/",
                     email = state.jiraEmail,
-                    jiraApiKey = state.jiraApiKey,
-                    tempoApiKey = state.tempoApiKey
+                    jiraApiToken = state.jiraApiKey,
+                    tempoApiToken = state.tempoApiKey
                 )
             )
         }
