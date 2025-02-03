@@ -92,6 +92,7 @@ internal class SettingsModel(
     private fun logout() {
         coroutineScope.launch {
             sessionRepo.signOut()
+            _state.update { SettingsState.SignedOut() }
         }
     }
 }
