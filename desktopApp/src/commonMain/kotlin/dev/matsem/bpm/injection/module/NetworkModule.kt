@@ -1,15 +1,20 @@
-package dev.matsem.bpm.injection
+package dev.matsem.bpm.injection.module
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import dev.matsem.bpm.data.model.domain.Credentials
 import dev.matsem.bpm.data.service.JiraApi
+import dev.matsem.bpm.data.service.JiraApiManager
+import dev.matsem.bpm.data.service.JiraApiManagerImpl
 import dev.matsem.bpm.data.service.plugin.ContentNegotiationPlugin
 import dev.matsem.bpm.data.service.plugin.JiraAuthPlugin
 import dev.matsem.bpm.data.service.plugin.LoggingPlugin
+import dev.matsem.bpm.injection.getNativeHttpClient
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 fun networkModule() = module {
@@ -23,6 +28,7 @@ private fun httpClientPluginsModule() = module {
 }
 
 private fun jiraClientModule() = module {
+
     scope<Credentials> {
 
         scoped<HttpClient>(named<JiraApi>()) {
@@ -49,7 +55,9 @@ private fun jiraClientModule() = module {
         scoped<JiraApi> {
             val ktorfit: Ktorfit = get(named<JiraApi>())
             @Suppress("DEPRECATION")
-            ktorfit.create<JiraApi>()
+            ktorfit.create()
         }
     }
+
+    singleOf(::JiraApiManagerImpl) bind JiraApiManager::class
 }

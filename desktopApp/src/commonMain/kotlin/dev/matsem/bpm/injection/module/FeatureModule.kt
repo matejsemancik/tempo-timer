@@ -1,4 +1,4 @@
-package dev.matsem.bpm.injection
+package dev.matsem.bpm.injection.module
 
 import dev.matsem.bpm.feature.settings.presentation.SettingsModel
 import dev.matsem.bpm.feature.settings.presentation.SettingsScreen

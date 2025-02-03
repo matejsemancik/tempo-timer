@@ -17,17 +17,16 @@ internal class SettingsModel(
     private val _state = MutableStateFlow<SettingsState>(DefaultState)
     override val state: StateFlow<SettingsState> = _state
         .onStart {
+            // Load initial state
             coroutineScope.launch {
-                sessionRepo.getUser().collect { user ->
-                    _state.update {
-                        when (user) {
-                            null -> SettingsState.SignedOut()
-                            else -> SettingsState.SignedIn(user)
-                        }
+                val user = runCatching { sessionRepo.fetchUser() }.getOrNull()
+                _state.update {
+                    when (user) {
+                        null -> SettingsState.SignedOut()
+                        else -> SettingsState.SignedIn(user)
                     }
                 }
             }
-            // Load initial state
         }
         .stateIn(coroutineScope, SharingStarted.Lazily, DefaultState)
     override val actions: SettingsActions = object : SettingsActions {
@@ -72,17 +71,21 @@ internal class SettingsModel(
             _state.update { currentState.copy(isLoading = true) }
 
             runCatching {
-                sessionRepo.signIn(
-                    Credentials(
-                        baseUrl = "https://${currentState.jiraHostname}.atlassian.net/rest/api/3/",
-                        email = currentState.jiraEmail,
-                        jiraApiToken = currentState.jiraApiToken,
-                        tempoApiToken = currentState.tempoApiToken
+                sessionRepo
+                    .signIn(
+                        Credentials(
+                            baseUrl = "https://${currentState.jiraHostname}.atlassian.net/rest/api/3/",
+                            email = currentState.jiraEmail,
+                            jiraApiToken = currentState.jiraApiToken,
+                            tempoApiToken = currentState.tempoApiToken
+                        )
                     )
-                )
-            }.onFailure {
-                _state.update { currentState.copy(isLoading = false) }
             }
+                .onSuccess { user -> _state.update { SettingsState.SignedIn(user) } }
+                .onFailure {
+                    println(it)
+                    _state.update { currentState.copy(isLoading = false) }
+                }
         }
     }
 

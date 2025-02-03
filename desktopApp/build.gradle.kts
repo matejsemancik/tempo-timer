@@ -43,6 +43,9 @@ kotlin {
             // coil
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
+
+            // persistence
+            implementation(libs.androidx.datastore)
         }
 
         desktopMain.dependencies {

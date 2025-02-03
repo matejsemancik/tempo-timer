@@ -1,15 +1,21 @@
 package dev.matsem.bpm.injection
 
+import dev.matsem.bpm.injection.module.*
 import org.koin.core.context.startKoin
-import org.koin.dsl.KoinAppDeclaration
+import org.koin.core.logger.Level
+import org.koin.core.logger.PrintLogger
 
 internal object AppInjection {
     fun initializeInjection() {
         startKoin {
+            logger(PrintLogger(Level.ERROR))
+
             modules(
-                dataModule(),
+                scopeModule(),
+                repositoryModule(),
+                networkModule(),
+                persistenceModule(),
                 featureModule(),
-                networkModule()
             )
         }
     }

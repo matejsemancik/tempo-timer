@@ -1,5 +1,5 @@
 package dev.matsem.bpm.data.repo
 
 interface ClearableRepo {
-    fun clear()
+    suspend fun clear()
 }

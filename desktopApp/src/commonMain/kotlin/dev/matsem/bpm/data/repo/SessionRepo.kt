@@ -2,53 +2,40 @@ package dev.matsem.bpm.data.repo
 
 import dev.matsem.bpm.data.model.domain.Credentials
 import dev.matsem.bpm.data.model.domain.User
+import dev.matsem.bpm.data.model.mapping.CredentialsMapping.toPersistenceModel
 import dev.matsem.bpm.data.model.mapping.UserMapping.toDomainModel
-import dev.matsem.bpm.data.service.JiraApi
-import kotlinx.coroutines.flow.*
-import org.koin.core.component.getScopeId
-import org.koin.core.component.getScopeName
-import org.koin.core.context.GlobalContext
-import org.koin.core.scope.Scope
+import dev.matsem.bpm.data.persistence.ApplicationPersistence
+import dev.matsem.bpm.data.service.JiraApiManager
+import dev.matsem.bpm.injection.scope.SessionScope
 
 interface SessionRepo : ClearableRepo {
-    fun isSignedIn(): Flow<Boolean>
-    suspend fun signIn(credentials: Credentials)
+
+    suspend fun signIn(credentials: Credentials): User
     suspend fun signOut()
-    suspend fun syncUser()
-    fun getUser(): Flow<User?>
+    suspend fun fetchUser(): User
 }
 
-internal class SessionRepoImpl : SessionRepo {
-    private var credentialsScope: Scope? = null
-    private val user = MutableStateFlow<User?>(null)
-    private val credentials = MutableStateFlow<Credentials?>(null)
-    override fun isSignedIn(): Flow<Boolean> = credentials.map { it != null }
-
-    private val jiraApi: JiraApi
-        get() = credentialsScope?.get<JiraApi>() ?: error("Scope is not initialized")
-
-    override suspend fun signIn(credentials: Credentials) {
-        credentialsScope?.close()
-        credentialsScope = GlobalContext.get().createScope(credentials.getScopeId(), credentials.getScopeName(), credentials)
-        this.credentials.update { credentials }
-        syncUser()
+internal class SessionRepoImpl(
+    private val sessionScope: SessionScope,
+    private val applicationPersistence: ApplicationPersistence,
+    private val jiraApiManager: JiraApiManager,
+) : SessionRepo {
+    override suspend fun signIn(credentials: Credentials): User {
+        sessionScope.closeScope()
+        applicationPersistence.saveCredentials(credentials.toPersistenceModel())
+        return jiraApiManager.getMyself().toDomainModel()
     }
 
     override suspend fun signOut() {
         clear()
     }
 
-    override suspend fun syncUser() {
-        this.user.update {
-            jiraApi.getMyself().toDomainModel()
-        }
+    override suspend fun fetchUser(): User {
+        return jiraApiManager.getMyself().toDomainModel()
     }
 
-    override fun getUser(): Flow<User?> = user
-
-    override fun clear() {
-        this.credentials.update { null }
-        this.user.update { null }
-        credentialsScope?.close()
+    override suspend fun clear() {
+        applicationPersistence.deleteCredentials()
+        sessionScope.closeScope()
     }
 }
