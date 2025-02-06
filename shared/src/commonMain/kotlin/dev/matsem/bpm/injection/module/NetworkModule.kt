@@ -44,15 +44,6 @@ private fun jiraClientModule() = module {
             get<HttpClient>(
                 parameters = { parametersOf(plugins) }
             )
-
-//            getNativeHttpClient {
-//                get<ContentNegotiationPlugin>()
-//                    .install(this)
-//                get<JiraAuthPlugin>(parameters = { parametersOf(credentials.email, credentials.jiraApiToken) })
-//                    .install(this)
-//                get<LoggingPlugin>(parameters = { parametersOf(LogLevel.BODY) })
-//                    .install(this)
-//            }
         }
 
         scoped<Ktorfit>(named<JiraApi>()) {
