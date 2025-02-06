@@ -1,6 +1,7 @@
 package dev.matsem.bpm.feature.settings.presentation
 
 import dev.matsem.bpm.data.model.domain.Credentials
+import dev.matsem.bpm.data.model.domain.User
 import dev.matsem.bpm.data.repo.SessionRepo
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -10,7 +11,7 @@ internal class SettingsModel(
 ) : SettingsScreen {
 
     companion object {
-        private val DefaultState: SettingsState = SettingsState.SignedOut()
+        private val DefaultState: SettingsState = SettingsState.SignedIn(User("", "", ""))
     }
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main) + SupervisorJob()

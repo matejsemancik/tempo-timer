@@ -14,5 +14,8 @@ internal interface UserDao {
     suspend fun delete()
 
     @Query("SELECT * FROM users LIMIT 1")
-    fun observe(): Flow<User>
+    fun observe(): Flow<User?>
+
+    @Query("SELECT * FROM users LIMIT 1")
+    suspend fun get(): User?
 }
