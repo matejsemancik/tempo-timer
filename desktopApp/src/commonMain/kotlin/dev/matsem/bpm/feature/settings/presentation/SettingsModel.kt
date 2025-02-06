@@ -17,13 +17,13 @@ internal class SettingsModel(
     private val _state = MutableStateFlow<SettingsState>(DefaultState)
     override val state: StateFlow<SettingsState> = _state
         .onStart {
-            // Load initial state
             coroutineScope.launch {
-                val user = runCatching { sessionRepo.fetchUser() }.getOrNull()
-                _state.update {
-                    when (user) {
-                        null -> SettingsState.SignedOut()
-                        else -> SettingsState.SignedIn(user)
+                sessionRepo.getUser().collect { user ->
+                    _state.update {
+                        when (user) {
+                            null -> SettingsState.SignedOut()
+                            else -> SettingsState.SignedIn(user)
+                        }
                     }
                 }
             }
@@ -67,9 +67,7 @@ internal class SettingsModel(
     private fun login() {
         coroutineScope.launch {
             val currentState = _state.value as? SettingsState.SignedOut ?: return@launch
-
             _state.update { currentState.copy(isLoading = true) }
-
             runCatching {
                 sessionRepo
                     .signIn(
@@ -80,19 +78,16 @@ internal class SettingsModel(
                             tempoApiToken = currentState.tempoApiToken
                         )
                     )
+            }.onFailure {
+                _state.update { currentState.copy(isLoading = false) }
+                println(it)
             }
-                .onSuccess { user -> _state.update { SettingsState.SignedIn(user) } }
-                .onFailure {
-                    println(it)
-                    _state.update { currentState.copy(isLoading = false) }
-                }
         }
     }
 
     private fun logout() {
         coroutineScope.launch {
             sessionRepo.signOut()
-            _state.update { SettingsState.SignedOut() }
         }
     }
 }

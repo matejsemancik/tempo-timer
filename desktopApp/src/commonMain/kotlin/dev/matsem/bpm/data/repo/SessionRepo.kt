@@ -7,12 +7,18 @@ import dev.matsem.bpm.data.model.mapping.UserMapping.toDomainModel
 import dev.matsem.bpm.data.persistence.ApplicationPersistence
 import dev.matsem.bpm.data.service.JiraApiManager
 import dev.matsem.bpm.injection.scope.SessionScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.update
 
-interface SessionRepo : ClearableRepo {
+interface SessionRepo {
 
-    suspend fun signIn(credentials: Credentials): User
+    suspend fun signIn(credentials: Credentials)
     suspend fun signOut()
-    suspend fun fetchUser(): User
+    suspend fun syncUser()
+
+    fun getUser(): Flow<User?>
 }
 
 internal class SessionRepoImpl(
@@ -20,22 +26,27 @@ internal class SessionRepoImpl(
     private val applicationPersistence: ApplicationPersistence,
     private val jiraApiManager: JiraApiManager,
 ) : SessionRepo {
-    override suspend fun signIn(credentials: Credentials): User {
+
+    private val user = MutableStateFlow<User?>(null)
+    override suspend fun signIn(credentials: Credentials) {
         sessionScope.closeScope()
         applicationPersistence.saveCredentials(credentials.toPersistenceModel())
-        return jiraApiManager.getMyself().toDomainModel()
+        syncUser()
     }
 
     override suspend fun signOut() {
-        clear()
-    }
-
-    override suspend fun fetchUser(): User {
-        return jiraApiManager.getMyself().toDomainModel()
-    }
-
-    override suspend fun clear() {
         applicationPersistence.deleteCredentials()
         sessionScope.closeScope()
+        user.update { null }
+    }
+
+    override suspend fun syncUser() {
+        user.update { jiraApiManager.getMyself().toDomainModel() }
+    }
+
+    override fun getUser(): Flow<User?> = flow {
+        emit(user.value)
+        runCatching { syncUser() }
+        user.collect(this)
     }
 }
