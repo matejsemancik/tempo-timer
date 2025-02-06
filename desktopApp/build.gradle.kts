@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktorfit)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.androidx.room)
 }
 
 kotlin {
@@ -46,6 +47,10 @@ kotlin {
 
             // persistence
             implementation(libs.androidx.datastore)
+
+            // database
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
         }
 
         desktopMain.dependencies {
@@ -58,6 +63,14 @@ kotlin {
             implementation(libs.ktor.engine.okhttp)
         }
     }
+}
+
+dependencies {
+    ksp(libs.androidx.room.compiler)
+}
+
+room {
+    schemaDirectory(project.layout.projectDirectory.dir("room-schemas"))
 }
 
 
