@@ -5,7 +5,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.core.logger.PrintLogger
 
-internal object AppInjection {
+object AppInjection {
     fun initializeInjection() {
         startKoin {
             logger(PrintLogger(Level.ERROR))

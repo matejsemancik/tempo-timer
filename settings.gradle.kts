@@ -29,3 +29,4 @@ dependencyResolutionManagement {
 }
 
 include(":desktopApp")
+include(":shared")
