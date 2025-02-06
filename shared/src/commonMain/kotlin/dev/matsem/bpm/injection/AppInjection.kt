@@ -15,6 +15,7 @@ object AppInjection {
                 repositoryModule(),
                 networkModule(),
                 persistenceModule(),
+                databaseModule(),
                 featureModule(),
             )
         }

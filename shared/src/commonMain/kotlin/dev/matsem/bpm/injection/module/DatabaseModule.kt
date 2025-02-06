@@ -1,19 +1,25 @@
 package dev.matsem.bpm.injection.module
 
-import androidx.room.Room
+import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import dev.matsem.bpm.data.database.AppDatabase
+import dev.matsem.bpm.data.database.dao.UserDao
+import kotlinx.coroutines.Dispatchers
+import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun databaseModule() = module {
-//    single<AppDatabase> {
-//        Room.databaseBuilder<AppDatabase>(
-//            name = "files/database.db",
-//            factory = {
-//                AppDatabase::class.instantiateImpl()
-//            }
-//        ).setDriver(
-//            BundledSQLiteDriver()
-//        ).build()
-//    }
+internal expect fun platformDatabaseModule(): Module
+
+internal fun databaseModule() = module {
+    includes(platformDatabaseModule())
+    single<AppDatabase> {
+        val databaseBuilder = get<RoomDatabase.Builder<AppDatabase>>()
+        databaseBuilder
+            .fallbackToDestructiveMigration(dropAllTables = true)
+            .setDriver(BundledSQLiteDriver())
+            .setQueryCoroutineContext(Dispatchers.IO)
+            .build()
+    }
+
+    single<UserDao> { get<AppDatabase>().userDao() }
 }

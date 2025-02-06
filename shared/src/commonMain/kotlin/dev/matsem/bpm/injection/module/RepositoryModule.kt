@@ -6,6 +6,6 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun repositoryModule() = module {
+internal fun repositoryModule() = module {
     singleOf(::SessionRepoImpl) bind SessionRepo::class
 }

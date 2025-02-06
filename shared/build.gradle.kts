@@ -53,6 +53,7 @@ kotlin {
 
         desktopMain.dependencies {
             implementation(libs.ktor.engine.okhttp)
+            implementation(libs.appDirs)
         }
     }
 }
