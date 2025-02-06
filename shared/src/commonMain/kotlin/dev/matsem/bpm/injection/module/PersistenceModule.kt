@@ -4,22 +4,28 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import dev.matsem.bpm.data.persistence.ApplicationPersistence
 import dev.matsem.bpm.data.persistence.ApplicationPersistenceImpl
 import dev.matsem.bpm.data.persistence.JsonPersistenceHandler
-import dev.matsem.bpm.injection.getDatastorePath
+import dev.matsem.bpm.injection.qualifier.Qualifiers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.json.Json
 import okio.Path.Companion.toPath
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun persistenceModule() = module {
+internal expect fun platformPersistenceModule(): Module
+internal fun persistenceModule() = module {
+    includes(platformPersistenceModule())
 
     single {
         PreferenceDataStoreFactory.createWithPath(
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
-            produceFile = { getDatastorePath().toPath() }
+            produceFile = {
+                get<String>(named<Qualifiers.DataStoreFilePath>()).toPath()
+            }
         )
     }
 

@@ -8,16 +8,19 @@ import dev.matsem.bpm.data.service.JiraApiManagerImpl
 import dev.matsem.bpm.data.service.plugin.ContentNegotiationPlugin
 import dev.matsem.bpm.data.service.plugin.JiraAuthPlugin
 import dev.matsem.bpm.data.service.plugin.LoggingPlugin
-import dev.matsem.bpm.injection.getNativeHttpClient
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun networkModule() = module {
+internal expect fun platformNetworkModule(): Module
+
+internal fun networkModule() = module {
+    includes(platformNetworkModule())
     includes(httpClientPluginsModule(), jiraClientModule())
 }
 
@@ -30,17 +33,26 @@ private fun httpClientPluginsModule() = module {
 private fun jiraClientModule() = module {
 
     scope<Credentials> {
-
         scoped<HttpClient>(named<JiraApi>()) {
             val credentials: Credentials = get()
-            getNativeHttpClient {
-                get<ContentNegotiationPlugin>()
-                    .install(this)
-                get<JiraAuthPlugin>(parameters = { parametersOf(credentials.email, credentials.jiraApiToken) })
-                    .install(this)
+            val plugins = listOf(
+                get<ContentNegotiationPlugin>(),
+                get<JiraAuthPlugin>(parameters = { parametersOf(credentials.email, credentials.jiraApiToken) }),
                 get<LoggingPlugin>(parameters = { parametersOf(LogLevel.BODY) })
-                    .install(this)
-            }
+            )
+
+            get<HttpClient>(
+                parameters = { parametersOf(plugins) }
+            )
+
+//            getNativeHttpClient {
+//                get<ContentNegotiationPlugin>()
+//                    .install(this)
+//                get<JiraAuthPlugin>(parameters = { parametersOf(credentials.email, credentials.jiraApiToken) })
+//                    .install(this)
+//                get<LoggingPlugin>(parameters = { parametersOf(LogLevel.BODY) })
+//                    .install(this)
+//            }
         }
 
         scoped<Ktorfit>(named<JiraApi>()) {
