@@ -7,13 +7,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import dev.matsem.bpm.data.model.domain.Issue
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.VerticalSpacer
 import dev.matsem.bpm.design.tooling.centeredVertically
-import dev.matsem.bpm.data.model.domain.Issue
-import dev.matsem.bpm.feature.tracker.ui.widget.IssueTypeIcon
 
 @Composable
 fun IssueTitleRow(
@@ -22,7 +22,11 @@ fun IssueTitleRow(
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     Row(modifier = modifier.padding(contentPadding), verticalAlignment = Alignment.CenterVertically) {
-        IssueTypeIcon(issue.type, Modifier.size(Grid.d6))
+        AsyncImage(
+            model = issue.iconUrl,
+            contentDescription = null,
+            modifier = Modifier.size(Grid.d6)
+        )
         HorizontalSpacer(Grid.d2)
         Column {
             Text(
@@ -41,6 +45,5 @@ fun IssueTitleRow(
                 overflow = TextOverflow.Ellipsis,
             )
         }
-
     }
 }

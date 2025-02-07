@@ -5,12 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SuggestedIssue(
-    
+
     @SerialName("id")
     val id: Long,
 
     @SerialName("img")
-    val img: String,
+    val iconUrlPath: String,
 
     @SerialName("key")
     val key: String,

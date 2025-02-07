@@ -78,8 +78,8 @@ private fun ColumnScope.SignedOutSection(
     VerticalSpacer(Grid.d2)
     DesignTextField(
         label = "Jira URL",
-        value = state.jiraHostname,
-        onValueChanged = actions::onJiraHostnameInput,
+        value = state.jiraCloudName,
+        onValueChanged = actions::onJiraCloudName,
         modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
         prefix = { Text("https://") },
         suffix = { Text(".atlassian.net") }
@@ -166,7 +166,7 @@ fun SettingsScreenUiPreview_SignedOut() {
         SettingsScreenUi(
             SettingsState.SignedOut(),
             object : SettingsActions {
-                override fun onJiraHostnameInput(input: String) = Unit
+                override fun onJiraCloudName(input: String) = Unit
                 override fun onJiraEmailInput(input: String) = Unit
                 override fun onJiraApiKeyInput(input: String) = Unit
                 override fun onTempoApiKeyInput(input: String) = Unit
@@ -191,7 +191,7 @@ fun SettingsScreenUiPreview_SignedIn() {
                 )
             ),
             object : SettingsActions {
-                override fun onJiraHostnameInput(input: String) = Unit
+                override fun onJiraCloudName(input: String) = Unit
                 override fun onJiraEmailInput(input: String) = Unit
                 override fun onJiraApiKeyInput(input: String) = Unit
                 override fun onTempoApiKeyInput(input: String) = Unit

@@ -4,7 +4,7 @@ import dev.matsem.bpm.data.model.domain.User
 
 sealed interface SettingsState {
     data class SignedOut(
-        val jiraHostname: String = "",
+        val jiraCloudName: String = "",
         val jiraEmail: String = "",
         val jiraApiToken: String = "",
         val tempoApiToken: String = "",

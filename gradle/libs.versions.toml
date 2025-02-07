@@ -45,6 +45,7 @@ ktor-engine-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 
 appDirs = { module = "net.harawata:appdirs", version.ref = "appDirs" }
 

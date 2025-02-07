@@ -7,10 +7,10 @@ import dev.matsem.bpm.data.model.network.jira.user.JiraUser
 
 interface JiraApi {
 
-    @GET("myself")
+    @GET("rest/api/3/myself")
     suspend fun getMyself(): JiraUser
 
-    @GET("issue/picker")
+    @GET("rest/api/3/issue/picker")
     suspend fun searchIssues(
         @Query("query") query: String,
         @Query("currentJQL") currentJql: String,

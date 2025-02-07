@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Credentials(
 
-    @SerialName("base_url")
-    val baseUrl: String,
+    @SerialName("jira_cloud_name")
+    val jiraCloudName: String,
 
     @SerialName("email")
     val email: String,

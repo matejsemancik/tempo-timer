@@ -26,6 +26,7 @@ internal class SearchModel(
             .filter { it.isNotBlank() }
             .onEach { query ->
                 val issues = issueRepo.searchIssues(query)
+                println("issues: ${issues.joinToString(separator = "\n") { it.toString() }}")
                 _state.update { it.copy(results = issues.toImmutableList()) }
             }
             .launchIn(coroutineScope)

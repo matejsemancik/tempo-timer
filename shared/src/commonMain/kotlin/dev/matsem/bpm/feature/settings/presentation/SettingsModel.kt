@@ -32,9 +32,9 @@ internal class SettingsModel(
         .stateIn(coroutineScope, SharingStarted.Lazily, DefaultState)
     override val actions: SettingsActions = object : SettingsActions {
 
-        override fun onJiraHostnameInput(input: String) = _state.update {
+        override fun onJiraCloudName(input: String) = _state.update {
             when (it) {
-                is SettingsState.SignedOut -> it.copy(jiraHostname = input)
+                is SettingsState.SignedOut -> it.copy(jiraCloudName = input)
                 is SettingsState.SignedIn -> it
             }
         }
@@ -73,7 +73,7 @@ internal class SettingsModel(
                 sessionRepo
                     .signIn(
                         Credentials(
-                            baseUrl = "https://${currentState.jiraHostname}.atlassian.net/rest/api/3/",
+                            jiraCloudName = currentState.jiraCloudName,
                             email = currentState.jiraEmail,
                             jiraApiToken = currentState.jiraApiToken,
                             tempoApiToken = currentState.tempoApiToken
