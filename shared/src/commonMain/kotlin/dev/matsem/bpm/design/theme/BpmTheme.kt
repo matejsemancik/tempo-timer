@@ -3,20 +3,29 @@ package dev.matsem.bpm.design.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 
 @Composable
-fun BpmTheme(isDark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun BpmTheme(
+    isDark: Boolean = isSystemInDarkTheme(),
+    dimensions: BpmDimensions = desktopBpmDimensions(),
+    content: @Composable () -> Unit
+) {
     MaterialTheme(
         colorScheme = if (isDark) {
             darkColorScheme()
         } else {
             lightColorScheme()
         },
-        content = content
-    )
-
-    MaterialTheme
+    ) {
+        CompositionLocalProvider(
+            LocalBpmDimensions provides dimensions
+        ) {
+            content()
+        }
+    }
 }
 
 object BpmTheme {
@@ -35,4 +44,11 @@ object BpmTheme {
         @Composable
         @ReadOnlyComposable
         get() = MaterialTheme.shapes
+
+    val dimensions: BpmDimensions
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalBpmDimensions.current
 }
+
+val LocalBpmDimensions = staticCompositionLocalOf<BpmDimensions> { error("BpmDimensions not provided") }

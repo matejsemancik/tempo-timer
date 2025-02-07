@@ -58,14 +58,27 @@ fun TimerRow(
                 onDoubleClick = onOpenDetail
             )
             .onKeyEvent { keyEvent ->
+                if (keyEvent.type != KeyEventType.KeyDown) {
+                    return@onKeyEvent false
+                }
+
                 return@onKeyEvent when {
-                    keyEvent.key == Key.Backspace && keyEvent.type == KeyEventType.KeyDown -> {
+                    keyEvent.key == Key.Backspace -> {
                         onDelete()
                         true
                     }
 
-                    keyEvent.key == Key.Enter && keyEvent.type == KeyEventType.KeyDown -> {
+                    keyEvent.key == Key.Enter -> {
                         onOpenDetail()
+                        true
+                    }
+
+                    keyEvent.key == Key.Spacebar -> {
+                        if (tracker.state.isRunning) {
+                            onPause()
+                        } else {
+                            onResume()
+                        }
                         true
                     }
 

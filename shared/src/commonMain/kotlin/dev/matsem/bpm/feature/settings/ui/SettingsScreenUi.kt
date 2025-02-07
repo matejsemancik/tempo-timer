@@ -61,26 +61,26 @@ private fun ColumnScope.SignedOutSection(
     Text(
         text = "🔐 Credentials",
         style = BpmTheme.typography.titleMedium,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
     )
     VerticalSpacer(Grid.d1)
     Text(
         text = "Sign In by providing necessary credentials.",
         style = BpmTheme.typography.bodyMedium,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
     )
     VerticalSpacer(Grid.d1)
     Text(
         text = "Jira API token is used to sync your profile and search issues. Tempo API token is used to synchronize worklogs with Tempo.\nInstructions on how to generate TBD.",
         style = BpmTheme.typography.labelMedium,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
     )
     VerticalSpacer(Grid.d2)
     DesignTextField(
         label = "Jira URL",
         value = state.jiraHostname,
         onValueChanged = actions::onJiraHostnameInput,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
         prefix = { Text("https://") },
         suffix = { Text(".atlassian.net") }
     )
@@ -88,24 +88,29 @@ private fun ColumnScope.SignedOutSection(
         label = "Atlassian account e-mail",
         value = state.jiraEmail,
         onValueChanged = actions::onJiraEmailInput,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
     )
     DesignTextField(
         label = "Jira API token",
         value = state.jiraApiToken,
         onValueChanged = actions::onJiraApiKeyInput,
         isPassword = true,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
     )
     DesignTextField(
         label = "Tempo API token",
         value = state.tempoApiToken,
         onValueChanged = actions::onTempoApiKeyInput,
         isPassword = true,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
     )
 
-    Row(modifier = Modifier.fillMaxWidth().padding(Grid.d3), horizontalArrangement = Arrangement.End) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = BpmTheme.dimensions.horizontalContentPadding, vertical = Grid.d3),
+        horizontalArrangement = Arrangement.End
+    ) {
         DesignButton(
             text = "Sign In",
             isLoading = state.isLoading,
@@ -120,7 +125,10 @@ private fun ColumnScope.SignedInSection(
     actions: SettingsActions,
     modifier: Modifier = Modifier
 ) {
-    Row(Modifier.fillMaxWidth().padding(horizontal = Grid.d3), verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         AsyncImage(
             model = state.user.avatarUrl,
             contentDescription = null,

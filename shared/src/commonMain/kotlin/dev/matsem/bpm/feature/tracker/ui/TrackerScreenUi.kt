@@ -71,7 +71,7 @@ fun FavouritesSection(
     actions: TrackerActions,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier.padding(horizontal = Grid.d3)) {
+    Column(modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)) {
         Text(
             "⭐ Favourites",
             style = BpmTheme.typography.titleMedium,
@@ -102,14 +102,14 @@ fun TrackersSection(
         Text(
             "⏳ Timers",
             style = BpmTheme.typography.titleMedium,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
+            modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
         )
         VerticalSpacer(Grid.d2)
         for (tracker in timers) {
             TimerRow(
                 tracker = tracker,
                 modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = Grid.d3),
+                contentPadding = PaddingValues(horizontal = BpmTheme.dimensions.horizontalContentPadding),
                 onResume = { actions.onResumeTimer(tracker) },
                 onPause = { actions.onPauseTimer(tracker) },
                 onDelete = { actions.onDeleteTimer(tracker) },
