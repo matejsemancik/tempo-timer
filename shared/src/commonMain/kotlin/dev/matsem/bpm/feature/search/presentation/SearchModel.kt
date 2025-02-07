@@ -1,5 +1,6 @@
 package dev.matsem.bpm.feature.search.presentation
 
+import dev.matsem.bpm.data.repo.IssueRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -8,7 +9,9 @@ import kotlinx.coroutines.plus
 import kotlin.time.Duration.Companion.milliseconds
 
 private const val SearchInputDebounceMs = 500L
-internal class SearchModel : SearchScreen {
+internal class SearchModel(
+    private val issueRepo: IssueRepo
+) : SearchScreen {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main) + SupervisorJob()
     private val _state = MutableStateFlow(SearchState())
@@ -20,9 +23,10 @@ internal class SearchModel : SearchScreen {
             .debounce(SearchInputDebounceMs.milliseconds)
             .distinctUntilChanged()
             .filter { it.isNotBlank() }
-            .onEach { input ->
-                println("search for: $input")
-                // perform search
+            .onEach { query ->
+                println("search query: $query")
+                val issues = issueRepo.searchIssues(query)
+                println(issues.joinToString(separator = "\n") { it.toString() })
             }
             .launchIn(coroutineScope)
     }

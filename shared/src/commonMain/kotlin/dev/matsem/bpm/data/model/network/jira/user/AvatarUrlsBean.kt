@@ -1,4 +1,4 @@
-package dev.matsem.bpm.data.model.network.jira
+package dev.matsem.bpm.data.model.network.jira.user
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -36,8 +36,6 @@ internal class SessionScopeImpl(
             error("No credentials")
         }
 
-        println("SessionScope credentials: $credentials")
-
         val scope = koin.getOrCreateScope(SessionScopeId, SessionScopeName, credentials.toDomainModel())
         return scope.get()
     }

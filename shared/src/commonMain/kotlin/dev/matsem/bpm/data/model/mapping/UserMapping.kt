@@ -2,9 +2,9 @@ package dev.matsem.bpm.data.model.mapping
 
 import dev.matsem.bpm.data.model.database.User as User_Db
 import dev.matsem.bpm.data.model.domain.User as User_Domain
-import dev.matsem.bpm.data.model.network.jira.JiraUser as JiraUser_Network
+import dev.matsem.bpm.data.model.network.jira.user.JiraUser as JiraUser_Network
 
-object UserMapping {
+internal object UserMapping {
 
     fun JiraUser_Network.toDbInsert() = User_Db(
         email = emailAddress,
