@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.Search
@@ -20,6 +19,7 @@ import dev.matsem.bpm.design.sheet.GenericModalBottomSheet
 import dev.matsem.bpm.design.sheet.SheetHeader
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
+import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.feature.search.ui.SearchScreenUi
 import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
@@ -72,12 +72,6 @@ fun AppUi() {
                 BottomAppBar(
                     actions = {
                         IconButton(
-                            onClick = { isSearchOpen = true }
-                        ) {
-                            Icon(Icons.Rounded.Search, contentDescription = "Search issues")
-                        }
-
-                        IconButton(
                             onClick = { darkMode = !darkMode })
                         {
                             Icon(
@@ -102,12 +96,13 @@ fun AppUi() {
                     },
                     floatingActionButton = {
                         ExtendedFloatingActionButton(
-                            onClick = { /* do something */ },
+                            onClick = { isSearchOpen = true },
                             containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                             elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                         ) {
-                            Icon(Icons.Rounded.Add, "Add tracker")
-                            Text("Timer")
+                            Icon(Icons.Rounded.Search, contentDescription = "Search issues")
+                            HorizontalSpacer(Grid.d1)
+                            Text(text = "Add timer", style = BpmTheme.typography.bodyMedium)
                         }
                     }
                 )

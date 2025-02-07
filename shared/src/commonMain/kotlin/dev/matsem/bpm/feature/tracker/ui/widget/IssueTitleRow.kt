@@ -5,9 +5,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.PlatformContext
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import dev.matsem.bpm.data.model.domain.Issue
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
@@ -23,9 +27,13 @@ fun IssueTitleRow(
 ) {
     Row(modifier = modifier.padding(contentPadding), verticalAlignment = Alignment.CenterVertically) {
         AsyncImage(
-            model = issue.iconUrl,
+            model = ImageRequest.Builder(PlatformContext.INSTANCE)
+                .data(issue.iconUrl)
+                .crossfade(true)
+                .build(),
+            error = ColorPainter(BpmTheme.colorScheme.outline),
             contentDescription = null,
-            modifier = Modifier.size(Grid.d6)
+            modifier = Modifier.size(Grid.d6),
         )
         HorizontalSpacer(Grid.d2)
         Column {
