@@ -100,9 +100,9 @@ fun AppUi() {
                             containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                             elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                         ) {
-                            Icon(Icons.Rounded.Search, contentDescription = "Search issues")
+                            Icon(Icons.Rounded.Search, contentDescription = "New timer")
                             HorizontalSpacer(Grid.d1)
-                            Text(text = "Add timer", style = BpmTheme.typography.bodyMedium)
+                            Text(text = "New timer", style = BpmTheme.typography.bodyMedium)
                         }
                     }
                 )
