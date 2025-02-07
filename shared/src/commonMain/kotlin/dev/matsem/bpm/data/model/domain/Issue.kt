@@ -9,7 +9,7 @@ data class Issue(
 val MockIssues = listOf(
     Issue(
         key = "MTSM-1",
-        title = "Dojebaný payment button",
+        title = "Payment button",
         iconUrl = "",
     ),
     Issue(
