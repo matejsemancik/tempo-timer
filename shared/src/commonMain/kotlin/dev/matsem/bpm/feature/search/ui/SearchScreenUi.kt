@@ -86,9 +86,7 @@ fun SearchScreenUiPreview() {
             state = SearchState(
                 results = MockIssues.toImmutableList()
             ),
-            actions = object : SearchActions {
-                override fun onSearchInput(input: String) = Unit
-            },
+            actions = SearchActions.noOp(),
             modifier = Modifier.fillMaxWidth()
         )
     }

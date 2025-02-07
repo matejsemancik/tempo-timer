@@ -8,4 +8,15 @@ interface SettingsActions {
 
     fun onLoginClick()
     fun onLogoutClick()
+
+    companion object {
+        fun noOp() = object : SettingsActions {
+            override fun onJiraCloudName(input: String) = Unit
+            override fun onJiraEmailInput(input: String) = Unit
+            override fun onJiraApiKeyInput(input: String) = Unit
+            override fun onTempoApiKeyInput(input: String) = Unit
+            override fun onLoginClick() = Unit
+            override fun onLogoutClick() = Unit
+        }
+    }
 }

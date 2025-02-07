@@ -17,12 +17,14 @@ import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.VerticalSpacer
 import dev.matsem.bpm.data.model.domain.Issue
 import dev.matsem.bpm.data.model.domain.Timer
+import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.feature.tracker.presentation.TrackerActions
 import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
 import dev.matsem.bpm.feature.tracker.presentation.TrackerState
 import dev.matsem.bpm.feature.tracker.ui.widget.FavouriteIssueChip
 import dev.matsem.bpm.feature.tracker.ui.widget.TimerRow
 import kotlinx.collections.immutable.ImmutableList
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
 @Composable
@@ -118,5 +120,16 @@ fun TrackersSection(
                 },
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun TrackerScreenPreview() {
+    Showcase {
+        TrackerScreenUi(
+            state = TrackerState(),
+            actions = TrackerActions.noOp()
+        )
     }
 }

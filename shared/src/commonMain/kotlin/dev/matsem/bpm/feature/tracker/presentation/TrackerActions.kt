@@ -8,4 +8,13 @@ interface TrackerActions {
     fun onResumeTimer(timer: Timer)
     fun onPauseTimer(timer: Timer)
     fun onDeleteTimer(timer: Timer)
+
+    companion object {
+        fun noOp() = object : TrackerActions {
+            override fun onNewTimer(issue: Issue) = Unit
+            override fun onResumeTimer(timer: Timer) = Unit
+            override fun onPauseTimer(timer: Timer) = Unit
+            override fun onDeleteTimer(timer: Timer) = Unit
+        }
+    }
 }
