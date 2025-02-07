@@ -26,7 +26,7 @@ import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForTimer
 import dev.matsem.bpm.data.model.domain.Timer
-import dev.matsem.bpm.data.model.domain.TimerMocks
+import dev.matsem.bpm.data.model.domain.MockTimers
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.seconds
@@ -161,7 +161,7 @@ private fun TrackerRowPreview() {
 
     Showcase(isDark = false) {
         Column {
-            for (tracker in TimerMocks) {
+            for (tracker in MockTimers) {
                 TimerRow(
                     tracker = tracker,
                     modifier = Modifier.fillMaxWidth(),

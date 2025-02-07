@@ -36,40 +36,4 @@ data class TimerState(
         }
 }
 
-val TimerMocks = listOf(
-    Timer(
-        issue = Issue(
-            type = IssueType.Bug,
-            key = "MTSM-1",
-            title = "Dojebaný payment button",
-        ),
-    ),
-    Timer(
-        issue = Issue(
-            type = IssueType.Task,
-            key = "MTSM-4",
-            title = "Spraviť robotu",
-        ),
-    ),
-    Timer(
-        issue = Issue(
-            type = IssueType.Subtask,
-            key = "MTSM-19",
-            title = "[AN] Spraviť robotu",
-        ),
-    ),
-    Timer(
-        issue = Issue(
-            type = IssueType.Story,
-            key = "MTSM-140",
-            title = "Robenie roboty",
-        ),
-    ),
-    Timer(
-        issue = Issue(
-            type = IssueType.Epic,
-            key = "MTSM-5",
-            title = "Tempo Desktop",
-        )
-    ),
-)
+val MockTimers = MockIssues.map { Timer(issue = it) }

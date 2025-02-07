@@ -1,6 +1,7 @@
 package dev.matsem.bpm.feature.search.presentation
 
 import dev.matsem.bpm.data.repo.IssueRepo
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -24,9 +25,8 @@ internal class SearchModel(
             .distinctUntilChanged()
             .filter { it.isNotBlank() }
             .onEach { query ->
-                println("search query: $query")
                 val issues = issueRepo.searchIssues(query)
-                println(issues.joinToString(separator = "\n") { it.toString() })
+                _state.update { it.copy(results = issues.toImmutableList()) }
             }
             .launchIn(coroutineScope)
     }
