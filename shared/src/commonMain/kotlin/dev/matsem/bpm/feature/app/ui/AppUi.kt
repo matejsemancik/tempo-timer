@@ -100,9 +100,9 @@ fun AppUi() {
                             containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                             elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                         ) {
-                            Icon(Icons.Rounded.Search, contentDescription = "New timer")
+                            Icon(Icons.Rounded.Search, contentDescription = "Search issues")
                             HorizontalSpacer(Grid.d1)
-                            Text(text = "New timer", style = BpmTheme.typography.bodyMedium)
+                            Text(text = "Search issues", style = BpmTheme.typography.bodyMedium)
                         }
                     }
                 )
@@ -140,7 +140,7 @@ fun AppUi() {
                 sheetState = sheetState,
                 header = {
                     SheetHeader(
-                        title = "Search",
+                        title = "Pick an issue",
                         onClose = {
                             coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { isSearchOpen = false }
                         }
