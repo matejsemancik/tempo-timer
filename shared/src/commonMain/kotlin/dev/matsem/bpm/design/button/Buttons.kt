@@ -1,4 +1,4 @@
-package dev.matsem.bpm.design.button
+package dev.matsem.bpm.design.input
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size

@@ -1,4 +1,4 @@
-package dev.matsem.bpm.feature.settings.ui.widget
+package dev.matsem.bpm.design.input
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Visibility
@@ -13,7 +13,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
-fun SettingsTextField(
+fun DesignTextField(
     value: String,
     onValueChanged: (String) -> Unit,
     modifier: Modifier = Modifier,

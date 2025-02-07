@@ -14,8 +14,9 @@ import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import dev.matsem.bpm.data.model.domain.User
-import dev.matsem.bpm.design.button.DesignButton
-import dev.matsem.bpm.design.button.DesignOutlinedButton
+import dev.matsem.bpm.design.input.DesignButton
+import dev.matsem.bpm.design.input.DesignOutlinedButton
+import dev.matsem.bpm.design.input.DesignTextField
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
@@ -25,7 +26,6 @@ import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.settings.presentation.SettingsActions
 import dev.matsem.bpm.feature.settings.presentation.SettingsScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsState
-import dev.matsem.bpm.feature.settings.ui.widget.SettingsTextField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -76,7 +76,7 @@ private fun ColumnScope.SignedOutSection(
         modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
     )
     VerticalSpacer(Grid.d2)
-    SettingsTextField(
+    DesignTextField(
         label = "Jira URL",
         value = state.jiraHostname,
         onValueChanged = actions::onJiraHostnameInput,
@@ -84,20 +84,20 @@ private fun ColumnScope.SignedOutSection(
         prefix = { Text("https://") },
         suffix = { Text(".atlassian.net") }
     )
-    SettingsTextField(
+    DesignTextField(
         label = "Atlassian account e-mail",
         value = state.jiraEmail,
         onValueChanged = actions::onJiraEmailInput,
         modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3),
     )
-    SettingsTextField(
+    DesignTextField(
         label = "Jira API token",
         value = state.jiraApiToken,
         onValueChanged = actions::onJiraApiKeyInput,
         isPassword = true,
         modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3),
     )
-    SettingsTextField(
+    DesignTextField(
         label = "Tempo API token",
         value = state.tempoApiToken,
         onValueChanged = actions::onTempoApiKeyInput,
