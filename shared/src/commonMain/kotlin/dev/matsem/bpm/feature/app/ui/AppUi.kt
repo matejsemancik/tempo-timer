@@ -20,6 +20,7 @@ import dev.matsem.bpm.design.sheet.GenericModalBottomSheet
 import dev.matsem.bpm.design.sheet.SheetHeader
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
+import dev.matsem.bpm.feature.search.ui.SearchScreenUi
 import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
 import kotlinx.coroutines.launch
@@ -33,6 +34,7 @@ fun AppUi() {
     var darkMode by remember { mutableStateOf(isSystemInDarkTheme) }
     val focusManager = LocalFocusManager.current
     var isSettingsOpen by remember { mutableStateOf(false) }
+    var isSearchOpen by remember { mutableStateOf(false) }
 
     BpmTheme(isDark = darkMode) {
         Scaffold(
@@ -69,18 +71,24 @@ fun AppUi() {
             bottomBar = {
                 BottomAppBar(
                     actions = {
-                        IconButton(onClick = { /* do something */ }) {
+                        IconButton(
+                            onClick = { isSearchOpen = true }
+                        ) {
                             Icon(Icons.Rounded.Search, contentDescription = "Search issues")
                         }
-                        IconButton(onClick = {
-                            darkMode = !darkMode
-                        }) {
+
+                        IconButton(
+                            onClick = { darkMode = !darkMode })
+                        {
                             Icon(
                                 if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
                                 contentDescription = "Toggle dark mode",
                             )
                         }
-                        IconButton(onClick = { isSettingsOpen = true }) {
+
+                        IconButton(
+                            onClick = { isSettingsOpen = true }
+                        ) {
                             Icon(
                                 Icons.Filled.Settings,
                                 contentDescription = "Settings",
@@ -126,6 +134,25 @@ fun AppUi() {
                 }
             ) {
                 SettingsScreenUi()
+            }
+        }
+
+        if (isSearchOpen) {
+            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+            val coroutineScope = rememberCoroutineScope()
+            GenericModalBottomSheet(
+                onDismissRequest = { isSearchOpen = false },
+                sheetState = sheetState,
+                header = {
+                    SheetHeader(
+                        title = "Search",
+                        onClose = {
+                            coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { isSearchOpen = false }
+                        }
+                    )
+                }
+            ) {
+                SearchScreenUi()
             }
         }
     }
