@@ -14,8 +14,8 @@ import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import dev.matsem.bpm.data.model.domain.User
-import dev.matsem.bpm.design.input.DesignButton
-import dev.matsem.bpm.design.input.DesignOutlinedButton
+import dev.matsem.bpm.design.input.AppButton
+import dev.matsem.bpm.design.input.AppOutlinedButton
 import dev.matsem.bpm.design.input.DesignTextField
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
@@ -111,7 +111,7 @@ private fun ColumnScope.SignedOutSection(
             .padding(horizontal = BpmTheme.dimensions.horizontalContentPadding, vertical = Grid.d3),
         horizontalArrangement = Arrangement.End
     ) {
-        DesignButton(
+        AppButton(
             text = "Sign In",
             isLoading = state.isLoading,
             onClick = actions::onLoginClick,
@@ -151,7 +151,7 @@ private fun ColumnScope.SignedInSection(
                 color = BpmTheme.colorScheme.outline
             )
         }
-        DesignOutlinedButton(
+        AppOutlinedButton(
             text = "Sign Out",
             onClick = actions::onLogoutClick,
         )

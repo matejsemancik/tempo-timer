@@ -14,7 +14,7 @@ import dev.matsem.bpm.design.tooling.Showcase
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun DesignButton(
+fun AppButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -30,7 +30,7 @@ fun DesignButton(
 }
 
 @Composable
-fun DesignOutlinedButton(
+fun AppOutlinedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -56,9 +56,9 @@ private fun ButtonContent(text: String, isLoading: Boolean) {
 
 @Preview
 @Composable
-private fun DesignButtonPreview() {
+private fun AppButtonPreview() {
     Showcase {
-        DesignButton(
+        AppButton(
             text = "asdf",
             isLoading = true,
             onClick = {},
