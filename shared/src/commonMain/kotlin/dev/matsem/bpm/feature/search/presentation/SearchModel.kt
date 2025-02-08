@@ -29,8 +29,28 @@ internal class SearchModel(
             .distinctUntilChanged()
             .filter { it.isNotBlank() }
             .onEach { query ->
-                val issues = issueRepo.searchIssues(query)
-                _state.update { it.copy(results = issues.map { SearchResult(it, false) }.toPersistentList()) }
+                _state.update { it.copy(isLoading = true) }
+                runCatching { issueRepo.searchIssues(query) }
+                    .fold(
+                        onSuccess = { issues ->
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    didSearch = true,
+                                    results = issues.map { issue -> SearchResult(issue, false) }.toPersistentList()
+                                )
+                            }
+                        },
+                        onFailure = { err ->
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    error = err,
+                                )
+                            }
+                        }
+                    )
+
             }
             .launchIn(coroutineScope)
     }

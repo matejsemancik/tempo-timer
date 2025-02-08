@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +19,6 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
@@ -169,6 +167,14 @@ fun AppTextFieldPreview() {
                 onValueChange = {},
                 prefix = "https://",
                 suffix = ".atlassian.net"
+            )
+
+            AppTextField(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3),
+                value = "some input",
+                onValueChange = {},
+                isError = true,
+                supportingText = "No results"
             )
 
             VerticalSpacer(Grid.d1)

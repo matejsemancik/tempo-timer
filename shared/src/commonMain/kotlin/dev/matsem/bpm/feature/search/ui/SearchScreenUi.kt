@@ -68,7 +68,9 @@ fun SearchScreenUi(
             placeholder = "Issue key, or summary, or try your luck...",
             leadingIcon = {
                 Icon(Icons.Rounded.Search, contentDescription = null)
-            }
+            },
+            isError = state.textFieldIsError,
+            supportingText = state.textFieldSupportingText
         )
         VerticalSpacer(Grid.d3)
         Box {

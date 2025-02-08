@@ -6,5 +6,20 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class SearchState(
     val input: String = "",
-    val results: ImmutableList<SearchResult> = persistentListOf()
-)
+    val isLoading: Boolean = false,
+    val results: ImmutableList<SearchResult> = persistentListOf(),
+    internal val error: Throwable? = null,
+    val didSearch: Boolean = false,
+) {
+
+    val textFieldIsError: Boolean
+        get() = error != null
+
+    val textFieldSupportingText: String?
+        get() = when {
+            error != null -> error.message
+            isLoading -> "Loading..."
+            didSearch && results.isEmpty() -> "No results"
+            else -> null
+        }
+}
