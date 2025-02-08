@@ -1,7 +1,8 @@
 package dev.matsem.bpm.feature.search.presentation
 
+import dev.matsem.bpm.data.model.domain.SearchResult
 import dev.matsem.bpm.data.repo.IssueRepo
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -10,6 +11,7 @@ import kotlinx.coroutines.plus
 import kotlin.time.Duration.Companion.milliseconds
 
 private const val SearchInputDebounceMs = 500L
+
 internal class SearchModel(
     private val issueRepo: IssueRepo
 ) : SearchScreen {
@@ -17,6 +19,8 @@ internal class SearchModel(
     private val coroutineScope = CoroutineScope(Dispatchers.Main) + SupervisorJob()
     private val _state = MutableStateFlow(SearchState())
     override val state: StateFlow<SearchState> = _state
+
+    private val favourites = MutableStateFlow<List<String>>(emptyList())
 
     init {
         state
@@ -26,12 +30,19 @@ internal class SearchModel(
             .filter { it.isNotBlank() }
             .onEach { query ->
                 val issues = issueRepo.searchIssues(query)
-                println("issues: ${issues.joinToString(separator = "\n") { it.toString() }}")
-                _state.update { it.copy(results = issues.toImmutableList()) }
+                _state.update { it.copy(results = issues.map { SearchResult(it, false) }.toPersistentList()) }
             }
             .launchIn(coroutineScope)
     }
+
     override val actions: SearchActions = object : SearchActions {
         override fun onSearchInput(input: String) = _state.update { it.copy(input = input) }
+        override fun onResultClick(searchResult: SearchResult) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onResultFavouriteClick(searchResult: SearchResult) {
+            TODO("Not yet implemented")
+        }
     }
 }

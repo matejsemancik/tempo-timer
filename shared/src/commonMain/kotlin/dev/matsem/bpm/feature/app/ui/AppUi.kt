@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.Search
@@ -20,6 +21,7 @@ import dev.matsem.bpm.design.sheet.SheetHeader
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
+import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.search.ui.SearchScreenUi
 import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
@@ -89,7 +91,7 @@ fun AppUi() {
                             )
                         }
                         Text(
-                            "tempo-desktop 0.0.1",
+                            "tempo-timer 0.0.1",
                             style = BpmTheme.typography.labelMedium,
                             modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
                         )
@@ -100,9 +102,9 @@ fun AppUi() {
                             containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                             elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                         ) {
-                            Icon(Icons.Rounded.Search, contentDescription = "Search issues")
+                            Icon(Icons.Rounded.Add, contentDescription = "New timer")
                             HorizontalSpacer(Grid.d1)
-                            Text(text = "Search issues", style = BpmTheme.typography.bodyMedium)
+                            Text(text = "New timer", style = BpmTheme.typography.bodyMedium.centeredVertically())
                         }
                     }
                 )

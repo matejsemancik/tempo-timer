@@ -17,6 +17,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.matsem.bpm.data.model.domain.MockIssues
+import dev.matsem.bpm.data.model.domain.MockSearchResults
 import dev.matsem.bpm.design.input.DesignTextField
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
@@ -60,7 +61,7 @@ fun SearchScreenUi(
                 .focusRequester(focusRequester)
                 .fillMaxWidth()
                 .padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
-            placeholder = "Issue key, title, try your luck..."
+            placeholder = "Issue key, or summary, or try your luck..."
         )
         VerticalSpacer(Grid.d3)
         Box {
@@ -68,11 +69,13 @@ fun SearchScreenUi(
             LazyColumn(
                 state = listState
             ) {
-                items(state.results) { issue ->
+                items(state.results) { searchResult ->
                     SearchResultRow(
-                        issue = issue,
+                        searchResult = searchResult,
                         contentPadding = PaddingValues(horizontal = BpmTheme.dimensions.horizontalContentPadding),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { actions.onResultClick(searchResult) },
+                        onFavouriteClick = { actions.onResultFavouriteClick(searchResult) }
                     )
                 }
             }
@@ -91,7 +94,7 @@ fun SearchScreenUiPreview() {
     Showcase {
         SearchScreenUi(
             state = SearchState(
-                results = MockIssues.toImmutableList()
+                results = MockSearchResults.toImmutableList()
             ),
             actions = SearchActions.noOp(),
             modifier = Modifier.fillMaxWidth()

@@ -142,7 +142,7 @@ fun TrackersSection(
                     )
                     VerticalSpacer(Grid.d3)
                     Text(
-                        text = "Search for an issue to start a timer",
+                        text = "Start a new timer from menu bar down there 👇",
                         style = BpmTheme.typography.bodyMedium.centeredVertically(),
                         color = BpmTheme.colorScheme.outline,
                         textAlign = TextAlign.Center,
