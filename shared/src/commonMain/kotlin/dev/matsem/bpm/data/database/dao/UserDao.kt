@@ -10,12 +10,12 @@ internal interface UserDao {
     @Upsert
     suspend fun upsert(user: User)
 
-    @Query("DELETE FROM users")
+    @Query("DELETE FROM user")
     suspend fun delete()
 
-    @Query("SELECT * FROM users LIMIT 1")
+    @Query("SELECT * FROM user LIMIT 1")
     fun observe(): Flow<User?>
 
-    @Query("SELECT * FROM users LIMIT 1")
+    @Query("SELECT * FROM user LIMIT 1")
     suspend fun get(): User?
 }
