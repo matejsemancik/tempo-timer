@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import dev.matsem.bpm.design.layout.ClickableDesignCard
+import dev.matsem.bpm.design.layout.ClickableAppCard
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.data.model.domain.Issue
@@ -19,7 +19,7 @@ fun FavouriteIssueChip(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    ClickableDesignCard(
+    ClickableAppCard(
         modifier = modifier,
         onClick = onClick
     ) {

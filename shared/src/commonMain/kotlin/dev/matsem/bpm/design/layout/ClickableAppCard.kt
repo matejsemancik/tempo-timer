@@ -19,7 +19,7 @@ import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 
 @Composable
-fun ClickableDesignCard(
+fun ClickableAppCard(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
