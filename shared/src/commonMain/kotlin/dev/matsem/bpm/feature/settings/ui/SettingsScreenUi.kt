@@ -50,6 +50,7 @@ fun SettingsScreenUi(
             is SettingsState.SignedOut -> SignedOutSection(state, actions)
             is SettingsState.SignedIn -> SignedInSection(state, actions)
         }
+        VerticalSpacer(Grid.d3)
     }
 }
 
@@ -142,7 +143,6 @@ private fun SignedOutSection(
                 onClick = actions::onLoginClick,
             )
         }
-        VerticalSpacer(Grid.d3)
     }
 }
 

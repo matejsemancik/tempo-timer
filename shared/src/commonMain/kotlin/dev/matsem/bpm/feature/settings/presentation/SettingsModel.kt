@@ -15,7 +15,7 @@ internal class SettingsModel(
     }
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main) + SupervisorJob()
-    private val _state = MutableStateFlow<SettingsState>(DefaultState)
+    private val _state = MutableStateFlow(DefaultState)
     override val state: StateFlow<SettingsState> = _state
         .onStart {
             coroutineScope.launch {
@@ -73,10 +73,10 @@ internal class SettingsModel(
                 sessionRepo
                     .signIn(
                         Credentials(
-                            jiraCloudName = currentState.jiraCloudName,
-                            email = currentState.jiraEmail,
-                            jiraApiToken = currentState.jiraApiToken,
-                            tempoApiToken = currentState.tempoApiToken
+                            jiraCloudName = currentState.jiraCloudName.trim(),
+                            email = currentState.jiraEmail.trim(),
+                            jiraApiToken = currentState.jiraApiToken.trim(),
+                            tempoApiToken = currentState.tempoApiToken.trim()
                         )
                     )
             }.onFailure {
