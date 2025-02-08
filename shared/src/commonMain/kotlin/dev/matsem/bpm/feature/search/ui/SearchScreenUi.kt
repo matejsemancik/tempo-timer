@@ -6,7 +6,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,7 +21,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.matsem.bpm.data.model.domain.MockIssues
 import dev.matsem.bpm.data.model.domain.MockSearchResults
-import dev.matsem.bpm.design.input.DesignTextField
+import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
@@ -54,14 +57,18 @@ fun SearchScreenUi(
     }
 
     Column(modifier) {
-        DesignTextField(
+        AppTextField(
             value = state.input,
-            onValueChanged = actions::onSearchInput,
+            onValueChange = actions::onSearchInput,
+            singleLine = true,
             modifier = Modifier
                 .focusRequester(focusRequester)
                 .fillMaxWidth()
                 .padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
-            placeholder = "Issue key, or summary, or try your luck..."
+            placeholder = "Issue key, or summary, or try your luck...",
+            leadingIcon = {
+                Icon(Icons.Rounded.Search, contentDescription = null)
+            }
         )
         VerticalSpacer(Grid.d3)
         Box {

@@ -9,6 +9,7 @@ object Grid {
     val d1 = 4.dp
     val d1_5 = 6.dp
     val d2 = 8.dp
+    val d2_5 = 10.dp
     val d3 = 12.dp
     val d4 = 16.dp
     val d5 = 20.dp

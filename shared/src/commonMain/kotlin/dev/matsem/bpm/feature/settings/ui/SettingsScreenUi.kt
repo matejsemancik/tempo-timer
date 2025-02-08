@@ -16,7 +16,7 @@ import coil3.compose.AsyncImage
 import dev.matsem.bpm.data.model.domain.User
 import dev.matsem.bpm.design.input.AppButton
 import dev.matsem.bpm.design.input.AppOutlinedButton
-import dev.matsem.bpm.design.input.DesignTextField
+import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
@@ -26,6 +26,7 @@ import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.settings.presentation.SettingsActions
 import dev.matsem.bpm.feature.settings.presentation.SettingsScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsState
+import dev.matsem.bpm.feature.settings.ui.PasswordTextField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -53,80 +54,106 @@ fun SettingsScreenUi(
 }
 
 @Composable
-private fun ColumnScope.SignedOutSection(
-    state: SettingsState.SignedOut,
-    actions: SettingsActions,
-    modifier: Modifier = Modifier
+private fun LabeledTextField(
+    label: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
-    Text(
-        text = "🔐 Credentials",
-        style = BpmTheme.typography.titleMedium,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
-    )
-    VerticalSpacer(Grid.d1)
-    Text(
-        text = "Sign In by providing necessary credentials.",
-        style = BpmTheme.typography.bodyMedium,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
-    )
-    VerticalSpacer(Grid.d1)
-    Text(
-        text = "Jira API token is used to sync your profile and search issues. Tempo API token is used to synchronize worklogs with Tempo.\nInstructions on how to generate TBD.",
-        style = BpmTheme.typography.labelMedium,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
-    )
-    VerticalSpacer(Grid.d2)
-    DesignTextField(
-        label = "Jira URL",
-        value = state.jiraCloudName,
-        onValueChanged = actions::onJiraCloudName,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
-        prefix = { Text("https://") },
-        suffix = { Text(".atlassian.net") }
-    )
-    DesignTextField(
-        label = "Atlassian account e-mail",
-        value = state.jiraEmail,
-        onValueChanged = actions::onJiraEmailInput,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
-    )
-    DesignTextField(
-        label = "Jira API token",
-        value = state.jiraApiToken,
-        onValueChanged = actions::onJiraApiKeyInput,
-        isPassword = true,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
-    )
-    DesignTextField(
-        label = "Tempo API token",
-        value = state.tempoApiToken,
-        onValueChanged = actions::onTempoApiKeyInput,
-        isPassword = true,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
-    )
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = BpmTheme.dimensions.horizontalContentPadding, vertical = Grid.d3),
-        horizontalArrangement = Arrangement.End
-    ) {
-        AppButton(
-            text = "Sign In",
-            isLoading = state.isLoading,
-            onClick = actions::onLoginClick,
-        )
+    Column(modifier) {
+        Text(text = label, style = BpmTheme.typography.labelMedium)
+        VerticalSpacer(Grid.d1)
+        content()
     }
 }
 
 @Composable
-private fun ColumnScope.SignedInSection(
+private fun SignedOutSection(
+    state: SettingsState.SignedOut,
+    actions: SettingsActions,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
+    ) {
+        Text(
+            text = "🔐 Credentials",
+            style = BpmTheme.typography.titleMedium,
+        )
+        VerticalSpacer(Grid.d1)
+        Text(
+            text = "Sign In by providing necessary credentials.",
+            style = BpmTheme.typography.bodyMedium,
+        )
+        VerticalSpacer(Grid.d1)
+        Text(
+            text = "Jira API token is used to sync your profile and search issues. Tempo API token is used to synchronize worklogs with Tempo.\nInstructions on how to generate TBD.",
+            style = BpmTheme.typography.labelMedium,
+        )
+
+        VerticalSpacer(Grid.d2)
+        LabeledTextField("Jira URL") {
+            AppTextField(
+                value = state.jiraCloudName,
+                onValueChange = actions::onJiraCloudName,
+                prefix = "https://",
+                suffix = ".atlassian.net",
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+
+        VerticalSpacer(Grid.d2)
+        LabeledTextField("Atlassian account e-mail") {
+            AppTextField(
+                value = state.jiraEmail,
+                onValueChange = actions::onJiraEmailInput,
+                singleLine = true,
+                placeholder = "you@corporate.org",
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+
+        VerticalSpacer(Grid.d2)
+        LabeledTextField("Jira API token") {
+            PasswordTextField(
+                value = state.jiraApiToken,
+                onValueChange = actions::onJiraApiKeyInput,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+
+        VerticalSpacer(Grid.d2)
+        LabeledTextField("Tempo API token") {
+            PasswordTextField(
+                value = state.tempoApiToken,
+                onValueChange = actions::onTempoApiKeyInput,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+
+        VerticalSpacer(Grid.d3)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            AppButton(
+                text = "Sign In",
+                isLoading = state.isLoading,
+                onClick = actions::onLoginClick,
+            )
+        }
+        VerticalSpacer(Grid.d3)
+    }
+}
+
+@Composable
+private fun SignedInSection(
     state: SettingsState.SignedIn,
     actions: SettingsActions,
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
+        modifier = modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
@@ -156,7 +183,6 @@ private fun ColumnScope.SignedInSection(
             onClick = actions::onLogoutClick,
         )
     }
-    VerticalSpacer(Grid.d4)
 }
 
 @Preview
