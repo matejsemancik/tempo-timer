@@ -1,4 +1,4 @@
-package dev.matsem.bpm.data.model.network.jira.issuePicker
+package dev.matsem.bpm.data.service.jira.model.issuePicker
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

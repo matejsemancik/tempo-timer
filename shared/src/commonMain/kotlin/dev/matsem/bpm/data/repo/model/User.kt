@@ -1,4 +1,4 @@
-package dev.matsem.bpm.data.model.domain
+package dev.matsem.bpm.data.repo.model
 
 data class User(
     val email: String,

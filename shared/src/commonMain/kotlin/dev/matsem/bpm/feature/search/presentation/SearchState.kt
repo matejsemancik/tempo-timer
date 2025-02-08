@@ -1,6 +1,6 @@
 package dev.matsem.bpm.feature.search.presentation
 
-import dev.matsem.bpm.data.model.domain.SearchResult
+import dev.matsem.bpm.data.repo.model.SearchResult
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

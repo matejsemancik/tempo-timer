@@ -1,6 +1,6 @@
 package dev.matsem.bpm.feature.settings.presentation
 
-import dev.matsem.bpm.data.model.domain.User
+import dev.matsem.bpm.data.repo.model.User
 
 sealed interface SettingsState {
     data class SignedOut(

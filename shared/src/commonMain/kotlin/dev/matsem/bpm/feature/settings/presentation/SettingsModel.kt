@@ -1,7 +1,7 @@
 package dev.matsem.bpm.feature.settings.presentation
 
-import dev.matsem.bpm.data.model.domain.Credentials
-import dev.matsem.bpm.data.model.domain.User
+import dev.matsem.bpm.data.repo.model.Credentials
+import dev.matsem.bpm.data.repo.model.User
 import dev.matsem.bpm.data.repo.SessionRepo
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*

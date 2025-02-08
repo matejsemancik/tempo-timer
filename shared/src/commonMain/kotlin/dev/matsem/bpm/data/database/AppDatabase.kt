@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import dev.matsem.bpm.data.database.dao.UserDao
-import dev.matsem.bpm.data.model.database.User
+import dev.matsem.bpm.data.database.model.User
 
 @Database(
     entities = [User::class],

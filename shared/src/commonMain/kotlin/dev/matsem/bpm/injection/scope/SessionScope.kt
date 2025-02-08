@@ -1,9 +1,9 @@
 package dev.matsem.bpm.injection.scope
 
-import dev.matsem.bpm.data.model.domain.Credentials
-import dev.matsem.bpm.data.model.mapping.CredentialsMapping.toDomainModel
+import dev.matsem.bpm.data.mapping.CredentialsMapping.toDomainModel
+import dev.matsem.bpm.data.repo.model.Credentials
 import dev.matsem.bpm.data.persistence.ApplicationPersistence
-import dev.matsem.bpm.data.service.JiraApi
+import dev.matsem.bpm.data.service.jira.JiraApi
 import org.koin.core.Koin
 import org.koin.core.context.GlobalContext
 import org.koin.core.qualifier.named

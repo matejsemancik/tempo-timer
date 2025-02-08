@@ -1,4 +1,4 @@
-package dev.matsem.bpm.data.model.persistence
+package dev.matsem.bpm.data.persistence.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

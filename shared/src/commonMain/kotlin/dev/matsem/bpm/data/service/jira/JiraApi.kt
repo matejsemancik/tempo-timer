@@ -1,9 +1,9 @@
-package dev.matsem.bpm.data.service
+package dev.matsem.bpm.data.service.jira
 
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Query
-import dev.matsem.bpm.data.model.network.jira.issuePicker.IssuePickerResponse
-import dev.matsem.bpm.data.model.network.jira.user.JiraUser
+import dev.matsem.bpm.data.service.jira.model.issuePicker.IssuePickerResponse
+import dev.matsem.bpm.data.service.jira.model.user.JiraUser
 
 interface JiraApi {
 

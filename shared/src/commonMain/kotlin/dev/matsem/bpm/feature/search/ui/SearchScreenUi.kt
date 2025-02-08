@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.matsem.bpm.data.model.domain.MockIssues
-import dev.matsem.bpm.data.model.domain.MockSearchResults
+import dev.matsem.bpm.data.repo.model.MockIssues
+import dev.matsem.bpm.data.repo.model.MockSearchResults
 import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid

@@ -1,7 +1,7 @@
 package dev.matsem.bpm.feature.tracker.presentation
 
-import dev.matsem.bpm.data.model.domain.Issue
-import dev.matsem.bpm.data.model.domain.Timer
+import dev.matsem.bpm.data.repo.model.Issue
+import dev.matsem.bpm.data.repo.model.Timer
 
 interface TrackerActions {
     fun onNewTimer(issue: Issue)

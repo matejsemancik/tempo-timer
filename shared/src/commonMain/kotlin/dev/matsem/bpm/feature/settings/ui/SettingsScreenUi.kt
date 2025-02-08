@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import dev.matsem.bpm.data.model.domain.User
+import dev.matsem.bpm.data.repo.model.User
 import dev.matsem.bpm.design.input.AppButton
 import dev.matsem.bpm.design.input.AppOutlinedButton
 import dev.matsem.bpm.design.input.AppTextField

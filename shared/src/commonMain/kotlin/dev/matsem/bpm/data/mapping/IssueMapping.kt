@@ -1,7 +1,7 @@
-package dev.matsem.bpm.data.model.mapping
+package dev.matsem.bpm.data.mapping
 
-import dev.matsem.bpm.data.model.domain.Issue as Issue_Domain
-import dev.matsem.bpm.data.model.network.jira.issuePicker.SuggestedIssue as SuggestedIssue_Network
+import dev.matsem.bpm.data.repo.model.Issue as Issue_Domain
+import dev.matsem.bpm.data.service.jira.model.issuePicker.SuggestedIssue as SuggestedIssue_Network
 
 internal object IssueMapping {
 

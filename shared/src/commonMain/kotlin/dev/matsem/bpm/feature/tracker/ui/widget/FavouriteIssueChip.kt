@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import dev.matsem.bpm.design.layout.ClickableAppCard
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
-import dev.matsem.bpm.data.model.domain.Issue
-import dev.matsem.bpm.data.model.domain.MockTimers
+import dev.matsem.bpm.data.repo.model.Issue
+import dev.matsem.bpm.data.repo.model.MockTimers
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

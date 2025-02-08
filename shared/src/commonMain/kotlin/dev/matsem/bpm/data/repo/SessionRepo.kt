@@ -1,13 +1,13 @@
 package dev.matsem.bpm.data.repo
 
 import dev.matsem.bpm.data.database.dao.UserDao
-import dev.matsem.bpm.data.model.domain.Credentials
-import dev.matsem.bpm.data.model.domain.User
-import dev.matsem.bpm.data.model.mapping.CredentialsMapping.toPersistenceModel
-import dev.matsem.bpm.data.model.mapping.UserMapping.toDbInsert
-import dev.matsem.bpm.data.model.mapping.UserMapping.toDomainModel
+import dev.matsem.bpm.data.mapping.CredentialsMapping.toPersistenceModel
+import dev.matsem.bpm.data.repo.model.Credentials
+import dev.matsem.bpm.data.repo.model.User
+import dev.matsem.bpm.data.mapping.UserMapping.toDbInsert
+import dev.matsem.bpm.data.mapping.UserMapping.toDomainModel
 import dev.matsem.bpm.data.persistence.ApplicationPersistence
-import dev.matsem.bpm.data.service.JiraApiManager
+import dev.matsem.bpm.data.service.jira.JiraApiManager
 import dev.matsem.bpm.injection.scope.SessionScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

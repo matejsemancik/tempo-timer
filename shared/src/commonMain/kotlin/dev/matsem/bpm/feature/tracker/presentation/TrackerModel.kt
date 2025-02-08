@@ -1,8 +1,8 @@
 package dev.matsem.bpm.feature.tracker.presentation
 
-import dev.matsem.bpm.data.model.domain.Issue
-import dev.matsem.bpm.data.model.domain.Timer
-import dev.matsem.bpm.data.model.domain.TimerState
+import dev.matsem.bpm.data.repo.model.Issue
+import dev.matsem.bpm.data.repo.model.Timer
+import dev.matsem.bpm.data.repo.model.TimerState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

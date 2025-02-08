@@ -20,8 +20,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.matsem.bpm.data.model.domain.MockSearchResults
-import dev.matsem.bpm.data.model.domain.SearchResult
+import dev.matsem.bpm.data.repo.model.MockSearchResults
+import dev.matsem.bpm.data.repo.model.SearchResult
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.theme.favourite

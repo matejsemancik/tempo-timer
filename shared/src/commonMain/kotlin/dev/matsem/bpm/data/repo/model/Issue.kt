@@ -1,4 +1,4 @@
-package dev.matsem.bpm.data.model.domain
+package dev.matsem.bpm.data.repo.model
 
 data class Issue(
     val key: String,

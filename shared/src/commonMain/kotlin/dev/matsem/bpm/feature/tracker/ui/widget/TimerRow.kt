@@ -25,8 +25,8 @@ import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForTimer
-import dev.matsem.bpm.data.model.domain.Timer
-import dev.matsem.bpm.data.model.domain.MockTimers
+import dev.matsem.bpm.data.repo.model.Timer
+import dev.matsem.bpm.data.repo.model.MockTimers
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.seconds

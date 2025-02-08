@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.matsem.bpm.data.model.domain.Issue
-import dev.matsem.bpm.data.model.domain.MockIssues
-import dev.matsem.bpm.data.model.domain.MockTimers
-import dev.matsem.bpm.data.model.domain.Timer
+import dev.matsem.bpm.data.repo.model.Issue
+import dev.matsem.bpm.data.repo.model.MockIssues
+import dev.matsem.bpm.data.repo.model.MockTimers
+import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase

@@ -1,4 +1,4 @@
-package dev.matsem.bpm.data.model.database
+package dev.matsem.bpm.data.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

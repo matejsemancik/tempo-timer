@@ -1,7 +1,7 @@
 package dev.matsem.bpm.data.persistence
 
 import androidx.datastore.preferences.core.stringPreferencesKey
-import dev.matsem.bpm.data.model.persistence.Credentials
+import dev.matsem.bpm.data.persistence.model.Credentials
 import kotlinx.coroutines.flow.Flow
 
 interface ApplicationPersistence {

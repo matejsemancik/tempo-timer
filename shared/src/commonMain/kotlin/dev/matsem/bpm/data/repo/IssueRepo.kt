@@ -1,10 +1,10 @@
 package dev.matsem.bpm.data.repo
 
-import dev.matsem.bpm.data.model.domain.Issue
-import dev.matsem.bpm.data.model.mapping.CredentialsMapping.toDomainModel
-import dev.matsem.bpm.data.model.mapping.IssueMapping.toDomainModel
+import dev.matsem.bpm.data.mapping.CredentialsMapping.toDomainModel
+import dev.matsem.bpm.data.mapping.IssueMapping.toDomainModel
+import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.persistence.ApplicationPersistence
-import dev.matsem.bpm.data.service.JiraApiManager
+import dev.matsem.bpm.data.service.jira.JiraApiManager
 
 interface IssueRepo {
 

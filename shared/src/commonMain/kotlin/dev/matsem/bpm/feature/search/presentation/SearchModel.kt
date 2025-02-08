@@ -1,6 +1,6 @@
 package dev.matsem.bpm.feature.search.presentation
 
-import dev.matsem.bpm.data.model.domain.SearchResult
+import dev.matsem.bpm.data.repo.model.SearchResult
 import dev.matsem.bpm.data.repo.IssueRepo
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope

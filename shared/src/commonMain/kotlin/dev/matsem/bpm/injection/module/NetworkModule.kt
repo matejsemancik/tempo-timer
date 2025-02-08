@@ -1,10 +1,10 @@
 package dev.matsem.bpm.injection.module
 
 import de.jensklingenberg.ktorfit.Ktorfit
-import dev.matsem.bpm.data.model.domain.Credentials
-import dev.matsem.bpm.data.service.JiraApi
-import dev.matsem.bpm.data.service.JiraApiManager
-import dev.matsem.bpm.data.service.JiraApiManagerImpl
+import dev.matsem.bpm.data.repo.model.Credentials
+import dev.matsem.bpm.data.service.jira.JiraApi
+import dev.matsem.bpm.data.service.jira.JiraApiManager
+import dev.matsem.bpm.data.service.jira.JiraApiManagerImpl
 import dev.matsem.bpm.data.service.plugin.ContentNegotiationPlugin
 import dev.matsem.bpm.data.service.plugin.JiraAuthPlugin
 import dev.matsem.bpm.data.service.plugin.LoggingPlugin

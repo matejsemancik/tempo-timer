@@ -12,7 +12,7 @@ import coil3.PlatformContext
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import dev.matsem.bpm.data.model.domain.Issue
+import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer

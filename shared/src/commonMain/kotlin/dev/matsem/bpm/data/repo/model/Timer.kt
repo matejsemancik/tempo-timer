@@ -1,4 +1,4 @@
-package dev.matsem.bpm.data.model.domain
+package dev.matsem.bpm.data.repo.model
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant

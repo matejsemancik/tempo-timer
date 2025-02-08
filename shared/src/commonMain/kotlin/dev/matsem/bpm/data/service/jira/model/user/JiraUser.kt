@@ -1,6 +1,6 @@
-package dev.matsem.bpm.data.model.network.jira.user
+package dev.matsem.bpm.data.service.jira.model.user
 
-import dev.matsem.bpm.data.model.network.jira.user.AvatarUrlsBean
+import dev.matsem.bpm.data.service.jira.model.user.AvatarUrlsBean
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -1,8 +1,8 @@
-package dev.matsem.bpm.data.model.mapping
+package dev.matsem.bpm.data.mapping
 
-import dev.matsem.bpm.data.model.database.User as User_Db
-import dev.matsem.bpm.data.model.domain.User as User_Domain
-import dev.matsem.bpm.data.model.network.jira.user.JiraUser as JiraUser_Network
+import dev.matsem.bpm.data.database.model.User as User_Db
+import dev.matsem.bpm.data.repo.model.User as User_Domain
+import dev.matsem.bpm.data.service.jira.model.user.JiraUser as JiraUser_Network
 
 internal object UserMapping {
 

@@ -1,6 +1,6 @@
 package dev.matsem.bpm.feature.search.presentation
 
-import dev.matsem.bpm.data.model.domain.SearchResult
+import dev.matsem.bpm.data.repo.model.SearchResult
 
 interface SearchActions {
     fun onSearchInput(input: String)
