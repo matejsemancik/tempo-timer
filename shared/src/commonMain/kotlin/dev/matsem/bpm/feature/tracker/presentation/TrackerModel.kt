@@ -1,16 +1,16 @@
 package dev.matsem.bpm.feature.tracker.presentation
 
 import dev.matsem.bpm.data.repo.IssueRepo
+import dev.matsem.bpm.data.repo.TimerRepo
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.Timer
-import dev.matsem.bpm.data.repo.model.TimerState
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.datetime.Clock
 
 internal class TrackerModel(
     private val issueRepo: IssueRepo,
+    private val timerRepo: TimerRepo,
 ) : TrackerScreen {
 
     companion object {
@@ -25,6 +25,12 @@ internal class TrackerModel(
                 _state.update { it.copy(favouriteIssues = favs.toImmutableList()) }
             }
         }
+
+        coroutineScope.launch {
+            timerRepo.getTimers().collect { timers ->
+                _state.update { it.copy(timers = timers.toImmutableList()) }
+            }
+        }
     }.stateIn(
         scope = coroutineScope,
         started = SharingStarted.Lazily,
@@ -36,50 +42,27 @@ internal class TrackerModel(
                 return
             }
 
-            _state.update { state ->
-                state.copy(
-                    timers = state.timers.add(
-                        Timer(
-                            issue = issue,
-                            state = TimerState(startedAt = Clock.System.now())
-                        )
-                    )
-                )
+            coroutineScope.launch {
+                timerRepo.createTimerForIssue(issue)
             }
         }
 
-        override fun onResumeTimer(timer: Timer) = _state.update { state ->
-            val idx = state.timers.indexOf(timer).takeIf { it >= 0 } ?: return@update state
-            state.copy(
-                timers = state.timers.set(
-                    idx,
-                    timer.copy(state = timer.state.copy(startedAt = Clock.System.now()))
-                )
-            )
-        }
-
-        override fun onPauseTimer(timer: Timer) = _state.update { state ->
-            val idx = state.timers.indexOf(timer).takeIf { it >= 0 } ?: return@update state
-            if (timer.state.startedAt == null) {
-                return@update state
+        override fun onResumeTimer(timer: Timer) {
+            coroutineScope.launch {
+                timerRepo.resumeTimer(timer.id)
             }
-
-            val durationToAdd = Clock.System.now() - timer.state.startedAt
-            state.copy(
-                timers = state.timers.set(
-                    idx,
-                    timer.copy(
-                        state = timer.state.copy(
-                            startedAt = null,
-                            finishedDuration = timer.state.finishedDuration + durationToAdd
-                        )
-                    )
-                )
-            )
         }
 
-        override fun onDeleteTimer(timer: Timer) = _state.update { state ->
-            state.copy(timers = state.timers.remove(timer))
+        override fun onPauseTimer(timer: Timer) {
+            coroutineScope.launch {
+                timerRepo.pauseTimer(timer.id)
+            }
+        }
+
+        override fun onDeleteTimer(timer: Timer) {
+            coroutineScope.launch {
+                timerRepo.deleteTimer(timer.id)
+            }
         }
 
         override fun onDeleteFavourite(issue: Issue) {

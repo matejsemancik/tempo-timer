@@ -26,11 +26,11 @@ data class Timer(
     @ColumnInfo(name = "jira_issue_id")
     val jiraIssueId: Long,
 
+    @ColumnInfo(name = "accumulation")
+    val accumulationMs: Long,
+
     @ColumnInfo(name = "started_at")
     val startedAt: Instant?,
-
-    @ColumnInfo(name = "accumulation")
-    val accumulationMs: Long
 )
 
 data class TimerComplete(

@@ -9,15 +9,15 @@ import kotlinx.coroutines.flow.Flow
 interface JiraIssueDao {
 
     @Upsert
-    suspend fun _upsertIssue(issue: JiraIssue)
+    suspend fun upsertIssue(issue: JiraIssue)
 
     @Insert
-    suspend fun _insertFavourite(favourite: FavouriteIssue)
+    suspend fun insertFavourite(favourite: FavouriteIssue)
 
     @Transaction
     suspend fun addFavouriteIssue(jiraIssue: JiraIssue, favourite: FavouriteIssue) {
-        _upsertIssue(jiraIssue)
-        _insertFavourite(favourite)
+        upsertIssue(jiraIssue)
+        insertFavourite(favourite)
     }
 
     @Query("DELETE FROM favourite_issue WHERE favourite_issue.jira_issue_id = :jiraIssueId")

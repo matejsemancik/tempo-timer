@@ -4,6 +4,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import dev.matsem.bpm.data.database.AppDatabase
 import dev.matsem.bpm.data.database.dao.JiraIssueDao
+import dev.matsem.bpm.data.database.dao.TimerDao
 import dev.matsem.bpm.data.database.dao.UserDao
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.Module
@@ -24,4 +25,5 @@ internal fun databaseModule() = module {
 
     single<UserDao> { get<AppDatabase>().userDao() }
     single<JiraIssueDao> { get<AppDatabase>().jiraIssueDao() }
+    single<TimerDao> { get<AppDatabase>().timerDao() }
 }

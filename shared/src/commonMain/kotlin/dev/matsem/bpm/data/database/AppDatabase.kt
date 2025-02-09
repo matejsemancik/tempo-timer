@@ -2,6 +2,7 @@ package dev.matsem.bpm.data.database
 
 import androidx.room.*
 import dev.matsem.bpm.data.database.dao.JiraIssueDao
+import dev.matsem.bpm.data.database.dao.TimerDao
 import dev.matsem.bpm.data.database.dao.UserDao
 import dev.matsem.bpm.data.database.model.FavouriteIssue
 import dev.matsem.bpm.data.database.model.JiraIssue
@@ -19,6 +20,8 @@ internal abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
     abstract fun jiraIssueDao(): JiraIssueDao
+
+    abstract fun timerDao(): TimerDao
 }
 
 internal expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {

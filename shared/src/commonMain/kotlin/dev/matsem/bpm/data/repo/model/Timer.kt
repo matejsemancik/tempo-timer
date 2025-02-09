@@ -6,6 +6,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 data class Timer(
+    val id: Int,
     val issue: Issue?,
     val state: TimerState = TimerState()
 )
@@ -36,4 +37,4 @@ data class TimerState(
         }
 }
 
-val MockTimers = MockIssues.map { Timer(issue = it) }
+val MockTimers = MockIssues.map { Timer(id = 0, issue = it) }

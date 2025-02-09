@@ -11,6 +11,7 @@ object AppInjection {
             logger(PrintLogger(Level.ERROR))
 
             modules(
+                systemModule(),
                 scopeModule(),
                 repositoryModule(),
                 networkModule(),
