@@ -136,15 +136,15 @@ fun TrackersSection(
                     Text(
                         text = "No running timers",
                         style = BpmTheme.typography.bodyLarge.centeredVertically(),
-                        color = BpmTheme.colorScheme.outline,
+                        color = BpmTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
                     VerticalSpacer(Grid.d3)
                     Text(
-                        text = "Start a new timer from menu bar down there 👇",
+                        text = "Start a new timer by clicking on Favourite,\nor from menu bar down there 👇",
                         style = BpmTheme.typography.bodyMedium.centeredVertically(),
-                        color = BpmTheme.colorScheme.outline,
+                        color = BpmTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
