@@ -1,5 +1,6 @@
 package dev.matsem.bpm.feature.settings.presentation
 
+import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.data.repo.model.Credentials
 import dev.matsem.bpm.data.repo.model.User
 import dev.matsem.bpm.data.repo.SessionRepo
@@ -32,28 +33,28 @@ internal class SettingsModel(
         .stateIn(coroutineScope, SharingStarted.Lazily, DefaultState)
     override val actions: SettingsActions = object : SettingsActions {
 
-        override fun onJiraCloudName(input: String) = _state.update {
+        override fun onJiraCloudName(input: TextFieldValue) = _state.update {
             when (it) {
                 is SettingsState.SignedOut -> it.copy(jiraCloudName = input)
                 is SettingsState.SignedIn -> it
             }
         }
 
-        override fun onJiraEmailInput(input: String) = _state.update {
+        override fun onJiraEmailInput(input: TextFieldValue) = _state.update {
             when (it) {
                 is SettingsState.SignedOut -> it.copy(jiraEmail = input)
                 is SettingsState.SignedIn -> it
             }
         }
 
-        override fun onJiraApiKeyInput(input: String) = _state.update {
+        override fun onJiraApiKeyInput(input: TextFieldValue) = _state.update {
             when (it) {
                 is SettingsState.SignedOut -> it.copy(jiraApiToken = input)
                 is SettingsState.SignedIn -> it
             }
         }
 
-        override fun onTempoApiKeyInput(input: String) = _state.update {
+        override fun onTempoApiKeyInput(input: TextFieldValue) = _state.update {
             when (it) {
                 is SettingsState.SignedIn -> it
                 is SettingsState.SignedOut -> it.copy(tempoApiToken = input)
@@ -73,10 +74,10 @@ internal class SettingsModel(
                 sessionRepo
                     .signIn(
                         Credentials(
-                            jiraCloudName = currentState.jiraCloudName.trim(),
-                            email = currentState.jiraEmail.trim(),
-                            jiraApiToken = currentState.jiraApiToken.trim(),
-                            tempoApiToken = currentState.tempoApiToken.trim()
+                            jiraCloudName = currentState.jiraCloudName.text.trim(),
+                            email = currentState.jiraEmail.text.trim(),
+                            jiraApiToken = currentState.jiraApiToken.text.trim(),
+                            tempoApiToken = currentState.tempoApiToken.text.trim()
                         )
                     )
             }.onFailure {

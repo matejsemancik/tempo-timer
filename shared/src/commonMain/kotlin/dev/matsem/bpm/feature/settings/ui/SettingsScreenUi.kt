@@ -26,7 +26,6 @@ import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.settings.presentation.SettingsActions
 import dev.matsem.bpm.feature.settings.presentation.SettingsScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsState
-import dev.matsem.bpm.feature.settings.ui.PasswordTextField
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 

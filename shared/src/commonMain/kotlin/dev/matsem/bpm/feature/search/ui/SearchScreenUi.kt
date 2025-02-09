@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,7 +53,6 @@ fun SearchScreenUi(
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
-        actions.onSearchInput("")
         focusRequester.requestFocus()
     }
 

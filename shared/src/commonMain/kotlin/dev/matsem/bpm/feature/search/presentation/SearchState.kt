@@ -1,11 +1,12 @@
 package dev.matsem.bpm.feature.search.presentation
 
+import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.data.repo.model.SearchResult
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class SearchState(
-    val input: String = "",
+    val input: TextFieldValue = TextFieldValue(),
     val isLoading: Boolean = false,
     val results: ImmutableList<SearchResult> = persistentListOf(),
     internal val error: Throwable? = null,

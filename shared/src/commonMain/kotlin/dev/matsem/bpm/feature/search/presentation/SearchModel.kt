@@ -1,5 +1,6 @@
 package dev.matsem.bpm.feature.search.presentation
 
+import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.data.repo.IssueRepo
 import dev.matsem.bpm.data.repo.model.SearchResult
 import kotlinx.collections.immutable.toImmutableList
@@ -24,6 +25,7 @@ internal class SearchModel(
             .map { it.input }
             .debounce(SearchInputDebounceMs.milliseconds)
             .distinctUntilChanged()
+            .map { it.text }
             .filter { it.isNotBlank() }
             .flatMapLatest { query ->
                 flow {
@@ -55,7 +57,7 @@ internal class SearchModel(
     }
 
     override val actions: SearchActions = object : SearchActions {
-        override fun onSearchInput(input: String) = _state.update { it.copy(input = input) }
+        override fun onSearchInput(input: TextFieldValue) = _state.update { it.copy(input = input) }
         override fun onResultClick(searchResult: SearchResult) {
             println("Not yet implemented")
         }
