@@ -45,6 +45,8 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "dev.matsem.bpm"
             packageVersion = "1.0.0"
+
+            // https://github.com/JetBrains/compose-multiplatform/issues/2686
             modules("jdk.unsupported")
 
             macOS {
