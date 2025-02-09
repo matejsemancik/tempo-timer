@@ -2,6 +2,7 @@ package dev.matsem.bpm.feature.search.presentation
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import dev.matsem.bpm.arch.BaseModel
 import dev.matsem.bpm.data.repo.IssueRepo
 import dev.matsem.bpm.data.repo.model.SearchResult
 import kotlinx.collections.immutable.toImmutableList
@@ -15,11 +16,7 @@ private const val SearchInputDebounceMs = 250L
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 internal class SearchModel(
     private val issueRepo: IssueRepo
-) : SearchScreen {
-
-    private val coroutineScope = CoroutineScope(Dispatchers.Main) + SupervisorJob()
-    private val _state = MutableStateFlow(SearchState())
-    override val state: StateFlow<SearchState> = _state
+) : BaseModel<SearchState>(SearchState()), SearchScreen {
 
     init {
         state
@@ -30,7 +27,7 @@ internal class SearchModel(
             .filter { it.isNotBlank() }
             .flatMapLatest { query ->
                 flow {
-                    _state.update { it.copy(isLoading = true) }
+                    updateState { it.copy(isLoading = true) }
                     try {
                         issueRepo.searchIssues(query).collect { searchResults ->
                             emit(searchResults)
@@ -39,13 +36,13 @@ internal class SearchModel(
                         return@flow
                     } catch (err: Throwable) {
                         println(err)
-                        _state.update { it.copy(isLoading = false, error = err) }
+                        updateState { it.copy(isLoading = false, error = err) }
                         return@flow
                     }
                 }
             }
             .onEach { searchResults ->
-                _state.update {
+                updateState {
                     it.copy(
                         isLoading = false,
                         error = null,
@@ -58,10 +55,10 @@ internal class SearchModel(
     }
 
     override val actions: SearchActions = object : SearchActions {
-        override fun onSearchInput(input: TextFieldValue) = _state.update { it.copy(input = input) }
+        override fun onSearchInput(input: TextFieldValue) = updateState { it.copy(input = input) }
 
         override fun onSearchInputSelectAll() =
-            _state.update { it.copy(input = it.input.copy(selection = TextRange(0, it.input.text.length))) }
+            updateState { it.copy(input = it.input.copy(selection = TextRange(0, it.input.text.length))) }
 
         override fun onResultClick(searchResult: SearchResult) {
             println("Not yet implemented")

@@ -1,60 +1,56 @@
 package dev.matsem.bpm.feature.settings.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
+import dev.matsem.bpm.arch.BaseModel
+import dev.matsem.bpm.data.repo.SessionRepo
 import dev.matsem.bpm.data.repo.model.Credentials
 import dev.matsem.bpm.data.repo.model.User
-import dev.matsem.bpm.data.repo.SessionRepo
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 internal class SettingsModel(
     private val sessionRepo: SessionRepo,
-) : SettingsScreen {
+) : BaseModel<SettingsState>(DefaultState), SettingsScreen {
 
     companion object {
         private val DefaultState: SettingsState = SettingsState.SignedIn(User("", "", ""))
     }
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main) + SupervisorJob()
-    private val _state = MutableStateFlow(DefaultState)
-    override val state: StateFlow<SettingsState> = _state
-        .onStart {
-            coroutineScope.launch {
-                sessionRepo.getUser().collect { user ->
-                    _state.update {
-                        when (user) {
-                            null -> SettingsState.SignedOut()
-                            else -> SettingsState.SignedIn(user)
-                        }
+    override suspend fun onStart() {
+        coroutineScope.launch {
+            sessionRepo.getUser().collect { user ->
+                updateState {
+                    when (user) {
+                        null -> SettingsState.SignedOut()
+                        else -> SettingsState.SignedIn(user)
                     }
                 }
             }
         }
-        .stateIn(coroutineScope, SharingStarted.Lazily, DefaultState)
+    }
     override val actions: SettingsActions = object : SettingsActions {
 
-        override fun onJiraCloudName(input: TextFieldValue) = _state.update {
+        override fun onJiraCloudName(input: TextFieldValue) = updateState {
             when (it) {
                 is SettingsState.SignedOut -> it.copy(jiraCloudName = input)
                 is SettingsState.SignedIn -> it
             }
         }
 
-        override fun onJiraEmailInput(input: TextFieldValue) = _state.update {
+        override fun onJiraEmailInput(input: TextFieldValue) = updateState {
             when (it) {
                 is SettingsState.SignedOut -> it.copy(jiraEmail = input)
                 is SettingsState.SignedIn -> it
             }
         }
 
-        override fun onJiraApiKeyInput(input: TextFieldValue) = _state.update {
+        override fun onJiraApiKeyInput(input: TextFieldValue) = updateState {
             when (it) {
                 is SettingsState.SignedOut -> it.copy(jiraApiToken = input)
                 is SettingsState.SignedIn -> it
             }
         }
 
-        override fun onTempoApiKeyInput(input: TextFieldValue) = _state.update {
+        override fun onTempoApiKeyInput(input: TextFieldValue) = updateState {
             when (it) {
                 is SettingsState.SignedIn -> it
                 is SettingsState.SignedOut -> it.copy(tempoApiToken = input)
@@ -68,8 +64,8 @@ internal class SettingsModel(
 
     private fun login() {
         coroutineScope.launch {
-            val currentState = _state.value as? SettingsState.SignedOut ?: return@launch
-            _state.update { currentState.copy(isLoading = true) }
+            val currentState = state.value as? SettingsState.SignedOut ?: return@launch
+            updateState { currentState.copy(isLoading = true) }
             runCatching {
                 sessionRepo
                     .signIn(
@@ -81,7 +77,7 @@ internal class SettingsModel(
                         )
                     )
             }.onFailure {
-                _state.update { currentState.copy(isLoading = false) }
+                updateState { currentState.copy(isLoading = false) }
                 println(it)
             }
         }
