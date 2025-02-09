@@ -12,16 +12,23 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.material3.Card
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.PointerButton
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.semantics.Role
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ClickableAppCard(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit,
+    onSecondaryClick: (Offset) -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
@@ -57,6 +64,11 @@ fun ClickableAppCard(
                 indication = null,
                 role = Role.Button
             )
+            .onPointerEvent(PointerEventType.Release) { event ->
+                if (event.button == PointerButton.Secondary) {
+                    onSecondaryClick(event.changes.first().position)
+                }
+            }
             .scale(scale = pressScale),
         shape = BpmTheme.shapes.small,
         border = hoverBorder,

@@ -81,5 +81,11 @@ internal class TrackerModel(
         override fun onDeleteTimer(timer: Timer) = _state.update { state ->
             state.copy(timers = state.timers.remove(timer))
         }
+
+        override fun onDeleteFavourite(issue: Issue) {
+            coroutineScope.launch {
+                issueRepo.removeFavouriteIssue(issue)
+            }
+        }
     }
 }

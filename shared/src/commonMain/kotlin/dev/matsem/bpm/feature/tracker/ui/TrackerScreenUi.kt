@@ -97,7 +97,8 @@ fun FavouritesSection(
             for (issue in issues) {
                 FavouriteIssueChip(
                     issue = issue,
-                    onClick = { actions.onNewTimer(issue) }
+                    onClick = { actions.onNewTimer(issue) },
+                    onDelete = { actions.onDeleteFavourite(issue) }
                 )
             }
         }

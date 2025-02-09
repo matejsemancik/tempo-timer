@@ -9,12 +9,15 @@ interface TrackerActions {
     fun onPauseTimer(timer: Timer)
     fun onDeleteTimer(timer: Timer)
 
+    fun onDeleteFavourite(issue: Issue)
+
     companion object {
         fun noOp() = object : TrackerActions {
             override fun onNewTimer(issue: Issue) = Unit
             override fun onResumeTimer(timer: Timer) = Unit
             override fun onPauseTimer(timer: Timer) = Unit
             override fun onDeleteTimer(timer: Timer) = Unit
+            override fun onDeleteFavourite(issue: Issue) = Unit
         }
     }
 }
