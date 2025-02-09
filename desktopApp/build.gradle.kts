@@ -45,7 +45,17 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "dev.matsem.bpm"
             packageVersion = "1.0.0"
+            modules("jdk.unsupported")
 
+            macOS {
+                infoPlist {
+                    // Hides app icon from dock (the app lives in tray)
+                    extraKeysRawXml = """
+                        <key>LSUIElement</key>
+                        <string>true</string>
+                    """.trimIndent()
+                }
+            }
         }
 
         jvmArgs(
