@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.*
 import java.util.concurrent.CancellationException
 import kotlin.time.Duration.Companion.milliseconds
 
-private const val SearchInputDebounceMs = 500L
+private const val SearchInputDebounceMs = 250L
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 internal class SearchModel(
