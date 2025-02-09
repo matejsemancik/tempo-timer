@@ -1,17 +1,16 @@
 package dev.matsem.bpm.feature.search.presentation
 
-import dev.matsem.bpm.data.repo.model.SearchResult
 import dev.matsem.bpm.data.repo.IssueRepo
-import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import dev.matsem.bpm.data.repo.model.SearchResult
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.plus
+import java.util.concurrent.CancellationException
 import kotlin.time.Duration.Companion.milliseconds
 
 private const val SearchInputDebounceMs = 500L
 
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 internal class SearchModel(
     private val issueRepo: IssueRepo
 ) : SearchScreen {
@@ -20,37 +19,37 @@ internal class SearchModel(
     private val _state = MutableStateFlow(SearchState())
     override val state: StateFlow<SearchState> = _state
 
-    private val favourites = MutableStateFlow<List<String>>(emptyList())
-
     init {
         state
             .map { it.input }
             .debounce(SearchInputDebounceMs.milliseconds)
             .distinctUntilChanged()
             .filter { it.isNotBlank() }
-            .onEach { query ->
-                _state.update { it.copy(isLoading = true) }
-                runCatching { issueRepo.searchIssues(query) }
-                    .fold(
-                        onSuccess = { issues ->
-                            _state.update {
-                                it.copy(
-                                    isLoading = false,
-                                    didSearch = true,
-                                    results = issues.map { issue -> SearchResult(issue, false) }.toPersistentList()
-                                )
-                            }
-                        },
-                        onFailure = { err ->
-                            _state.update {
-                                it.copy(
-                                    isLoading = false,
-                                    error = err,
-                                )
-                            }
+            .flatMapLatest { query ->
+                flow {
+                    _state.update { it.copy(isLoading = true) }
+                    try {
+                        issueRepo.searchIssues(query).collect { searchResults ->
+                            emit(searchResults)
                         }
+                    } catch (cancellation: CancellationException) {
+                        return@flow
+                    } catch (err: Throwable) {
+                        println(err)
+                        _state.update { it.copy(isLoading = false, error = err) }
+                        return@flow
+                    }
+                }
+            }
+            .onEach { searchResults ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        error = null,
+                        didSearch = true,
+                        results = searchResults.toImmutableList()
                     )
-
+                }
             }
             .launchIn(coroutineScope)
     }
@@ -58,11 +57,17 @@ internal class SearchModel(
     override val actions: SearchActions = object : SearchActions {
         override fun onSearchInput(input: String) = _state.update { it.copy(input = input) }
         override fun onResultClick(searchResult: SearchResult) {
-            TODO("Not yet implemented")
+            println("Not yet implemented")
         }
 
         override fun onResultFavouriteClick(searchResult: SearchResult) {
-            TODO("Not yet implemented")
+            coroutineScope.launch {
+                if (searchResult.isFavourite) {
+                    issueRepo.removeFavouriteIssue(searchResult.issue)
+                } else {
+                    issueRepo.addFavouriteIssue(searchResult.issue)
+                }
+            }
         }
     }
 }

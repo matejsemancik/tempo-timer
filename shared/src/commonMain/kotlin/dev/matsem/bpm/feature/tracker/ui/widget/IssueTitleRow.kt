@@ -46,7 +46,7 @@ fun IssueTitleRow(
             )
             VerticalSpacer(Grid.d0_5)
             Text(
-                text = issue.title,
+                text = issue.summary,
                 color = BpmTheme.colorScheme.onSurface,
                 style = BpmTheme.typography.bodySmall.centeredVertically(),
                 maxLines = 1,

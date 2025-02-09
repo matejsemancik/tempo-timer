@@ -1,35 +1,41 @@
 package dev.matsem.bpm.data.repo.model
 
 data class Issue(
+    val id: Long,
     val key: String,
-    val title: String,
+    val summary: String,
     val iconUrl: String,
 )
 
 val MockIssues = listOf(
     Issue(
+        id = 0L,
         key = "MTSM-1",
-        title = "Payment button",
+        summary = "Payment button",
         iconUrl = "",
     ),
     Issue(
+        id = 0L,
         key = "MTSM-4",
-        title = "Spraviť robotu",
+        summary = "Spraviť robotu",
         iconUrl = "",
     ),
     Issue(
+        id = 0L,
         key = "MTSM-19",
-        title = "[AN] Spraviť robotu",
+        summary = "[AN] Spraviť robotu",
         iconUrl = "",
     ),
     Issue(
+        id = 0L,
         key = "MTSM-140",
-        title = "Robenie roboty",
+        summary = "Robenie roboty",
         iconUrl = "",
     ),
     Issue(
+        id = 0L,
         key = "MTSM-5",
-        title = "Tempo Desktop",
+        summary = "Tempo Desktop",
         iconUrl = "",
     )
 )

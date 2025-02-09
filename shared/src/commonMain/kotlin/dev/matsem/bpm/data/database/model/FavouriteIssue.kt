@@ -1,10 +1,9 @@
 package dev.matsem.bpm.data.database.model
 
 import androidx.room.*
-import kotlinx.datetime.Instant
 
 @Entity(
-    tableName = "timer",
+    tableName = "favourite_issue",
     foreignKeys = [
         ForeignKey(
             entity = JiraIssue::class,
@@ -17,29 +16,12 @@ import kotlinx.datetime.Instant
         Index("jira_issue_id")
     ]
 )
-data class Timer(
+data class FavouriteIssue(
 
-    @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     val id: Int = 0,
 
     @ColumnInfo(name = "jira_issue_id")
     val jiraIssueId: Long,
-
-    @ColumnInfo(name = "started_at")
-    val startedAt: Instant?,
-
-    @ColumnInfo(name = "accumulation")
-    val accumulationMs: Long
-)
-
-data class TimerComplete(
-
-    @Embedded val timer: Timer,
-
-    @Relation(
-        parentColumn = "jira_issue_id",
-        entityColumn = "id"
-    )
-    val issue: JiraIssue
 )

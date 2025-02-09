@@ -1,17 +1,35 @@
 package dev.matsem.bpm.feature.tracker.presentation
 
+import dev.matsem.bpm.data.repo.IssueRepo
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.data.repo.model.TimerState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import kotlinx.datetime.Clock
 
-internal class TrackerModel : TrackerScreen {
+internal class TrackerModel(
+    private val issueRepo: IssueRepo,
+) : TrackerScreen {
 
-    private val _state = MutableStateFlow(TrackerState())
-    override val state: StateFlow<TrackerState> = _state
+    companion object {
+        private val DefaultState = TrackerState()
+    }
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Main) + SupervisorJob()
+    private val _state = MutableStateFlow(DefaultState)
+    override val state: StateFlow<TrackerState> = _state.onStart {
+        coroutineScope.launch {
+            issueRepo.getFavouriteIssues().collect { favs ->
+                _state.update { it.copy(favouriteIssues = favs.toImmutableList()) }
+            }
+        }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = DefaultState
+    )
     override val actions: TrackerActions = object : TrackerActions {
         override fun onNewTimer(issue: Issue) {
             if (_state.value.timers.any { it.issue == issue }) {

@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "issue")
-data class Issue(
+@Entity(tableName = "jira_issue")
+data class JiraIssue(
 
     @ColumnInfo(name = "id")
     @PrimaryKey
