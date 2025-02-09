@@ -16,7 +16,7 @@ private const val SearchInputDebounceMs = 250L
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 internal class SearchModel(
     private val issueRepo: IssueRepo
-) : BaseModel<SearchState>(SearchState()), SearchScreen {
+) : BaseModel<SearchState, SearchEvent>(SearchState()), SearchScreen {
 
     init {
         state
@@ -60,9 +60,8 @@ internal class SearchModel(
         override fun onSearchInputSelectAll() =
             updateState { it.copy(input = it.input.copy(selection = TextRange(0, it.input.text.length))) }
 
-        override fun onResultClick(searchResult: SearchResult) {
-            println("Not yet implemented")
-        }
+        override fun onResultClick(searchResult: SearchResult) =
+            sendEvent(SearchEvent.CreateTimerEvent(searchResult.issue))
 
         override fun onResultFavouriteClick(searchResult: SearchResult) {
             coroutineScope.launch {

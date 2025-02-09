@@ -1,16 +1,15 @@
 package dev.matsem.bpm.arch
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 
 /**
  * A base presentation component for managing and encapsulating state of application components with reactive state updates.
  *
  * @param S The type of the state managed by this model.
+ * @param E The type of events emitted by this model.
  * @param defaultState The initial state to be held by this model.
- *
- * The `BaseModel` provides a structure for managing state in a reactive programming model. It leverages Kotlin's
- * `StateFlow` to expose the current state and ensure it can be observed reactively.
  *
  * @property coroutineScope The `CoroutineScope` used for managing coroutines associated with this model. It uses the
  * global `MainScope` as the scope for coroutine operations.
@@ -18,6 +17,9 @@ import kotlinx.coroutines.flow.*
  * @property state A `StateFlow` representing the current state of the model. Observers can subscribe to this flow to
  * receive updates whenever the state changes. It initializes with the `defaultState` and starts observing the flow
  * when the model is instantiated.
+ *
+ * @property events A `Flow` instance that represents a stream of events emitted by the model. Events are sent via
+ * a buffered `Channel`, allowing consumers to subscribe and handle incoming events.
  *
  * The state flow triggers the [onStart] function when it starts collecting, which can be overridden to perform
  * specific actions during initialization.
@@ -31,17 +33,31 @@ import kotlinx.coroutines.flow.*
  * - [updateState]: Updates the current state by applying the given `mapper` function. The `mapper` receives the
  *   current state and returns the new, updated state. This function ensures safe state updates by modifying a private
  *   [MutableStateFlow].
+ *
+ * - [sendEvent]: Emits a new event of type [E] to the events flow. This is intended for sending transient, one-shot
+ *   events like navigation actions or UI feedback.
  */
-abstract class BaseModel<S : Any>(defaultState: S) {
+abstract class BaseModel<S : Any, E : Any>(defaultState: S) {
 
-    val coroutineScope = MainScope()
+    protected val coroutineScope = MainScope()
+
     private val _state = MutableStateFlow(defaultState)
+
+    private val _events = Channel<E>(Channel.BUFFERED)
 
     val state: StateFlow<S> = _state
         .onStart { onStart() }
         .stateIn(coroutineScope, SharingStarted.Lazily, defaultState)
 
+    val events: Flow<E> = _events
+        .receiveAsFlow()
+        .shareIn(coroutineScope, SharingStarted.Lazily)
+
     protected open suspend fun onStart() = Unit
 
     protected fun updateState(mapper: (S) -> S) = _state.update(mapper)
+
+    protected fun sendEvent(event: E) {
+        coroutineScope.launch { _events.send(event) }
+    }
 }

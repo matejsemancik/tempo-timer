@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 internal class SettingsModel(
     private val sessionRepo: SessionRepo,
-) : BaseModel<SettingsState>(DefaultState), SettingsScreen {
+) : BaseModel<SettingsState, Nothing>(DefaultState), SettingsScreen {
 
     companion object {
         private val DefaultState: SettingsState = SettingsState.SignedIn(User("", "", ""))

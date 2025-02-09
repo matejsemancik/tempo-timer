@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 internal class TrackerModel(
     private val issueRepo: IssueRepo,
     private val timerRepo: TimerRepo,
-) : BaseModel<TrackerState>(TrackerState()), TrackerScreen {
+) : BaseModel<TrackerState, Nothing>(TrackerState()), TrackerScreen {
 
     override suspend fun onStart() {
         coroutineScope.launch {
