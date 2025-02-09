@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.takeOrElse
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -26,49 +25,6 @@ import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.VerticalSpacer
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
-//@Composable
-//fun AppTextField(
-//    value: String,
-//    onValueChange: (String) -> Unit,
-//    modifier: Modifier = Modifier,
-//    enabled: Boolean = true,
-//    readOnly: Boolean = false,
-//    placeholder: String? = null,
-//    leadingIcon: @Composable (() -> Unit)? = null,
-//    trailingIcon: @Composable (() -> Unit)? = null,
-//    prefix: String? = null,
-//    suffix: String? = null,
-//    supportingText: String? = null,
-//    isError: Boolean = false,
-//    visualTransformation: VisualTransformation = VisualTransformation.None,
-//    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-//    keyboardActions: KeyboardActions = KeyboardActions.Default,
-//    singleLine: Boolean = false,
-//    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
-//    minLines: Int = 1,
-//    interactionSource: MutableInteractionSource? = null,
-//) = AppTextField(
-//    value = TextFieldValue(text = value, selection = TextRange(value.length)),
-//    onValueChange = { textFieldValue -> onValueChange(textFieldValue.text) },
-//    modifier = modifier,
-//    enabled = enabled,
-//    readOnly = readOnly,
-//    placeholder = placeholder,
-//    leadingIcon = leadingIcon,
-//    trailingIcon = trailingIcon,
-//    prefix = prefix,
-//    suffix = suffix,
-//    supportingText = supportingText,
-//    isError = isError,
-//    visualTransformation = visualTransformation,
-//    keyboardOptions = keyboardOptions,
-//    keyboardActions = keyboardActions,
-//    singleLine = singleLine,
-//    maxLines = maxLines,
-//    minLines = minLines,
-//    interactionSource = interactionSource,
-//)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
