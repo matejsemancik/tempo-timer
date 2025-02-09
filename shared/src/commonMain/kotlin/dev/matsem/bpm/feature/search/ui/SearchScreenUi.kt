@@ -8,9 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.matsem.bpm.data.repo.model.MockIssues
 import dev.matsem.bpm.data.repo.model.MockSearchResults
 import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.theme.BpmTheme
@@ -54,6 +51,7 @@ fun SearchScreenUi(
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+        actions.onSearchInputSelectAll()
     }
 
     Column(modifier) {

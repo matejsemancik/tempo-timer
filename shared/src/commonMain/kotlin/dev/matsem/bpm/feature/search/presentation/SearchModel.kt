@@ -1,5 +1,6 @@
 package dev.matsem.bpm.feature.search.presentation
 
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.data.repo.IssueRepo
 import dev.matsem.bpm.data.repo.model.SearchResult
@@ -58,6 +59,10 @@ internal class SearchModel(
 
     override val actions: SearchActions = object : SearchActions {
         override fun onSearchInput(input: TextFieldValue) = _state.update { it.copy(input = input) }
+
+        override fun onSearchInputSelectAll() =
+            _state.update { it.copy(input = it.input.copy(selection = TextRange(0, it.input.text.length))) }
+
         override fun onResultClick(searchResult: SearchResult) {
             println("Not yet implemented")
         }
