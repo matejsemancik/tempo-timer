@@ -61,7 +61,7 @@ internal class SearchModel(
             updateState { it.copy(input = it.input.copy(selection = TextRange(0, it.input.text.length))) }
 
         override fun onResultClick(searchResult: SearchResult) =
-            sendEvent(SearchEvent.CreateTimerEvent(searchResult.issue))
+            sendEvent(SearchEvent.IssueSelectedEvent(searchResult.issue))
 
         override fun onResultFavouriteClick(searchResult: SearchResult) {
             coroutineScope.launch {

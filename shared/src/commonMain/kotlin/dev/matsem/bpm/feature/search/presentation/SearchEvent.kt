@@ -4,5 +4,5 @@ import dev.matsem.bpm.data.repo.model.Issue
 
 sealed interface SearchEvent {
 
-    data class CreateTimerEvent(val issue: Issue) : SearchEvent
+    data class IssueSelectedEvent(val issue: Issue) : SearchEvent
 }

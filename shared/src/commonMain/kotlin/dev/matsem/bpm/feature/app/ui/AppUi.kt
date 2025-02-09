@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -24,9 +23,11 @@ import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.search.ui.SearchScreenUi
 import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
+import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +38,8 @@ fun AppUi() {
     val focusManager = LocalFocusManager.current
     var isSettingsOpen by remember { mutableStateOf(false) }
     var isSearchOpen by remember { mutableStateOf(false) }
+
+    val trackerScreen: TrackerScreen = koinInject()
 
     BpmTheme(isDark = darkMode) {
         Scaffold(
@@ -111,7 +114,8 @@ fun AppUi() {
             }
         ) { contentPadding ->
             TrackerScreenUi(
-                modifier = Modifier.fillMaxSize().padding(contentPadding)
+                modifier = Modifier.fillMaxSize().padding(contentPadding),
+                screen = trackerScreen
             )
         }
 
@@ -144,12 +148,25 @@ fun AppUi() {
                     SheetHeader(
                         title = "Pick an issue",
                         onClose = {
-                            coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { isSearchOpen = false }
+                            coroutineScope
+                                .launch { sheetState.hide() }
+                                .invokeOnCompletion {
+                                    isSearchOpen = false
+                                }
                         }
                     )
                 }
             ) {
-                SearchScreenUi()
+                SearchScreenUi(
+                    onIssueSelected = { issue ->
+                        coroutineScope
+                            .launch { sheetState.hide() }
+                            .invokeOnCompletion {
+                                isSearchOpen = false
+                                trackerScreen.actions.onNewTimer(issue)
+                            }
+                    }
+                )
             }
         }
     }

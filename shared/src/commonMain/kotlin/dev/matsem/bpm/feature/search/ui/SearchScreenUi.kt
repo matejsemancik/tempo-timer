@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.matsem.bpm.arch.EventEffect
+import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.MockSearchResults
 import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.theme.BpmTheme
@@ -25,6 +27,7 @@ import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.VerticalSpacer
 import dev.matsem.bpm.feature.search.presentation.SearchActions
+import dev.matsem.bpm.feature.search.presentation.SearchEvent
 import dev.matsem.bpm.feature.search.presentation.SearchScreen
 import dev.matsem.bpm.feature.search.presentation.SearchState
 import dev.matsem.bpm.feature.search.ui.widget.SearchResultRow
@@ -36,9 +39,16 @@ import org.koin.compose.koinInject
 fun SearchScreenUi(
     modifier: Modifier = Modifier,
     screen: SearchScreen = koinInject(),
+    onIssueSelected: (issue: Issue) -> Unit,
 ) {
     val state by screen.state.collectAsStateWithLifecycle()
     SearchScreenUi(state, screen.actions, modifier)
+
+    EventEffect(screen.events) { event ->
+        when (event) {
+            is SearchEvent.IssueSelectedEvent -> onIssueSelected(event.issue)
+        }
+    }
 }
 
 @Composable
