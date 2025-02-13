@@ -70,7 +70,7 @@ internal class SettingsModel(
                 sessionRepo
                     .signIn(
                         Credentials(
-                            jiraCloudName = currentState.jiraCloudName.text.trim(),
+                            jiraDomain = currentState.jiraCloudName.text.trim(),
                             email = currentState.jiraEmail.text.trim(),
                             jiraApiToken = currentState.jiraApiToken.text.trim(),
                             tempoApiToken = currentState.tempoApiToken.text.trim()

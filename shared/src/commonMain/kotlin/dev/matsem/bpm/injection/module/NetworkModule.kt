@@ -50,7 +50,7 @@ private fun jiraClientModule() = module {
             val credentials: Credentials = get()
 
             Ktorfit.Builder()
-                .baseUrl(credentials.jiraApiHost)
+                .baseUrl(credentials.jiraApiUrl)
                 .httpClient(get<HttpClient>(named<JiraApi>()))
                 .build()
         }

@@ -12,7 +12,7 @@ import dev.matsem.bpm.data.database.typeConverter.JsonTypeConverters
 
 @Database(
     entities = [User::class, JiraIssue::class, FavouriteIssue::class, Timer::class],
-    version = 4
+    version = 5
 )
 @TypeConverters(JsonTypeConverters::class)
 @ConstructedBy(AppDatabaseConstructor::class)

@@ -6,14 +6,14 @@ import dev.matsem.bpm.data.persistence.model.Credentials as Credentials_Persiste
 internal object CredentialsMapping {
 
     fun Credentials_Domain.toPersistenceModel() = Credentials_Persistence(
-        jiraCloudName = jiraCloudName,
+        jiraDomain = jiraDomain,
         email = email,
         jiraApiToken = jiraApiToken,
         tempoApiToken = tempoApiToken
     )
 
     fun Credentials_Persistence.toDomainModel() = Credentials_Domain(
-        jiraCloudName = jiraCloudName,
+        jiraDomain = jiraDomain,
         email = email,
         jiraApiToken = jiraApiToken,
         tempoApiToken = tempoApiToken

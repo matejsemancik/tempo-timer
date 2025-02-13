@@ -1,11 +1,13 @@
 package dev.matsem.bpm.data.repo.model
 
+import dev.matsem.bpm.tooling.Constants
+
 data class Credentials(
-    val jiraCloudName: String,
+    val jiraDomain: String,
     val email: String,
     val jiraApiToken: String,
     val tempoApiToken: String
 ) {
-    val jiraApiHost: String
-        get() = "https://${jiraCloudName}.atlassian.net/"
+    val jiraApiUrl: String
+        get() = Constants.JIRA_API_URL(jiraDomain)
 }

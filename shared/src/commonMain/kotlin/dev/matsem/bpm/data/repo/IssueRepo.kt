@@ -35,7 +35,7 @@ internal class IssueRepoImpl(
             showSubTaskParents = true
         )
 
-        val baseApiUrl = applicationPersistence.getCredentials()?.toDomainModel()?.jiraApiHost
+        val baseApiUrl = applicationPersistence.getCredentials()?.toDomainModel()?.jiraApiUrl
             ?: error("Credentials are not present")
 
         val issues = response.sections
