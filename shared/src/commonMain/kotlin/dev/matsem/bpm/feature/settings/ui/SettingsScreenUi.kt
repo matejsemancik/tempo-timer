@@ -203,6 +203,7 @@ fun SettingsScreenUiPreview_SignedIn() {
         SettingsScreenUi(
             SettingsState.SignedIn(
                 User(
+                    accountId = "emanuel",
                     email = "emanuel@bacigala.sk",
                     displayName = "Emanuel Bacigala",
                     avatarUrl = ""

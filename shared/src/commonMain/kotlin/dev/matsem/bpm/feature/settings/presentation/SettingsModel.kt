@@ -12,7 +12,7 @@ internal class SettingsModel(
 ) : BaseModel<SettingsState, Nothing>(DefaultState), SettingsScreen {
 
     companion object {
-        private val DefaultState: SettingsState = SettingsState.SignedIn(User("", "", ""))
+        private val DefaultState: SettingsState = SettingsState.SignedIn(User("", "", "", ""))
     }
 
     override suspend fun onStart() {
