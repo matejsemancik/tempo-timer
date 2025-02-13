@@ -20,10 +20,9 @@ internal class SearchModel(
 
     init {
         state
-            .map { it.input }
+            .map { it.input.text }
             .debounce(SearchInputDebounceMs.milliseconds)
             .distinctUntilChanged()
-            .map { it.text }
             .filter { it.isNotBlank() }
             .flatMapLatest { query ->
                 flow {
