@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.matsem.bpm.arch.EventEffect
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.MockIssues
 import dev.matsem.bpm.data.repo.model.MockTimers
@@ -23,6 +24,7 @@ import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.VerticalSpacer
 import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.tracker.presentation.TrackerActions
+import dev.matsem.bpm.feature.tracker.presentation.TrackerEvent
 import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
 import dev.matsem.bpm.feature.tracker.presentation.TrackerState
 import dev.matsem.bpm.feature.tracker.ui.widget.FavouriteIssueChip
@@ -35,8 +37,9 @@ import org.koin.compose.koinInject
 
 @Composable
 fun TrackerScreenUi(
-    modifier: Modifier = Modifier,
     screen: TrackerScreen = koinInject(),
+    openCommitDialog: (Timer) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val state by screen.state.collectAsStateWithLifecycle()
     TrackerScreenUi(
@@ -44,6 +47,12 @@ fun TrackerScreenUi(
         actions = screen.actions,
         modifier = modifier
     )
+
+    EventEffect(screen.events) { event ->
+        when(event) {
+            is TrackerEvent.OpenCommitDialog -> openCommitDialog(event.timer)
+        }
+    }
 }
 
 @Composable
@@ -154,15 +163,13 @@ fun TrackersSection(
                 Column {
                     for (timer in timers) {
                         TimerRow(
-                            tracker = timer,
+                            timer = timer,
                             modifier = Modifier.fillMaxWidth(),
                             contentPadding = PaddingValues(horizontal = BpmTheme.dimensions.horizontalContentPadding),
                             onResume = { actions.onResumeTimer(timer) },
                             onPause = { actions.onPauseTimer(timer) },
                             onDelete = { actions.onDeleteTimer(timer) },
-                            onOpenDetail = {
-                                println("onOpenDetail: ${timer.issue?.key}")
-                            },
+                            onOpenDetail = { actions.onCommitTimer(timer) },
                         )
                     }
                 }

@@ -11,16 +11,20 @@ import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
+import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.design.sheet.GenericModalBottomSheet
 import dev.matsem.bpm.design.sheet.SheetHeader
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.centeredVertically
+import dev.matsem.bpm.feature.commit.presentation.CommitArgs
+import dev.matsem.bpm.feature.commit.ui.CommitScreenUi
 import dev.matsem.bpm.feature.search.ui.SearchScreenUi
 import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
 import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
@@ -28,6 +32,7 @@ import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,8 +41,9 @@ fun AppUi() {
     val isSystemInDarkTheme = isSystemInDarkTheme() // Stores initial state of dark mode and stores in [darkMode] state.
     var darkMode by remember { mutableStateOf(isSystemInDarkTheme) }
     val focusManager = LocalFocusManager.current
-    var isSettingsOpen by remember { mutableStateOf(false) }
-    var isSearchOpen by remember { mutableStateOf(false) }
+    var isSettingsOpen by rememberSaveable { mutableStateOf(false) }
+    var isSearchOpen by rememberSaveable { mutableStateOf(false) }
+    var commitDialogTimer: Timer? by rememberSaveable { mutableStateOf(null) }
 
     val trackerScreen: TrackerScreen = koinInject()
 
@@ -115,7 +121,8 @@ fun AppUi() {
         ) { contentPadding ->
             TrackerScreenUi(
                 modifier = Modifier.fillMaxSize().padding(contentPadding),
-                screen = trackerScreen
+                screen = trackerScreen,
+                openCommitDialog = { timer -> commitDialogTimer = timer }
             )
         }
 
@@ -167,6 +174,25 @@ fun AppUi() {
                             }
                     }
                 )
+            }
+        }
+
+        commitDialogTimer?.let { timer ->
+            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+            val coroutineScope = rememberCoroutineScope()
+            GenericModalBottomSheet(
+                onDismissRequest = { commitDialogTimer = null },
+                sheetState = sheetState,
+                header = {
+                    SheetHeader(
+                        title = "Log Time",
+                        onClose = {
+                            coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { commitDialogTimer = null }
+                        }
+                    )
+                }
+            ) {
+                CommitScreenUi(screen = koinInject(parameters = { parametersOf(CommitArgs(timer)) }))
             }
         }
     }

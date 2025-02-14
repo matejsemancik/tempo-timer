@@ -1,5 +1,6 @@
 package dev.matsem.bpm.data.repo.model
 
+import androidx.compose.runtime.Immutable
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.time.Duration
@@ -7,7 +8,7 @@ import kotlin.time.Duration.Companion.seconds
 
 data class Timer(
     val id: Int,
-    val issue: Issue?,
+    val issue: Issue,
     val state: TimerState = TimerState()
 )
 

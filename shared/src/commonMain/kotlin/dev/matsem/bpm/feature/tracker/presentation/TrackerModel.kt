@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 internal class TrackerModel(
     private val issueRepo: IssueRepo,
     private val timerRepo: TimerRepo,
-) : BaseModel<TrackerState, Nothing>(TrackerState()), TrackerScreen {
+) : BaseModel<TrackerState, TrackerEvent>(TrackerState()), TrackerScreen {
 
     override suspend fun onStart() {
         coroutineScope.launch {
@@ -60,6 +60,10 @@ internal class TrackerModel(
             coroutineScope.launch {
                 issueRepo.removeFavouriteIssue(issue)
             }
+        }
+
+        override fun onCommitTimer(timer: Timer) {
+            sendEvent(TrackerEvent.OpenCommitDialog(timer = timer))
         }
     }
 }

@@ -34,7 +34,7 @@ import kotlin.time.Duration.Companion.seconds
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TimerRow(
-    tracker: Timer,
+    timer: Timer,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     onResume: () -> Unit,
@@ -74,7 +74,7 @@ fun TimerRow(
                     }
 
                     keyEvent.key == Key.Spacebar -> {
-                        if (tracker.state.isRunning) {
+                        if (timer.state.isRunning) {
                             onPause()
                         } else {
                             onResume()
@@ -90,23 +90,21 @@ fun TimerRow(
             .padding(contentPadding),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        tracker.issue?.let {
-            IssueTitleRow(issue = tracker.issue, modifier = Modifier.weight(1f))
-        }
+        IssueTitleRow(issue = timer.issue, modifier = Modifier.weight(1f))
 
         // Action Row
         Row(verticalAlignment = Alignment.CenterVertically) {
-            if (tracker.state.duration.isPositive()) {
-                var timer by remember { mutableStateOf(tracker.state.duration.formatForTimer()) }
-                LaunchedEffect(tracker.state.isRunning) {
-                    while (tracker.state.isRunning) {
+            if (timer.state.duration.isPositive()) {
+                var timerText by remember { mutableStateOf(timer.state.duration.formatForTimer()) }
+                LaunchedEffect(timer.state.isRunning) {
+                    while (timer.state.isRunning) {
                         delay(1.seconds)
-                        timer = tracker.state.duration.formatForTimer()
+                        timerText = timer.state.duration.formatForTimer()
                     }
                 }
 
                 Text(
-                    text = timer,
+                    text = timerText,
                     style = BpmTheme.typography.bodySmall.centeredVertically(),
                     color = BpmTheme.colorScheme.onSurface,
                     modifier = Modifier
@@ -121,7 +119,7 @@ fun TimerRow(
 
             IconButton(
                 onClick = {
-                    if (tracker.state.isRunning) {
+                    if (timer.state.isRunning) {
                         onPause()
                     } else {
                         onResume()
@@ -132,7 +130,7 @@ fun TimerRow(
                     contentColor = BpmTheme.colorScheme.onSurfaceVariant
                 )
             ) {
-                Crossfade(tracker.state.isRunning) { isRunning ->
+                Crossfade(timer.state.isRunning) { isRunning ->
                     when (isRunning) {
                         true -> {
                             Icon(
@@ -163,7 +161,7 @@ private fun TrackerRowPreview() {
         Column {
             for (tracker in MockTimers) {
                 TimerRow(
-                    tracker = tracker,
+                    timer = tracker,
                     modifier = Modifier.fillMaxWidth(),
                     onResume = {},
                     onPause = {},
