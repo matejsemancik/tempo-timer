@@ -9,5 +9,5 @@ data class Credentials(
     val tempoApiToken: String
 ) {
     val jiraApiUrl: String
-        get() = Constants.JIRA_API_URL(jiraDomain)
+        get() = Constants.JiraApiUrl(jiraDomain)
 }

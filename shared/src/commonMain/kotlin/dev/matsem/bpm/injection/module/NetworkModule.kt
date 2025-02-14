@@ -8,6 +8,11 @@ import dev.matsem.bpm.data.service.jira.JiraApiManagerImpl
 import dev.matsem.bpm.data.service.plugin.ContentNegotiationPlugin
 import dev.matsem.bpm.data.service.plugin.JiraAuthPlugin
 import dev.matsem.bpm.data.service.plugin.LoggingPlugin
+import dev.matsem.bpm.data.service.plugin.TempoAuthPlugin
+import dev.matsem.bpm.data.service.tempo.TempoApi
+import dev.matsem.bpm.data.service.tempo.TempoApiManager
+import dev.matsem.bpm.data.service.tempo.TempoApiManagerImpl
+import dev.matsem.bpm.tooling.Constants
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
 import org.koin.core.module.Module
@@ -21,7 +26,7 @@ internal expect fun platformNetworkModule(): Module
 
 internal fun networkModule() = module {
     includes(platformNetworkModule())
-    includes(httpClientPluginsModule(), jiraClientModule())
+    includes(httpClientPluginsModule(), apiClientsModule())
 }
 
 private fun httpClientPluginsModule() = module {
@@ -30,9 +35,16 @@ private fun httpClientPluginsModule() = module {
     factory { (email: String, apiToken: String) -> JiraAuthPlugin(email, apiToken) }
 }
 
-private fun jiraClientModule() = module {
+private fun apiClientsModule() = module {
+
+    singleOf(::JiraApiManagerImpl) bind JiraApiManager::class
+    singleOf(::TempoApiManagerImpl) bind TempoApiManager::class
 
     scope<Credentials> {
+
+        // region JIRA --------------------------------------------------------
+
+        // Jira HTTP client
         scoped<HttpClient>(named<JiraApi>()) {
             val credentials: Credentials = get()
             val plugins = listOf(
@@ -41,26 +53,59 @@ private fun jiraClientModule() = module {
                 get<LoggingPlugin>(parameters = { parametersOf(LogLevel.BODY) })
             )
 
-            get<HttpClient>(
-                parameters = { parametersOf(plugins) }
-            )
+            get<HttpClient>(parameters = { parametersOf(plugins) })
         }
 
+        // Jira Ktorfit
         scoped<Ktorfit>(named<JiraApi>()) {
             val credentials: Credentials = get()
 
             Ktorfit.Builder()
-                .baseUrl(credentials.jiraApiUrl)
+                .baseUrl(Constants.JiraApiUrl(credentials.jiraDomain))
                 .httpClient(get<HttpClient>(named<JiraApi>()))
                 .build()
         }
 
+        // JiraApi
         scoped<JiraApi> {
             val ktorfit: Ktorfit = get(named<JiraApi>())
             @Suppress("DEPRECATION")
             ktorfit.create()
         }
-    }
 
-    singleOf(::JiraApiManagerImpl) bind JiraApiManager::class
+        // endregion
+
+        // region TEMPO --------------------------------------------------------
+
+        // Tempo API client
+        scoped<HttpClient>(named<TempoApi>()) {
+            val credentials: Credentials = get()
+            val plugins = listOf(
+                get<ContentNegotiationPlugin>(),
+                get<TempoAuthPlugin>(parameters = { parametersOf(credentials.tempoApiToken) }),
+                get<LoggingPlugin>(parameters = { parametersOf(LogLevel.BODY) })
+            )
+
+            get<HttpClient>(parameters = { parametersOf(plugins) })
+        }
+
+        // Tempo Ktorfit
+        scoped<Ktorfit>(named<TempoApi>()) {
+            val credentials: Credentials = get()
+
+            Ktorfit.Builder()
+                .baseUrl(Constants.TempoApiUrl)
+                .httpClient(get<HttpClient>(named<TempoApi>()))
+                .build()
+        }
+
+        // TempoApi
+        scoped<TempoApi> {
+            val ktorfit: Ktorfit = get(named<TempoApi>())
+            @Suppress("DEPRECATION")
+            ktorfit.create()
+        }
+
+        // endregion
+    }
 }
