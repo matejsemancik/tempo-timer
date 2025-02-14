@@ -33,6 +33,7 @@ private fun httpClientPluginsModule() = module {
     factory { ContentNegotiationPlugin() }
     factory { (logLevel: LogLevel) -> LoggingPlugin(logLevel) }
     factory { (email: String, apiToken: String) -> JiraAuthPlugin(email, apiToken) }
+    factory { (apiToken: String) -> TempoAuthPlugin(apiToken) }
 }
 
 private fun apiClientsModule() = module {
