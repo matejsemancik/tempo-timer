@@ -11,4 +11,5 @@ internal fun repositoryModule() = module {
     singleOf(::SessionRepoImpl) bind SessionRepo::class
     singleOf(::IssueRepoImpl) bind IssueRepo::class
     singleOf(::TimerRepoImpl) bind TimerRepo::class
+    singleOf(::WorklogRepoImpl) bind WorklogRepo::class
 }
