@@ -1,5 +1,6 @@
 package dev.matsem.bpm.feature.tracker.ui.widget
 
+import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
@@ -7,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.PlatformContext
 import coil3.compose.AsyncImage
@@ -52,7 +52,10 @@ fun LargeIssueTitleRow(
             text = issue.summary,
             color = BpmTheme.colorScheme.onSurface,
             style = BpmTheme.typography.bodyMedium.centeredVertically(),
-            modifier = Modifier.basicMarquee(),
+            modifier = Modifier.basicMarquee(
+                spacing = MarqueeSpacing.fractionOfContainer(0.1f),
+                velocity = 50.dp
+            ),
         )
     }
 }
