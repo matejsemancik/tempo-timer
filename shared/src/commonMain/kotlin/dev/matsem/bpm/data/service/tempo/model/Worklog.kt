@@ -47,7 +47,7 @@ data class Worklog(
     data class Issue(
         @SerialName("id")
         val id: Long,
-        @SerialName("key")
-        val key: String
+        @SerialName("self")
+        val self: String
     )
 }
