@@ -18,4 +18,16 @@ internal object DurationFormatter {
             "$minutes:$seconds"
         }
     }
+
+    fun Duration.formatForTextInput(): String {
+        val seconds = (inWholeSeconds % SecondsInMinute).toString()
+        val minutes = (inWholeMinutes % MinutesInHour).toString()
+        val hours = inWholeHours.takeIf { it > 0 }?.toString()
+
+        return if (hours != null) {
+            "${hours}h ${minutes}m ${seconds}s"
+        } else {
+            "${minutes}m ${seconds}s"
+        }
+    }
 }

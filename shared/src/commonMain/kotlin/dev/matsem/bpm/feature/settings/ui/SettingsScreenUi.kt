@@ -17,6 +17,7 @@ import dev.matsem.bpm.data.repo.model.User
 import dev.matsem.bpm.design.input.AppButton
 import dev.matsem.bpm.design.input.AppOutlinedButton
 import dev.matsem.bpm.design.input.AppTextField
+import dev.matsem.bpm.design.input.LabeledTextField
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
@@ -50,19 +51,6 @@ fun SettingsScreenUi(
             is SettingsState.SignedIn -> SignedInSection(state, actions)
         }
         VerticalSpacer(Grid.d3)
-    }
-}
-
-@Composable
-private fun LabeledTextField(
-    label: String,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    Column(modifier) {
-        Text(text = label, style = BpmTheme.typography.labelMedium)
-        VerticalSpacer(Grid.d1)
-        content()
     }
 }
 

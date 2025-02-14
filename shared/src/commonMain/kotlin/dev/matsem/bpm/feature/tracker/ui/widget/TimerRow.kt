@@ -27,6 +27,7 @@ import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForTimer
 import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.data.repo.model.MockTimers
+import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.seconds
@@ -93,6 +94,7 @@ fun TimerRow(
         IssueTitleRow(issue = timer.issue, modifier = Modifier.weight(1f))
 
         // Action Row
+        HorizontalSpacer(Grid.d2)
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (timer.state.duration.isPositive()) {
                 var timerText by remember { mutableStateOf(timer.state.duration.formatForTimer()) }

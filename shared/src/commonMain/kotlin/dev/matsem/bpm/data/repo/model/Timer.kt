@@ -1,6 +1,5 @@
 package dev.matsem.bpm.data.repo.model
 
-import androidx.compose.runtime.Immutable
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.time.Duration
