@@ -1,5 +1,7 @@
 package dev.matsem.bpm.injection.module
 
+import dev.matsem.bpm.feature.commit.presentation.CommitModel
+import dev.matsem.bpm.feature.commit.presentation.CommitScreen
 import dev.matsem.bpm.feature.search.presentation.SearchModel
 import dev.matsem.bpm.feature.search.presentation.SearchScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsModel
@@ -14,4 +16,5 @@ internal fun featureModule() = module {
     singleOf(::TrackerModel) bind TrackerScreen::class
     singleOf(::SettingsModel) bind SettingsScreen::class
     singleOf(::SearchModel) bind SearchScreen::class
+    singleOf(::CommitModel) bind CommitScreen::class
 }
