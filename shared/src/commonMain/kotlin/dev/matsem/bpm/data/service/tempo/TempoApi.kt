@@ -3,6 +3,7 @@ package dev.matsem.bpm.data.service.tempo
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Path
 import de.jensklingenberg.ktorfit.http.Query
+import de.jensklingenberg.ktorfit.http.Url
 import dev.matsem.bpm.data.service.tempo.model.PageableTempoResponse
 import dev.matsem.bpm.data.service.tempo.model.Worklog
 import kotlinx.datetime.LocalDate
@@ -16,5 +17,10 @@ interface TempoApi {
         @Query("to") to: LocalDate,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int
+    ): PageableTempoResponse<Worklog>
+
+    @GET("")
+    suspend fun getWorklogs(
+        @Url url: String
     ): PageableTempoResponse<Worklog>
 }
