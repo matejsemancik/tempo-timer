@@ -1,11 +1,7 @@
-This is a Kotlin Multiplatform project targeting Desktop.
+# tempo-timer
 
-* `/desktopApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+Minimalistic desktop client for Tempo Timesheets written in Kotlin and Compose Multiplatform.
 
+This project aims to provide a simple interface for tracking time spent on Jira issues into Tempo without burden of interacting with Jira (slow), or Tempo browser extension (clumsy). It is intended mainly for users who like to track time in real-time. Tracking for dates other than "today" is not yet supported. 
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
