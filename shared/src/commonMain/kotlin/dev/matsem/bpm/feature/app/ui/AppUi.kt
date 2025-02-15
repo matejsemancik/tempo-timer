@@ -180,19 +180,23 @@ fun AppUi() {
         commitDialogTimer?.let { timer ->
             val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
             val coroutineScope = rememberCoroutineScope()
+            val dismiss = fun() {
+                coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { commitDialogTimer = null }
+            }
             GenericModalBottomSheet(
                 onDismissRequest = { commitDialogTimer = null },
                 sheetState = sheetState,
                 header = {
                     SheetHeader(
                         title = "Timer",
-                        onClose = {
-                            coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { commitDialogTimer = null }
-                        }
+                        onClose = dismiss
                     )
                 }
             ) {
-                CommitScreenUi(screen = koinInject(parameters = { parametersOf(CommitArgs(timer)) }))
+                CommitScreenUi(
+                    screen = koinInject(parameters = { parametersOf(CommitArgs(timer)) }),
+                    onDismiss = dismiss
+                )
             }
         }
     }

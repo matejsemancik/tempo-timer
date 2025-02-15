@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.matsem.bpm.arch.EventEffect
 import dev.matsem.bpm.data.repo.model.MockTimers
 import dev.matsem.bpm.design.chip.AppSuggestionChip
 import dev.matsem.bpm.design.button.AppButton
@@ -23,6 +24,7 @@ import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.design.tooling.VerticalSpacer
 import dev.matsem.bpm.feature.commit.presentation.CommitActions
+import dev.matsem.bpm.feature.commit.presentation.CommitEvent
 import dev.matsem.bpm.feature.commit.presentation.CommitScreen
 import dev.matsem.bpm.feature.commit.presentation.CommitState
 import dev.matsem.bpm.feature.tracker.ui.widget.LargeIssueTitleRow
@@ -32,6 +34,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun CommitScreenUi(
     screen: CommitScreen,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state by screen.state.collectAsStateWithLifecycle()
@@ -40,9 +43,14 @@ fun CommitScreenUi(
         actions = screen.actions,
         modifier = modifier
     )
+
+    EventEffect(screen.events) { event ->
+        when(event) {
+           CommitEvent.Dismiss -> onDismiss()
+        }
+    }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CommitScreenUi(
     state: CommitState,

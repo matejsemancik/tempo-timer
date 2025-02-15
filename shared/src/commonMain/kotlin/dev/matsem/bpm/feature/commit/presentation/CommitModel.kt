@@ -3,23 +3,25 @@ package dev.matsem.bpm.feature.commit.presentation
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.arch.BaseModel
+import dev.matsem.bpm.data.repo.TimerRepo
+import dev.matsem.bpm.data.repo.WorklogRepo
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForTextInput
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlin.math.max
+import kotlinx.coroutines.launch
 import kotlin.math.round
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.nanoseconds
 import kotlin.time.Duration.Companion.seconds
 
 internal class CommitModel(
     private val args: CommitArgs,
+    private val timerRepo: TimerRepo,
+    private val worklogRepo: WorklogRepo,
 ) : BaseModel<CommitState, CommitEvent>(CommitState(args.timer)), CommitScreen {
 
     companion object {
@@ -84,7 +86,10 @@ internal class CommitModel(
         }
 
         override fun onDeleteClick() {
-            // TODO("Not yet implemented")
+            coroutineScope.launch {
+                timerRepo.deleteTimer(args.timer.id)
+                sendEvent(CommitEvent.Dismiss)
+            }
         }
 
         override fun onCommitClick() {
