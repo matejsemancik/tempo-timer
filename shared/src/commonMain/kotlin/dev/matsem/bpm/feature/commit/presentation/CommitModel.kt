@@ -52,8 +52,10 @@ internal class CommitModel(
             .distinctUntilChanged()
             .onEach { durationInput ->
                 updateState { state ->
+                    val isInputValid = parsePositiveDuration(durationInput) != null
                     state.copy(
-                        isDurationInputError = parsePositiveDuration(durationInput) == null
+                        isDurationInputError = !isInputValid,
+                        error = if (isInputValid) null else state.error
                     )
                 }
             }
@@ -80,6 +82,20 @@ internal class CommitModel(
         override fun onSuggestionClick(suggestion: String) = updateState {
             it.copy(durationInput = TextFieldValue(suggestion, TextRange(suggestion.length)))
         }
+
+        override fun onDeleteClick() {
+            // TODO("Not yet implemented")
+        }
+
+        override fun onCommitClick() {
+            val duration = parsePositiveDuration(state.value.durationInput.text)
+            if (duration == null) {
+                updateState { state ->
+                    state.copy(error = "Invalid duration input")
+                }
+                return
+            }
+        }
     }
 
     private fun parsePositiveDuration(input: String): Duration? {
@@ -101,7 +117,7 @@ internal class CommitModel(
             duration.roundToNearest(5.minutes),
             duration.roundToNearest(10.minutes),
             duration.roundToNearest(15.minutes),
-            ).filter { it.isPositive() }.distinct()
+        ).filter { it.isPositive() }.distinct()
     }
 
     private fun Duration.roundToNearest(interval: Duration): Duration {

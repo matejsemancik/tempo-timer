@@ -16,7 +16,9 @@ data class CommitState(
         TextFieldValue(text, TextRange(0, text.length))
     },
     val isDurationInputError: Boolean = false,
-    val durationSuggestions: ImmutableList<String> = persistentListOf()
+    val durationSuggestions: ImmutableList<String> = persistentListOf(),
+    val isButtonLoading: Boolean = false,
+    val error: String? = null
 ) {
     val issue: Issue
         get() = timer.issue

@@ -1,13 +1,12 @@
 package dev.matsem.bpm.feature.commit.ui
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DeleteForever
+import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -101,21 +100,38 @@ fun CommitScreenUi(
             )
         }
 
+        // Action row
         VerticalSpacer(Grid.d3)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End,
             modifier = Modifier.fillMaxWidth(),
         ) {
+            AnimatedVisibility(
+                visible = state.error != null,
+                enter = fadeIn() + slideInVertically(),
+                exit = fadeOut() + slideOutVertically(),
+                modifier = Modifier.weight(1f)
+            ) {
+                val errorText = remember { state.error ?: "" }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    CompositionLocalProvider(LocalContentColor provides BpmTheme.colorScheme.error) {
+                        Icon(Icons.Rounded.Warning, contentDescription = null)
+                        HorizontalSpacer(Grid.d1)
+                        Text(text = errorText, style = BpmTheme.typography.bodyMedium)
+                    }
+                }
+            }
             IconButton(
-                onClick = {},
+                onClick = actions::onDeleteClick,
             ) {
                 Icon(Icons.Rounded.DeleteForever, contentDescription = "Delete timer")
             }
             HorizontalSpacer(Grid.d3)
             AppButton(
                 text = "Log Time",
-                onClick = {},
+                onClick = actions::onCommitClick,
+                isLoading = state.isButtonLoading
             )
         }
 
@@ -134,7 +150,8 @@ fun CommitScreenPreview() {
                     "1h",
                     "30m",
                     "4h 50m"
-                )
+                ),
+                error = "This is error"
             ),
             actions = CommitActions.noOp(),
             modifier = Modifier.fillMaxWidth()
