@@ -27,7 +27,7 @@ Publishing WIP. You can build from source for now `./gradlew desktopApp:packageD
 ## Getting started
 
 1. Create a Jira API token → [Generate here](https://id.atlassian.com/manage-profile/security/api-tokens)
-2. Create a Tempo API token → Follow [these steps](https://apidocs.tempo.io/#section/Authentication) (Using the REST API as an individual user)
+2. Create a Tempo API token → Follow [these steps](https://apidocs.tempo.io/#section/Authentication) (Using the REST API as an individual user). Token must have permissions to access Worklogs.
 3. Log in: Open the app -> Settings and enter your Jira cloud instance name, Jira account email, and both tokens.
 
 That’s it!
