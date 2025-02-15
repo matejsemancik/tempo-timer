@@ -36,7 +36,7 @@ fun ApplicationScope.MainApplication() {
             onCloseRequest = {
                 isOpen = false
             },
-            title = "Tempo Desktop",
+            title = "Tempo Timer",
             resizable = true,
         ) {
             AppUi()
