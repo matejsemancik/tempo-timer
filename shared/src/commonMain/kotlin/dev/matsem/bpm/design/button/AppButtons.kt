@@ -1,4 +1,4 @@
-package dev.matsem.bpm.design.input
+package dev.matsem.bpm.design.button
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,12 +18,14 @@ fun AppButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     isLoading: Boolean = false
 ) {
     Button(
         onClick = onClick,
         shape = BpmTheme.shapes.small,
-        enabled = !isLoading
+        enabled = enabled && !isLoading,
+        modifier = modifier
     ) {
         ButtonContent(text, isLoading)
     }
@@ -34,12 +36,14 @@ fun AppOutlinedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     isLoading: Boolean = false
 ) {
     OutlinedButton(
         onClick = onClick,
         shape = BpmTheme.shapes.small,
-        enabled = !isLoading
+        enabled = enabled && !isLoading,
+        modifier = modifier
     ) {
         ButtonContent(text, isLoading)
     }

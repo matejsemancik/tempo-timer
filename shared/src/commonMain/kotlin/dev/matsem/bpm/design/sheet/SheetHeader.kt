@@ -27,3 +27,24 @@ fun SheetHeader(
         }
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SheetHeader(
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
+    title: @Composable () -> Unit,
+) {
+    TopAppBar(
+        colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = Color.Transparent),
+        modifier = modifier,
+        title = title,
+        actions = {
+            IconButton(
+                onClick = onClose,
+            ) {
+                Icon(Icons.Rounded.Close, contentDescription = "Close")
+            }
+        }
+    )
+}

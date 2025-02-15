@@ -14,8 +14,8 @@ import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import dev.matsem.bpm.data.repo.model.User
-import dev.matsem.bpm.design.input.AppButton
-import dev.matsem.bpm.design.input.AppOutlinedButton
+import dev.matsem.bpm.design.button.AppButton
+import dev.matsem.bpm.design.button.AppOutlinedButton
 import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.input.LabeledTextField
 import dev.matsem.bpm.design.theme.BpmTheme

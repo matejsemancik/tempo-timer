@@ -185,7 +185,7 @@ fun AppUi() {
                 sheetState = sheetState,
                 header = {
                     SheetHeader(
-                        title = "Log Time",
+                        title = "Timer",
                         onClose = {
                             coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { commitDialogTimer = null }
                         }

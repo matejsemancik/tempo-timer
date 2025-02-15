@@ -1,9 +1,9 @@
 package dev.matsem.bpm.feature.commit.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.DeleteForever
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,6 +15,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.matsem.bpm.data.repo.model.MockTimers
 import dev.matsem.bpm.design.chip.AppSuggestionChip
+import dev.matsem.bpm.design.button.AppButton
 import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.input.LabeledTextField
 import dev.matsem.bpm.design.theme.BpmTheme
@@ -66,7 +67,7 @@ fun CommitScreenUi(
                 AppTextField(
                     value = state.durationInput,
                     isError = state.isDurationInputError,
-                    placeholder = "e.g. \"1h 20m\" or \"30m\" ",
+                    placeholder = "e.g. \"1h 20m\"",
                     onValueChange = actions::onDurationInput,
                     singleLine = true,
                     modifier = Modifier.weight(1f).focusRequester(focusRequester),
@@ -97,6 +98,24 @@ fun CommitScreenUi(
                 placeholder = state.descriptionPlaceholder,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
+            )
+        }
+
+        VerticalSpacer(Grid.d3)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            IconButton(
+                onClick = {},
+            ) {
+                Icon(Icons.Rounded.DeleteForever, contentDescription = "Delete timer")
+            }
+            HorizontalSpacer(Grid.d3)
+            AppButton(
+                text = "Log Time",
+                onClick = {},
             )
         }
 
