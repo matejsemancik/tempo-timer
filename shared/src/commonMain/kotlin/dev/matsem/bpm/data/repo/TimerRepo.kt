@@ -29,31 +29,31 @@ internal class TimerRepoImpl(
         timerDao.getTimers().map { timerList -> timerList.map { dbTimber -> dbTimber.toDomainModel() } }
 
     override suspend fun createTimerForIssue(issue: Issue) {
-        val newTimer = Timer_Database(jiraIssueId = issue.id, accumulationMs = 0L, startedAt = clock.now())
+        val newTimer = Timer_Database(jiraIssueId = issue.id, accumulationMs = 0L, lastStartedAt = clock.now(), createdAt = clock.now())
         timerDao.addOrUpdateTimer(newTimer, issue.toDbModel())
     }
 
     override suspend fun resumeTimer(id: Int) {
         val timer = timerDao.getTimerById(id) ?: return
-        if (timer.startedAt != null) {
+        if (timer.lastStartedAt != null) {
             println("timer already started")
             return
         }
 
-        val newTimer = timer.copy(startedAt = clock.now())
+        val newTimer = timer.copy(lastStartedAt = clock.now())
         timerDao.upsertTimer(newTimer)
     }
 
     override suspend fun pauseTimer(id: Int) {
         val timer = timerDao.getTimerById(id) ?: return
-        if (timer.startedAt == null) {
+        if (timer.lastStartedAt == null) {
             println("timer is not started")
             return
         }
 
-        val durationToAdd = clock.now() - timer.startedAt
+        val durationToAdd = clock.now() - timer.lastStartedAt
         val newTimer = timer.copy(
-            startedAt = null,
+            lastStartedAt = null,
             accumulationMs = timer.accumulationMs + durationToAdd.inWholeMilliseconds
         )
 

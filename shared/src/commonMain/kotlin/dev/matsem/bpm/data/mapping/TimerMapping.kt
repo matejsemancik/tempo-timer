@@ -11,9 +11,10 @@ internal object TimerMapping {
     fun Timer_Database.toDomainModel() = Timer_Domain(
         id = timer.id,
         issue = issue.toDomainModel(),
+        createdAt = timer.createdAt,
         state = TimerState(
             finishedDuration = timer.accumulationMs.milliseconds,
-            startedAt = timer.startedAt
+            lastStartedAt = timer.lastStartedAt
         )
     )
 }

@@ -5,6 +5,7 @@ import dev.matsem.bpm.data.repo.model.Credentials
 import dev.matsem.bpm.data.service.jira.JiraApi
 import dev.matsem.bpm.data.service.jira.JiraApiManager
 import dev.matsem.bpm.data.service.jira.JiraApiManagerImpl
+import dev.matsem.bpm.data.service.plugin.*
 import dev.matsem.bpm.data.service.plugin.ContentNegotiationPlugin
 import dev.matsem.bpm.data.service.plugin.JiraAuthPlugin
 import dev.matsem.bpm.data.service.plugin.LoggingPlugin
@@ -34,6 +35,7 @@ private fun httpClientPluginsModule() = module {
     factory { (logLevel: LogLevel) -> LoggingPlugin(logLevel) }
     factory { (email: String, apiToken: String) -> JiraAuthPlugin(email, apiToken) }
     factory { (apiToken: String) -> TempoAuthPlugin(apiToken) }
+    factory { TempoDefaultHeadersPlugin() }
 }
 
 private fun apiClientsModule() = module {
@@ -84,7 +86,8 @@ private fun apiClientsModule() = module {
             val plugins = listOf(
                 get<ContentNegotiationPlugin>(),
                 get<TempoAuthPlugin>(parameters = { parametersOf(credentials.tempoApiToken) }),
-                get<LoggingPlugin>(parameters = { parametersOf(LogLevel.BODY) })
+                get<LoggingPlugin>(parameters = { parametersOf(LogLevel.BODY) }),
+                get<TempoDefaultHeadersPlugin>()
             )
 
             get<HttpClient>(parameters = { parametersOf(plugins) })
@@ -92,8 +95,6 @@ private fun apiClientsModule() = module {
 
         // Tempo Ktorfit
         scoped<Ktorfit>(named<TempoApi>()) {
-            val credentials: Credentials = get()
-
             Ktorfit.Builder()
                 .baseUrl(Constants.TempoApiUrl)
                 .httpClient(get<HttpClient>(named<TempoApi>()))

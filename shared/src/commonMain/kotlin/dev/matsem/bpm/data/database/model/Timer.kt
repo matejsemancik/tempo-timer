@@ -29,8 +29,11 @@ data class Timer(
     @ColumnInfo(name = "accumulation")
     val accumulationMs: Long,
 
-    @ColumnInfo(name = "started_at")
-    val startedAt: Instant?,
+    @ColumnInfo(name = "created_at")
+    val createdAt: Instant,
+
+    @ColumnInfo(name = "last_started_at")
+    val lastStartedAt: Instant?,
 )
 
 data class TimerComplete(

@@ -100,6 +100,32 @@ internal class CommitModel(
                 }
                 return
             }
+
+            coroutineScope.launch {
+                updateState { state ->
+                    state.copy(isButtonLoading = true)
+                }
+
+                runCatching {
+                    worklogRepo.createWorklog(
+                        jiraIssue = args.timer.issue,
+                        createdAt = args.timer.createdAt,
+                        timeSpent = duration,
+                        description = state.value.descriptionInput.text.takeIf { it.isNotBlank() }
+                    )
+                    timerRepo.deleteTimer(args.timer.id)
+                }.fold(
+                    onSuccess = {
+                        sendEvent(CommitEvent.Dismiss)
+                    },
+                    onFailure = { error ->
+                        println(error)
+                        updateState { state ->
+                            state.copy(isButtonLoading = false, error = error.message)
+                        }
+                    }
+                )
+            }
         }
     }
 

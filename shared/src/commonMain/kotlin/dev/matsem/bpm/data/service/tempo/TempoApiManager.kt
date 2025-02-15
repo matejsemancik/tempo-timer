@@ -1,5 +1,6 @@
 package dev.matsem.bpm.data.service.tempo
 
+import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
 import dev.matsem.bpm.data.service.tempo.model.Worklog
 import dev.matsem.bpm.injection.scope.SessionScope
 import kotlinx.coroutines.flow.flow
@@ -14,6 +15,8 @@ interface TempoApiManager {
         from: LocalDate,
         to: LocalDate,
     ): List<Worklog>
+
+    suspend fun createWorklog(body: CreateWorklogBody): Worklog
 }
 
 internal class TempoApiManagerImpl(
@@ -50,4 +53,8 @@ internal class TempoApiManagerImpl(
                 } while (nextUrl != null)
             }.map { it.results }.toList().flatten()
         }
+
+    override suspend fun createWorklog(body: CreateWorklogBody) = sessionScoped { api ->
+        api.createWorklog(body)
+    }
 }

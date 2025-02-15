@@ -1,9 +1,7 @@
 package dev.matsem.bpm.data.service.tempo
 
-import de.jensklingenberg.ktorfit.http.GET
-import de.jensklingenberg.ktorfit.http.Path
-import de.jensklingenberg.ktorfit.http.Query
-import de.jensklingenberg.ktorfit.http.Url
+import de.jensklingenberg.ktorfit.http.*
+import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
 import dev.matsem.bpm.data.service.tempo.model.PageableTempoResponse
 import dev.matsem.bpm.data.service.tempo.model.Worklog
 import kotlinx.datetime.LocalDate
@@ -23,4 +21,7 @@ interface TempoApi {
     suspend fun getWorklogs(
         @Url url: String
     ): PageableTempoResponse<Worklog>
+
+    @POST("worklogs")
+    suspend fun createWorklog(@Body body: CreateWorklogBody): Worklog
 }
