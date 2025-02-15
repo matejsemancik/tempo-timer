@@ -127,8 +127,8 @@ fun AppTextField(
                                 interactionSource = interactionSource,
                                 colors = colors,
                                 shape = BpmTheme.shapes.small,
-                                focusedBorderThickness = Grid.d0_25,
-                                unfocusedBorderThickness = Dp.Hairline,
+                                focusedBorderThickness = Grid.d0_5,
+                                unfocusedBorderThickness = Grid.d0_25,
                             )
                         }
                     )
