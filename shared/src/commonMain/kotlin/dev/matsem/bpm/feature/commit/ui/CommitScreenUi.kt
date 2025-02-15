@@ -61,7 +61,7 @@ fun CommitScreenUi(
         VerticalSpacer(Grid.d3)
         LabeledTextField(label = "📜 Description") {
             AppTextField(
-                value = state.description,
+                value = state.descriptionInput,
                 onValueChange = actions::onDescriptionInput,
                 placeholder = state.descriptionPlaceholder,
                 singleLine = true,
@@ -72,7 +72,9 @@ fun CommitScreenUi(
         VerticalSpacer(Grid.d3)
         LabeledTextField(label = "⏳ Duration") {
             AppTextField(
-                value = state.duration,
+                value = state.durationInput,
+                isError = state.isDurationInputError,
+                placeholder = "e.g. \"1h 20m\" or \"30m\" ",
                 onValueChange = actions::onDurationInput,
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth().focusRequester(focusRequester),

@@ -8,11 +8,12 @@ import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForText
 
 data class CommitState(
     private val timer: Timer,
-    val description: TextFieldValue = TextFieldValue(),
-    val duration: TextFieldValue = run {
+    val descriptionInput: TextFieldValue = TextFieldValue(),
+    val durationInput: TextFieldValue = run {
         val text = timer.state.duration.formatForTextInput()
         TextFieldValue(text, TextRange(0, text.length))
-    }
+    },
+    val isDurationInputError: Boolean = false,
 ) {
     val issue: Issue
         get() = timer.issue
