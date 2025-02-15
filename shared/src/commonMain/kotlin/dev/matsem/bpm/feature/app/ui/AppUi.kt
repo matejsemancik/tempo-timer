@@ -100,7 +100,7 @@ fun AppUi() {
                             )
                         }
                         Text(
-                            "tempo-timer 0.0.1",
+                            "tempo-timer 0.1.0",
                             style = BpmTheme.typography.labelMedium,
                             modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
                         )
