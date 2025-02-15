@@ -18,7 +18,7 @@ internal class SearchModel(
     private val issueRepo: IssueRepo
 ) : BaseModel<SearchState, SearchEvent>(SearchState()), SearchScreen {
 
-    init {
+    override suspend fun onStart() {
         state
             .map { it.input.text }
             .debounce(SearchInputDebounceMs.milliseconds)
