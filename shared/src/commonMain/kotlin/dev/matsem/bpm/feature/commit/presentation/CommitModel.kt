@@ -10,9 +10,12 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlin.math.max
+import kotlin.math.round
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.nanoseconds
 import kotlin.time.Duration.Companion.seconds
 
 internal class CommitModel(
@@ -58,7 +61,7 @@ internal class CommitModel(
 
         updateState { state ->
             state.copy(
-                durationSuggestions = getSuggestionsForDuration(args.timer.state.duration)
+                durationSuggestions = calculateSuggestionsForDuration(args.timer.state.duration)
                     .map { it.formatForTextInput() }
                     .toImmutableList()
             )
@@ -93,7 +96,17 @@ internal class CommitModel(
         return duration
     }
 
-    private fun getSuggestionsForDuration(duration: Duration): List<Duration> {
-        return listOf(1.seconds, 400.seconds)
+    private fun calculateSuggestionsForDuration(duration: Duration): List<Duration> {
+        return listOf(
+            duration.roundToNearest(5.minutes),
+            duration.roundToNearest(10.minutes),
+            duration.roundToNearest(15.minutes),
+            ).filter { it.isPositive() }.distinct()
+    }
+
+    private fun Duration.roundToNearest(interval: Duration): Duration {
+        val intervalNanos = interval.inWholeSeconds
+        val factor = round(this.inWholeSeconds.toDouble() / intervalNanos)
+        return (factor * intervalNanos).seconds
     }
 }
