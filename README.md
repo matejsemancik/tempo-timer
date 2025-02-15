@@ -1,25 +1,33 @@
 # tempo-timer
 
-**Minimalistic desktop client for Tempo Timesheets written in Kotlin and Compose Multiplatform.**
+**A simple desktop client for Tempo Timesheets, built with Kotlin and Compose Multiplatform.**
 
 ![](docs/screenshots.png)
 
-This project aims to provide a simple desktop app for tracking time spent on Jira issues into Tempo. It is intended mainly for users who like to track time in real-time (e.g. me). Tracking for dates other than "today" is not supported (yet) and can be done from Tempo web interface.
+**Track your time effortlessly.**
 
-The app runs in system tray and was tested only on macOS. Works with Jira cloud only.
+tempo-timer is a simple desktop app designed for logging time on Jira issues directly into Tempo Timesheets. It’s perfect for users who prefer real-time tracking (like me!) and find existing web UI and/or browser extension very slow clunky (also, like me!). Currently, tracking is limited to "today"—for other dates, use the Tempo web interface.
 
-**Features:**
-- Track time into Tempo Timesheets
-- Adjust time and description of Worklog before sending to Tempo
-- Search Jira issues
-- Save your favourite issues for fast access
-- Manage multiple timers simultaneously
-- Dark mode
+The app runs in the system tray and is tested on macOS. It supports Jira Cloud only.
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
+## Features
+- ⏱ **Track time** directly in Tempo Timesheets
+- ✍ **Edit worklogs** before submitting (time & description)
+- 🔍 **Search Jira issues** quickly
+- ⭐ **Save favorite issues** for fast access
+- 🎛 **Manage multiple timers** simultaneously
+- 🌙 **Dark mode support**
 
-## How to use
+Interested in Kotlin Multiplatform? Learn more [here](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html).
 
-1. Create a Jira API token at https://id.atlassian.com/manage-profile/security/api-tokens
-2. Create a Tempo API token with steps described here https://apidocs.tempo.io/#section/Authentication
-3. Open app settings and log in using your Jira cloud instance name, jira account e-mail and tokens obtained in steps above.
+## Installation
+
+Publishing WIP. You can build from source for now `./gradlew desktopApp:packageDistributionForCurrentOS`
+
+## Getting started
+
+1. Create a Jira API token → [Generate here](https://id.atlassian.com/manage-profile/security/api-tokens)
+2. Create a Tempo API token → Follow [these steps](https://apidocs.tempo.io/#section/Authentication) (Using the REST API as an individual user)
+3. Log in: Open the app -> Settings and enter your Jira cloud instance name, Jira account email, and both tokens.
+
+That’s it!
