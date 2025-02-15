@@ -9,7 +9,8 @@ The app runs in system tray and was tested only on macOS. Works with Jira cloud 
 **Features:**
 - Track time into Tempo Timesheets
 - Adjust time and description of Worklog before sending to Tempo
-- Save your favourite issues
+- Search Jira issues
+- Save your favourite issues for fast access
 - Manage multiple timers simultaneously
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
