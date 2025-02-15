@@ -85,20 +85,12 @@ fun CommitScreenUi(
             horizontalArrangement = Arrangement.spacedBy(Grid.d1_5),
             verticalArrangement = Arrangement.spacedBy(Grid.d1_5)
         ) {
-            AppSuggestionChip(
-                onClick = { actions.onDurationInput(TextFieldValue("3h"))},
-                label = "3h",
-            )
-
-            AppSuggestionChip(
-                onClick = { actions.onDurationInput(TextFieldValue("3h 20m"))},
-                label = "3h 20m",
-            )
-
-            AppSuggestionChip(
-                onClick = { actions.onDurationInput(TextFieldValue("2h 10m"))},
-                label = "2h 10m",
-            )
+            state.durationSuggestions.forEach {
+                AppSuggestionChip(
+                    onClick = { actions.onSuggestionClick(it) },
+                    label = it,
+                )
+            }
         }
 
         VerticalSpacer(Grid.d3)
@@ -114,7 +106,7 @@ fun AppSuggestionChip(
     SuggestionChip(
         modifier = modifier,
         onClick = onClick,
-        label = { Text(text = label )},
+        label = { Text(text = label) },
         shape = BpmTheme.shapes.small,
         colors = SuggestionChipDefaults.suggestionChipColors(
             containerColor = BpmTheme.colorScheme.surfaceContainerHigh

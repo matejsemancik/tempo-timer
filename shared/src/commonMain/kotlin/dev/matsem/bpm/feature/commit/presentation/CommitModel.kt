@@ -1,7 +1,15 @@
 package dev.matsem.bpm.feature.commit.presentation
 
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.arch.BaseModel
+import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForTextInput
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
@@ -35,9 +43,25 @@ internal class CommitModel(
         val DurationInputRegex = "^(?=.*\\d)(?:(\\d+)h\\s*)?(?:(\\d+)m\\s*)?(?:(\\d+)s\\s*)?$".toRegex()
     }
 
-    init {
+    override suspend fun onStart() {
+        state
+            .map { it.durationInput.text }
+            .distinctUntilChanged()
+            .onEach { durationInput ->
+                updateState { state ->
+                    state.copy(
+                        isDurationInputError = parsePositiveDuration(durationInput) == null
+                    )
+                }
+            }
+            .launchIn(coroutineScope)
+
         updateState { state ->
-            state.copy(isDurationInputError = parsePositiveDuration(state.durationInput.text) == null)
+            state.copy(
+                durationSuggestions = getSuggestionsForDuration(args.timer.state.duration)
+                    .map { it.formatForTextInput() }
+                    .toImmutableList()
+            )
         }
     }
 
@@ -47,7 +71,11 @@ internal class CommitModel(
         }
 
         override fun onDurationInput(input: TextFieldValue) = updateState {
-            it.copy(durationInput = input, isDurationInputError = parsePositiveDuration(input.text) == null)
+            it.copy(durationInput = input)
+        }
+
+        override fun onSuggestionClick(suggestion: String) = updateState {
+            it.copy(durationInput = TextFieldValue(suggestion, TextRange(suggestion.length)))
         }
     }
 
@@ -63,5 +91,9 @@ internal class CommitModel(
             return null
         }
         return duration
+    }
+
+    private fun getSuggestionsForDuration(duration: Duration): List<Duration> {
+        return listOf(1.seconds, 400.seconds)
     }
 }

@@ -5,6 +5,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForTextInput
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 data class CommitState(
     private val timer: Timer,
@@ -14,6 +16,7 @@ data class CommitState(
         TextFieldValue(text, TextRange(0, text.length))
     },
     val isDurationInputError: Boolean = false,
+    val durationSuggestions: ImmutableList<String> = persistentListOf()
 ) {
     val issue: Issue
         get() = timer.issue
