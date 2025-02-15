@@ -1,8 +1,10 @@
 # tempo-timer
 
-Minimalistic desktop client for Tempo Timesheets written in Kotlin and Compose Multiplatform.
+**Minimalistic desktop client for Tempo Timesheets written in Kotlin and Compose Multiplatform.**
 
-This project aims to provide a simple interface for tracking time spent on Jira issues in Tempo, without burden of interacting with Jira (slow), or Tempo browser extension (clumsy). It is intended mainly for users who like to track time in real-time (e.g. me). Tracking for dates other than "today" is not supported (yet) and can be done from Tempo web interface.
+![](docs/screenshots_github.jpg)
+
+This project aims to provide a simple desktop app for tracking time spent on Jira issues into Tempo. It is intended mainly for users who like to track time in real-time (e.g. me). Tracking for dates other than "today" is not supported (yet) and can be done from Tempo web interface.
 
 The app runs in system tray and was tested only on macOS. Works with Jira cloud only.
 
