@@ -12,6 +12,7 @@ The app runs in system tray and was tested only on macOS. Works with Jira cloud 
 - Search Jira issues
 - Save your favourite issues for fast access
 - Manage multiple timers simultaneously
+- Dark mode
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
 
