@@ -20,14 +20,10 @@ internal object DurationFormatter {
     }
 
     fun Duration.formatForTextInput(): String {
-        val seconds = (inWholeSeconds % SecondsInMinute).toString()
-        val minutes = (inWholeMinutes % MinutesInHour).toString()
-        val hours = inWholeHours.takeIf { it > 0 }?.toString()
+        val seconds = (inWholeSeconds % SecondsInMinute).takeIf { it > 0 }?.toString()?.let { "${it}s" }
+        val minutes = (inWholeMinutes % MinutesInHour).takeIf { it > 0 }?.toString()?.let { "${it}m" }
+        val hours = inWholeHours.takeIf { it > 0 }?.toString()?.let { "${it}h" }
 
-        return if (hours != null) {
-            "${hours}h ${minutes}m ${seconds}s"
-        } else {
-            "${minutes}m ${seconds}s"
-        }
+        return listOfNotNull(hours, minutes, seconds).joinToString(separator = " ") { it }
     }
 }
