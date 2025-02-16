@@ -40,28 +40,39 @@ kotlin {
 compose.desktop {
     application {
         mainClass = "dev.matsem.bpm.MainKt"
+        jvmArgs("-Dapple.awt.application.appearance=system")
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "dev.matsem.bpm"
-            packageVersion = "1.0.0"
+
+            packageName = "Tempo Timer"
+            packageVersion = System.getenv("DESKTOP_PACKAGE_VERSION") ?: "1.0.0"
+            description = "Desktop client for Tempo Timesheets"
+            copyright = "Copyright (c) 2025 Matej Semančík"
+            vendor = "matsem.dev"
+            licenseFile.set(rootProject.file("LICENSE"))
 
             // https://github.com/JetBrains/compose-multiplatform/issues/2686
             modules("jdk.unsupported")
 
             macOS {
+                iconFile.set(project.file("nativeDistributions/macOS/icon.icns"))
+                infoPlist {
+
+                }
                 infoPlist {
                     // Hides app icon from dock (the app lives in tray)
-                    extraKeysRawXml = """
-                        <key>LSUIElement</key>
-                        <string>true</string>
-                    """.trimIndent()
+                    extraKeysRawXml = project.file("nativeDistributions/macOS/Info.plist").readText()
                 }
             }
-        }
 
-        jvmArgs(
-            "-Dapple.awt.application.appearance=system"
-        )
+            windows {
+                iconFile.set(project.file("nativeDistributions/windows/icon.ico"))
+            }
+
+            linux {
+                iconFile.set(project.file("nativeDistributions/linux/icon.png"))
+            }
+        }
     }
 }
