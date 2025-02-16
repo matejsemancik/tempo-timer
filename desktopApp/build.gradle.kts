@@ -67,11 +67,11 @@ compose.desktop {
             }
 
             windows {
-                iconFile.set(project.file("nativeDistributions/windows/icon.icns"))
+                iconFile.set(project.file("nativeDistributions/windows/icon.ico"))
             }
 
             linux {
-                iconFile.set(project.file("nativeDistributions/linux/icon.icns"))
+                iconFile.set(project.file("nativeDistributions/linux/icon.png"))
             }
         }
     }
