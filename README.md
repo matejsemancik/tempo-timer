@@ -22,7 +22,7 @@ Interested in Kotlin Multiplatform? Learn more [here](https://www.jetbrains.com/
 
 ## Installation
 
-Publishing WIP. You can build from source for now `./gradlew desktopApp:packageDistributionForCurrentOS`
+Publishing WIP. For now, you can run using `./gradlew runDistributable`.
 
 ## Getting started
 
