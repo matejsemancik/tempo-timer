@@ -6,6 +6,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
@@ -38,6 +39,15 @@ fun ApplicationScope.MainApplication() {
             },
             title = "Tempo Timer",
             resizable = true,
+            onPreviewKeyEvent = { keyEvent ->
+                when {
+                    keyEvent.type == KeyEventType.KeyDown && keyEvent.isMetaPressed && keyEvent.key == Key.W -> {
+                        isOpen = false
+                        true
+                    }
+                    else -> false
+                }
+            }
         ) {
             AppUi()
         }
