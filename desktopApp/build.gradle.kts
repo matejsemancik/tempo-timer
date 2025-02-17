@@ -40,7 +40,7 @@ kotlin {
 compose.desktop {
     application {
         mainClass = "dev.matsem.bpm.MainKt"
-        jvmArgs("-Dapple.awt.application.appearance=system")
+        jvmArgs("-Dapple.awt.application.appearance=system", "-Dapple.awt.enableTemplateImages=true")
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)

@@ -1,11 +1,15 @@
 package dev.matsem.bpm
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Timer
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -56,7 +60,7 @@ fun ApplicationScope.MainApplication() {
     val trayState = rememberTrayState()
 
     Tray(
-        icon = TrayIcon,
+        icon = rememberVectorPainter(Icons.Rounded.Timer),
         state = trayState,
         onAction = {
             println("onAction")
@@ -70,12 +74,4 @@ fun ApplicationScope.MainApplication() {
             Item("Quit", onClick = ::exitApplication)
         }
     )
-}
-
-private object TrayIcon : Painter() {
-    override val intrinsicSize: Size = Size(256f, 256f)
-
-    override fun DrawScope.onDraw() {
-        drawOval(Color.Magenta)
-    }
 }
