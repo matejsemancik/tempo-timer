@@ -4,9 +4,6 @@ on:
   pull_request:
     types:
       - opened
-  push:
-    branches:
-      - feature/ci-cd
 
 jobs:
   check:
