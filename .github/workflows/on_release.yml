@@ -4,9 +4,6 @@ on:
   release:
     types:
       - published
-  push:
-    branches:
-      - feature/ci-cd
 
 jobs:
   build:
@@ -30,3 +27,9 @@ jobs:
           DESKTOP_PACKAGE_VERSION: ${{ github.event.release.tag_name }}
         run: |
           ./gradlew packageDistributionForCurrentOS
+      - name: 'Upload assets'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            **/build/compose/binaries/main/{dmg,deb,msi}/*
+          fail_on_unmatched_files: true
