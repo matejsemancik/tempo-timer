@@ -8,7 +8,7 @@
 
 tempo-timer is a simple desktop app designed for logging time on Jira issues directly into Tempo Timesheets. It’s perfect for users who prefer real-time tracking (like me!) and find existing web UI and/or browser extension very slow or clunky (also, like me!). Currently, tracking is limited to "today"—for other dates, use the Tempo web interface.
 
-The app runs in the system tray and is tested on macOS. It supports Jira Cloud only.
+The app is tested on macOS. It supports Jira Cloud only.
 
 ## Features
 - ⏱ **Track time** directly in Tempo Timesheets

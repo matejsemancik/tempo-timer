@@ -61,7 +61,6 @@ compose.desktop {
 
                 }
                 infoPlist {
-                    // Hides app icon from dock (the app lives in tray)
                     extraKeysRawXml = project.file("nativeDistributions/macOS/Info.plist").readText()
                 }
             }
