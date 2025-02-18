@@ -16,7 +16,6 @@ import dev.matsem.bpm.injection.AppInjection
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.KoinContext
 import java.awt.Desktop
-import java.awt.PopupMenu
 import java.awt.Taskbar
 import java.awt.desktop.AppReopenedListener
 
