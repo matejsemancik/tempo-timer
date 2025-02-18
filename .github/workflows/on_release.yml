@@ -31,7 +31,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            **/build/compose/binaries/main/dmg/*
-            **/build/compose/binaries/main/deb/*
-            **/build/compose/binaries/main/msi/*
-          fail_on_unmatched_files: true
+            **/build/compose/binaries/main/{dmg,deb,msi}/*
