@@ -1,0 +1,27 @@
+name: Pull Request Check
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  check:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+      - name: 'Setup Java'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: "Setup Gradle"
+        uses: gradle/actions/setup-gradle@v4
+      - name: 'Check'
+        run: |
+          ./gradlew check
