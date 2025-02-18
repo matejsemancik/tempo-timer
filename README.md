@@ -20,10 +20,12 @@ The app is tested on macOS. It supports Jira Cloud only.
 
 Interested in Kotlin Multiplatform? Learn more [here](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html).
 
-## Installation
+## Download
 [![GitHub Release](https://img.shields.io/github/v/release/matejsemancik/tempo-timer?include_prereleases&sort=semver&display_name=release&style=flat&link=https%3A%2F%2Fgithub.com%2Fmatejsemancik%2Ftempo-timer%2Freleases%2Flatest)](https://github.com/matejsemancik/tempo-timer/releases/latest)
 
 Download latest release [here](https://github.com/matejsemancik/tempo-timer/releases/latest).
+
+## Development
 
 - To build package locally, run `./gradlew packageDistributionForCurrentOS`
 - Run with `./gradlew runDistributable`
