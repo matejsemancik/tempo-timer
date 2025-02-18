@@ -29,6 +29,7 @@ import dev.matsem.bpm.feature.search.ui.SearchScreenUi
 import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
 import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
+import dev.matsem.bpm.tooling.Platform
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
@@ -46,6 +47,7 @@ fun AppUi() {
     var commitDialogTimer: Timer? by rememberSaveable { mutableStateOf(null) }
 
     val trackerScreen: TrackerScreen = koinInject()
+    val platform: Platform = koinInject()
 
     BpmTheme(isDark = darkMode) {
         Scaffold(
@@ -100,8 +102,9 @@ fun AppUi() {
                             )
                         }
                         Text(
-                            "tempo-timer 0.1.0",
+                            "tempo-timer (${platform.getVersionString()})",
                             style = BpmTheme.typography.labelMedium,
+                            color = BpmTheme.colorScheme.outline,
                             modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
                         )
                     },
