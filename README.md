@@ -25,11 +25,6 @@ Interested in Kotlin Multiplatform? Learn more [here](https://www.jetbrains.com/
 
 Download latest release [here](https://github.com/matejsemancik/tempo-timer/releases/latest).
 
-## Development
-
-- To build package locally, run `./gradlew packageDistributionForCurrentOS`
-- Run with `./gradlew runDistributable`
-
 ## Getting started
 
 1. Create a Jira API token → [Generate here](https://id.atlassian.com/manage-profile/security/api-tokens)
@@ -37,3 +32,8 @@ Download latest release [here](https://github.com/matejsemancik/tempo-timer/rele
 3. Log in: Open the app -> Settings and enter your Jira cloud instance name, Jira account email, and both tokens.
 
 That’s it!
+
+## Development
+
+- To build package locally, run `./gradlew packageDistributionForCurrentOS`
+- Run with `./gradlew runDistributable`
