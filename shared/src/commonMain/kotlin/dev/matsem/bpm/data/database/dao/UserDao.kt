@@ -1,6 +1,8 @@
 package dev.matsem.bpm.data.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Upsert
 import dev.matsem.bpm.data.database.model.User
 import kotlinx.coroutines.flow.Flow
 

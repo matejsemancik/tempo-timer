@@ -4,8 +4,10 @@ import dev.matsem.bpm.data.database.dao.UserDao
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.service.tempo.TempoApiManager
 import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
-import dev.matsem.bpm.tooling.dropNanos
-import kotlinx.datetime.*
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration
 
 interface WorklogRepo {

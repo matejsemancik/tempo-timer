@@ -1,6 +1,5 @@
 package dev.matsem.bpm.data.repo
 
-import androidx.room.PrimaryKey
 import dev.matsem.bpm.data.database.dao.TimerDao
 import dev.matsem.bpm.data.mapping.IssueMapping.toDbModel
 import dev.matsem.bpm.data.mapping.TimerMapping.toDomainModel

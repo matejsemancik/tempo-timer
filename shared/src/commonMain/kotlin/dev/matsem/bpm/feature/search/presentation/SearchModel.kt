@@ -6,8 +6,17 @@ import dev.matsem.bpm.arch.BaseModel
 import dev.matsem.bpm.data.repo.IssueRepo
 import dev.matsem.bpm.data.repo.model.SearchResult
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import java.util.concurrent.CancellationException
 import kotlin.time.Duration.Companion.milliseconds
 

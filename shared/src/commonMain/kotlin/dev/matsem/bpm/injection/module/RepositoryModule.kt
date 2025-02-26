@@ -1,8 +1,13 @@
 package dev.matsem.bpm.injection.module
 
-import dev.matsem.bpm.data.repo.*
+import dev.matsem.bpm.data.repo.IssueRepo
 import dev.matsem.bpm.data.repo.IssueRepoImpl
+import dev.matsem.bpm.data.repo.SessionRepo
 import dev.matsem.bpm.data.repo.SessionRepoImpl
+import dev.matsem.bpm.data.repo.TimerRepo
+import dev.matsem.bpm.data.repo.TimerRepoImpl
+import dev.matsem.bpm.data.repo.WorklogRepo
+import dev.matsem.bpm.data.repo.WorklogRepoImpl
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
