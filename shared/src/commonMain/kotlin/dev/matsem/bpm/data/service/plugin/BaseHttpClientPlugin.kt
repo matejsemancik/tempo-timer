@@ -1,6 +1,6 @@
 package dev.matsem.bpm.data.service.plugin
 
-import io.ktor.client.*
+import io.ktor.client.HttpClientConfig
 
 interface BaseHttpClientPlugin {
 

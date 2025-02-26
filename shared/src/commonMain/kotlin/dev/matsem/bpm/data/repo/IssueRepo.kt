@@ -9,7 +9,10 @@ import dev.matsem.bpm.data.persistence.ApplicationPersistence
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.SearchResult
 import dev.matsem.bpm.data.service.jira.JiraApiManager
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 interface IssueRepo {
 

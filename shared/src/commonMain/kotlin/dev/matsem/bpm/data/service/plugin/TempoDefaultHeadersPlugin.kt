@@ -1,9 +1,10 @@
 package dev.matsem.bpm.data.service.plugin
 
-import io.ktor.client.*
-import io.ktor.client.plugins.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.request.header
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 
 internal class TempoDefaultHeadersPlugin : BaseHttpClientPlugin {
 

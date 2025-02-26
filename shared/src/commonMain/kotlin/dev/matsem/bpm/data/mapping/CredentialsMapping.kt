@@ -1,7 +1,7 @@
 package dev.matsem.bpm.data.mapping
 
-import dev.matsem.bpm.data.repo.model.Credentials as Credentials_Domain
 import dev.matsem.bpm.data.persistence.model.Credentials as Credentials_Persistence
+import dev.matsem.bpm.data.repo.model.Credentials as Credentials_Domain
 
 internal object CredentialsMapping {
 

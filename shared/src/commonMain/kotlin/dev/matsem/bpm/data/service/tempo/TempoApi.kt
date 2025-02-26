@@ -1,6 +1,11 @@
 package dev.matsem.bpm.data.service.tempo
 
-import de.jensklingenberg.ktorfit.http.*
+import de.jensklingenberg.ktorfit.http.Body
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.POST
+import de.jensklingenberg.ktorfit.http.Path
+import de.jensklingenberg.ktorfit.http.Query
+import de.jensklingenberg.ktorfit.http.Url
 import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
 import dev.matsem.bpm.data.service.tempo.model.PageableTempoResponse
 import dev.matsem.bpm.data.service.tempo.model.Worklog

@@ -1,21 +1,43 @@
 package dev.matsem.bpm.feature.commit.ui
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DeleteForever
 import androidx.compose.material.icons.rounded.Warning
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import bpm_tracker.shared.generated.resources.Res
+import bpm_tracker.shared.generated.resources.delete_timer
+import bpm_tracker.shared.generated.resources.description_label
+import bpm_tracker.shared.generated.resources.duration_label
+import bpm_tracker.shared.generated.resources.duration_placeholder
+import bpm_tracker.shared.generated.resources.log_time
 import dev.matsem.bpm.arch.EventEffect
 import dev.matsem.bpm.data.repo.model.MockTimers
-import dev.matsem.bpm.design.chip.AppSuggestionChip
 import dev.matsem.bpm.design.button.AppButton
+import dev.matsem.bpm.design.chip.AppSuggestionChip
 import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.input.LabeledTextField
 import dev.matsem.bpm.design.theme.BpmTheme
@@ -29,6 +51,7 @@ import dev.matsem.bpm.feature.commit.presentation.CommitScreen
 import dev.matsem.bpm.feature.commit.presentation.CommitState
 import dev.matsem.bpm.feature.tracker.ui.widget.LargeIssueTitleRow
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -69,12 +92,12 @@ fun CommitScreenUi(
             modifier = Modifier.fillMaxWidth()
         )
         VerticalSpacer(Grid.d3)
-        LabeledTextField(label = "⏳ Duration") {
+        LabeledTextField(label = stringResource(Res.string.duration_label)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AppTextField(
                     value = state.durationInput,
                     isError = state.isDurationInputError,
-                    placeholder = "e.g. \"1h 20m\"",
+                    placeholder = stringResource(Res.string.duration_placeholder),
                     onValueChange = actions::onDurationInput,
                     singleLine = true,
                     modifier = Modifier.weight(1f).focusRequester(focusRequester),
@@ -98,7 +121,7 @@ fun CommitScreenUi(
         }
 
         VerticalSpacer(Grid.d3)
-        LabeledTextField(label = "📜 Description") {
+        LabeledTextField(label = stringResource(Res.string.description_label)) {
             AppTextField(
                 value = state.descriptionInput,
                 onValueChange = actions::onDescriptionInput,
@@ -133,11 +156,11 @@ fun CommitScreenUi(
             IconButton(
                 onClick = actions::onDeleteClick,
             ) {
-                Icon(Icons.Rounded.DeleteForever, contentDescription = "Delete timer")
+                Icon(Icons.Rounded.DeleteForever, contentDescription = stringResource(Res.string.delete_timer))
             }
             HorizontalSpacer(Grid.d3)
             AppButton(
-                text = "Log Time",
+                text = stringResource(Res.string.log_time),
                 onClick = actions::onCommitClick,
                 isLoading = state.isButtonLoading
             )

@@ -1,7 +1,12 @@
 package dev.matsem.bpm.feature.settings.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -12,6 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import bpm_tracker.shared.generated.resources.Res
+import bpm_tracker.shared.generated.resources.credentials_description
+import bpm_tracker.shared.generated.resources.credentials_instructions
+import bpm_tracker.shared.generated.resources.credentials_title
+import bpm_tracker.shared.generated.resources.jira_api_token
+import bpm_tracker.shared.generated.resources.jira_email
+import bpm_tracker.shared.generated.resources.jira_email_placeholder
+import bpm_tracker.shared.generated.resources.jira_url
+import bpm_tracker.shared.generated.resources.sign_in
+import bpm_tracker.shared.generated.resources.sign_out
+import bpm_tracker.shared.generated.resources.tempo_api_token
 import coil3.compose.AsyncImage
 import dev.matsem.bpm.data.repo.model.User
 import dev.matsem.bpm.design.button.AppButton
@@ -27,6 +43,7 @@ import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.settings.presentation.SettingsActions
 import dev.matsem.bpm.feature.settings.presentation.SettingsScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsState
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -43,7 +60,7 @@ fun SettingsScreenUi(
 fun SettingsScreenUi(
     state: SettingsState,
     actions: SettingsActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier.verticalScroll(rememberScrollState())) {
         when (state) {
@@ -58,28 +75,28 @@ fun SettingsScreenUi(
 private fun SignedOutSection(
     state: SettingsState.SignedOut,
     actions: SettingsActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
     ) {
         Text(
-            text = "🔐 Credentials",
+            text = stringResource(Res.string.credentials_title),
             style = BpmTheme.typography.titleMedium,
         )
         VerticalSpacer(Grid.d1)
         Text(
-            text = "Sign In by providing necessary credentials.",
+            text = stringResource(Res.string.credentials_description),
             style = BpmTheme.typography.bodyMedium,
         )
         VerticalSpacer(Grid.d1)
         Text(
-            text = "Jira API token is used to sync your profile and search issues. Tempo API token is used to synchronize worklogs with Tempo.\nInstructions on how to generate TBD.",
+            text = stringResource(Res.string.credentials_instructions),
             style = BpmTheme.typography.labelMedium,
         )
 
         VerticalSpacer(Grid.d2)
-        LabeledTextField("Jira URL") {
+        LabeledTextField(stringResource(Res.string.jira_url)) {
             AppTextField(
                 value = state.jiraCloudName,
                 onValueChange = actions::onJiraCloudName,
@@ -91,18 +108,18 @@ private fun SignedOutSection(
         }
 
         VerticalSpacer(Grid.d2)
-        LabeledTextField("Atlassian account e-mail") {
+        LabeledTextField(stringResource(Res.string.jira_email)) {
             AppTextField(
                 value = state.jiraEmail,
                 onValueChange = actions::onJiraEmailInput,
                 singleLine = true,
-                placeholder = "you@corporate.org",
+                placeholder = stringResource(Res.string.jira_email_placeholder),
                 modifier = Modifier.fillMaxWidth(),
             )
         }
 
         VerticalSpacer(Grid.d2)
-        LabeledTextField("Jira API token") {
+        LabeledTextField(stringResource(Res.string.jira_api_token)) {
             PasswordTextField(
                 value = state.jiraApiToken,
                 onValueChange = actions::onJiraApiKeyInput,
@@ -111,7 +128,7 @@ private fun SignedOutSection(
         }
 
         VerticalSpacer(Grid.d2)
-        LabeledTextField("Tempo API token") {
+        LabeledTextField(stringResource(Res.string.tempo_api_token)) {
             PasswordTextField(
                 value = state.tempoApiToken,
                 onValueChange = actions::onTempoApiKeyInput,
@@ -125,7 +142,7 @@ private fun SignedOutSection(
             horizontalArrangement = Arrangement.End
         ) {
             AppButton(
-                text = "Sign In",
+                text = stringResource(Res.string.sign_in),
                 isLoading = state.isLoading,
                 onClick = actions::onLoginClick,
             )
@@ -137,7 +154,7 @@ private fun SignedOutSection(
 private fun SignedInSection(
     state: SettingsState.SignedIn,
     actions: SettingsActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
@@ -166,7 +183,7 @@ private fun SignedInSection(
             )
         }
         AppOutlinedButton(
-            text = "Sign Out",
+            text = stringResource(Res.string.sign_out),
             onClick = actions::onLogoutClick,
         )
     }

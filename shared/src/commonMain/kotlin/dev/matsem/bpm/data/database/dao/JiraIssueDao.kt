@@ -1,6 +1,10 @@
 package dev.matsem.bpm.data.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Upsert
 import dev.matsem.bpm.data.database.model.FavouriteIssue
 import dev.matsem.bpm.data.database.model.JiraIssue
 import kotlinx.coroutines.flow.Flow

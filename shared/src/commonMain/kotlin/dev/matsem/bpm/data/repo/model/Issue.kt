@@ -1,7 +1,5 @@
 package dev.matsem.bpm.data.repo.model
 
-import androidx.compose.runtime.key
-
 data class Issue(
     val id: Long,
     val key: String,
