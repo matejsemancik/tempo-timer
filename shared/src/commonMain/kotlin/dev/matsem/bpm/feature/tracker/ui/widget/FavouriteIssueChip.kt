@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import bpm_tracker.shared.generated.resources.Res
+import bpm_tracker.shared.generated.resources.remove
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.MockTimers
 import dev.matsem.bpm.design.layout.ClickableAppCard
@@ -25,6 +27,7 @@ import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.Showcase
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -82,7 +85,7 @@ fun FavouriteIssueChip(
                 CompositionLocalProvider(LocalContentColor provides BpmTheme.colorScheme.error) {
                     Icon(Icons.Rounded.Delete, contentDescription = null, modifier = Modifier.size(Grid.d5))
                     HorizontalSpacer(Grid.d2)
-                    Text("Remove", style = BpmTheme.typography.bodySmall)
+                    Text(stringResource(Res.string.remove), style = BpmTheme.typography.bodySmall)
                 }
             }
         }

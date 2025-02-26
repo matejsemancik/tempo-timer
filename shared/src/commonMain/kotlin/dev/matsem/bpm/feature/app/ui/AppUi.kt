@@ -16,6 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
+import bpm_tracker.shared.generated.resources.Res
+import bpm_tracker.shared.generated.resources.app_name
+import bpm_tracker.shared.generated.resources.new_timer
+import bpm_tracker.shared.generated.resources.pick_issue
+import bpm_tracker.shared.generated.resources.settings
+import bpm_tracker.shared.generated.resources.timer
+import bpm_tracker.shared.generated.resources.toggle_dark_mode
 import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.design.sheet.GenericModalBottomSheet
 import dev.matsem.bpm.design.sheet.SheetHeader
@@ -31,6 +38,7 @@ import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
 import dev.matsem.bpm.tooling.Platform
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
@@ -89,7 +97,7 @@ fun AppUi() {
                         {
                             Icon(
                                 if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
-                                contentDescription = "Toggle dark mode",
+                                contentDescription = stringResource(Res.string.toggle_dark_mode),
                             )
                         }
 
@@ -98,11 +106,11 @@ fun AppUi() {
                         ) {
                             Icon(
                                 Icons.Filled.Settings,
-                                contentDescription = "Settings",
+                                contentDescription = stringResource(Res.string.settings),
                             )
                         }
                         Text(
-                            "tempo-timer (${platform.getVersionString()})",
+                            "${stringResource(Res.string.app_name)} (${platform.getVersionString()})",
                             style = BpmTheme.typography.labelMedium,
                             color = BpmTheme.colorScheme.outline,
                             modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
@@ -114,9 +122,12 @@ fun AppUi() {
                             containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                             elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                         ) {
-                            Icon(Icons.Rounded.Add, contentDescription = "New timer")
+                            Icon(Icons.Rounded.Add, contentDescription = stringResource(Res.string.new_timer))
                             HorizontalSpacer(Grid.d1)
-                            Text(text = "New timer", style = BpmTheme.typography.bodyMedium.centeredVertically())
+                            Text(
+                                text = stringResource(Res.string.new_timer),
+                                style = BpmTheme.typography.bodyMedium.centeredVertically()
+                            )
                         }
                     }
                 )
@@ -137,7 +148,7 @@ fun AppUi() {
                 sheetState = sheetState,
                 header = {
                     SheetHeader(
-                        title = "Settings",
+                        title = stringResource(Res.string.settings),
                         onClose = {
                             coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { isSettingsOpen = false }
                         }
@@ -156,7 +167,7 @@ fun AppUi() {
                 sheetState = sheetState,
                 header = {
                     SheetHeader(
-                        title = "Pick an issue",
+                        title = stringResource(Res.string.pick_issue),
                         onClose = {
                             coroutineScope
                                 .launch { sheetState.hide() }
@@ -191,7 +202,7 @@ fun AppUi() {
                 sheetState = sheetState,
                 header = {
                     SheetHeader(
-                        title = "Timer",
+                        title = stringResource(Res.string.timer),
                         onClose = dismiss
                     )
                 }
