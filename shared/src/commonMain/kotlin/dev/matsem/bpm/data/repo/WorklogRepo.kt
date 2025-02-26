@@ -4,6 +4,7 @@ import dev.matsem.bpm.data.database.dao.UserDao
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.service.tempo.TempoApiManager
 import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
+import dev.matsem.bpm.tooling.dropNanos
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -14,7 +15,7 @@ interface WorklogRepo {
 
     suspend fun printWorklogs(
         from: LocalDate,
-        to: LocalDate
+        to: LocalDate,
     )
 
     suspend fun createWorklog(
@@ -31,7 +32,7 @@ internal class WorklogRepoImpl(
 ) : WorklogRepo {
     override suspend fun printWorklogs(
         from: LocalDate,
-        to: LocalDate
+        to: LocalDate,
     ) {
         val user = userDao.get() ?: error("No User")
         val worklogs = tempoApiManager.getAllWorklogs(
@@ -43,7 +44,12 @@ internal class WorklogRepoImpl(
         println(worklogs.joinToString(separator = "\n") { it.toString() })
     }
 
-    override suspend fun createWorklog(jiraIssue: Issue, createdAt: Instant, timeSpent: Duration, description: String?) {
+    override suspend fun createWorklog(
+        jiraIssue: Issue,
+        createdAt: Instant,
+        timeSpent: Duration,
+        description: String?,
+    ) {
         val user = userDao.get() ?: error("No User")
         val requestBody = CreateWorklogBody(
             jiraAccountId = user.accountId,
