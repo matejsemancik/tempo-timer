@@ -50,8 +50,8 @@ internal class WorklogRepoImpl(
             jiraIssueId = jiraIssue.id,
             // Current system default time zone is our best bet rn.
             startedAtDate = createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).date,
-            // Disabled until I find out how to properly work with time zones (no clear guidance on Tempo side)
-            // startedAtTime = createdAt.toLocalDateTime(TimeZone.UTC).time.dropNanos(),
+            // Current system default time zone is our best bet rn.
+            startedAtTime = createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).time.dropNanos(),
             timeSpentSeconds = timeSpent.inWholeSeconds,
             description = description
         )

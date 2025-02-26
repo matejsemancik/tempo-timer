@@ -24,6 +24,7 @@ Interested in Kotlin Multiplatform? Learn more [here](https://www.jetbrains.com/
 [![GitHub Release](https://img.shields.io/github/v/release/matejsemancik/tempo-timer?include_prereleases&sort=semver&display_name=release&style=flat&link=https%3A%2F%2Fgithub.com%2Fmatejsemancik%2Ftempo-timer%2Freleases%2Flatest)](https://github.com/matejsemancik/tempo-timer/releases/latest)
 
 Download latest release [here](https://github.com/matejsemancik/tempo-timer/releases/latest).
+The app is not signed on macOS, yet (TBD). Considering you inspected source code and you trust the app, you can manually do `xattr -d -r com.apple.quarantine <path_to_Tempo Timer.app>`, or navigate to System Security settings and allow it to open there.
 
 ## Getting started
 
