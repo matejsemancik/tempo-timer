@@ -25,12 +25,16 @@ Interested in Kotlin Multiplatform? Learn more [here](https://www.jetbrains.com/
 
 Download latest release [here](https://github.com/matejsemancik/tempo-timer/releases/latest).
 
-The app is not signed and notarized on macOS and probably will never be (I refuse to pay Apple Developer fee for this), so system will not let you run the app without additional dance.
+### macOS-specific
+
+The app is not signed and notarized on macOS and probably will never be (I refuse to pay Apple Developer fee for this), so system will greet you with this lovely dialog after first opening the app:
+
+![](docs/gatekeeper.png)
+
 Considering you inspected source code and you trust it, you can
 - manually run `xattr -d -r com.apple.quarantine <path_to_Tempo Timer.app>`, or
-- right-click the app icon and click Open (this should bypass the macOS Gatekeeper), or
-- after opening the app and being alerted by Gatekeeper that this app is "unsafe" or "damaged", navigate to `System Settings -> Privacy & Security` and allow it to open there, or
-- build it from source code 👇 -- apps built locally do not trigger Gatekeeper
+- navigate to `System Settings -> Privacy & Security` and allow the app to run, or
+- build it from source code 👇 - apps built locally do not trigger Gatekeeper
 
 ## Getting started
 
