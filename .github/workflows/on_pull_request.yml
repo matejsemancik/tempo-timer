@@ -1,9 +1,6 @@
 name: Pull Request Check
 
-on:
-  pull_request:
-    types:
-      - opened
+on: [ pull_request ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
