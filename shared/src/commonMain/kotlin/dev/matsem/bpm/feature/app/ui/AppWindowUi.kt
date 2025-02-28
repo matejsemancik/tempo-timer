@@ -28,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -38,6 +37,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bpm_tracker.shared.generated.resources.Res
 import bpm_tracker.shared.generated.resources.app_name
 import bpm_tracker.shared.generated.resources.new_timer
@@ -45,13 +45,14 @@ import bpm_tracker.shared.generated.resources.pick_issue
 import bpm_tracker.shared.generated.resources.settings
 import bpm_tracker.shared.generated.resources.timer
 import bpm_tracker.shared.generated.resources.toggle_dark_mode
-import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.design.sheet.GenericModalBottomSheet
 import dev.matsem.bpm.design.sheet.SheetHeader
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.centeredVertically
+import dev.matsem.bpm.feature.app.presentation.AppWindow
+import dev.matsem.bpm.feature.app.presentation.AppWindowSheet
 import dev.matsem.bpm.feature.commit.presentation.CommitArgs
 import dev.matsem.bpm.feature.commit.ui.CommitScreenUi
 import dev.matsem.bpm.feature.search.ui.SearchScreenUi
@@ -68,14 +69,15 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
-fun AppUi() {
+fun AppWindowUi(
+    window: AppWindow = koinInject(),
+) {
+    val state by window.state.collectAsStateWithLifecycle()
+    val actions = window.actions
+
     val isSystemInDarkTheme = isSystemInDarkTheme() // Stores initial state of dark mode and stores in [darkMode] state.
     var darkMode by remember { mutableStateOf(isSystemInDarkTheme) }
     val focusManager = LocalFocusManager.current
-    var isSettingsOpen by rememberSaveable { mutableStateOf(false) }
-    var isSearchOpen by rememberSaveable { mutableStateOf(false) }
-    var commitDialogTimer: Timer? by rememberSaveable { mutableStateOf(null) }
-    var updateBannerVisible by remember { mutableStateOf(false) }
 
     val trackerScreen: TrackerScreen = koinInject()
     val platform: Platform = koinInject()
@@ -115,11 +117,11 @@ fun AppUi() {
             bottomBar = {
                 Column {
                     AnimatedVisibility(
-                        visible = updateBannerVisible,
+                        visible = state.newVersionBannerVisible,
                         enter = slideInVertically { it },
                         exit = slideOutVertically { it }
                     ) {
-                        NewVersionRow(Modifier.fillMaxWidth(), onDismiss = { updateBannerVisible = false })
+                        NewVersionRow(Modifier.fillMaxWidth(), onDismiss = actions::onUpdateBannerDismissClick)
                     }
                     BottomAppBar(
                         actions = {
@@ -132,9 +134,7 @@ fun AppUi() {
                                 )
                             }
 
-                            IconButton(
-                                onClick = { isSettingsOpen = true }
-                            ) {
+                            IconButton(onClick = actions::onSettingsClick) {
                                 Icon(
                                     Icons.Filled.Settings,
                                     contentDescription = stringResource(Res.string.settings),
@@ -149,7 +149,7 @@ fun AppUi() {
                         },
                         floatingActionButton = {
                             ExtendedFloatingActionButton(
-                                onClick = { isSearchOpen = true },
+                                onClick = actions::onSearchClick,
                                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                             ) {
@@ -168,81 +168,45 @@ fun AppUi() {
             TrackerScreenUi(
                 modifier = Modifier.fillMaxSize().padding(contentPadding),
                 screen = trackerScreen,
-                openCommitDialog = { timer -> commitDialogTimer = timer }
+                openCommitDialog = actions::onOpenCommitDialog
             )
         }
 
-        if (isSettingsOpen) {
+        state.sheet?.let { appWindowSheet ->
             val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
             val coroutineScope = rememberCoroutineScope()
             GenericModalBottomSheet(
-                onDismissRequest = { isSettingsOpen = false },
+                onDismissRequest = actions::onDismissSheet,
                 sheetState = sheetState,
                 header = {
                     SheetHeader(
-                        title = stringResource(Res.string.settings),
+                        title = when (appWindowSheet) {
+                            AppWindowSheet.Settings -> stringResource(Res.string.settings)
+                            AppWindowSheet.Search -> stringResource(Res.string.pick_issue)
+                            is AppWindowSheet.CommitDialog -> stringResource(Res.string.timer)
+                        },
                         onClose = {
-                            coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { isSettingsOpen = false }
+                            coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { actions.onDismissSheet() }
                         }
                     )
                 }
             ) {
-                SettingsScreenUi()
-            }
-        }
-
-        if (isSearchOpen) {
-            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-            val coroutineScope = rememberCoroutineScope()
-            GenericModalBottomSheet(
-                onDismissRequest = { isSearchOpen = false },
-                sheetState = sheetState,
-                header = {
-                    SheetHeader(
-                        title = stringResource(Res.string.pick_issue),
-                        onClose = {
-                            coroutineScope
-                                .launch { sheetState.hide() }
-                                .invokeOnCompletion {
-                                    isSearchOpen = false
-                                }
+                when (appWindowSheet) {
+                    AppWindowSheet.Settings -> SettingsScreenUi()
+                    AppWindowSheet.Search -> SearchScreenUi(
+                        onIssueSelected = { issue ->
+                            actions.onDismissSheet()
+                            trackerScreen.actions.onNewTimer(issue)
                         }
                     )
-                }
-            ) {
-                SearchScreenUi(
-                    onIssueSelected = { issue ->
-                        coroutineScope
-                            .launch { sheetState.hide() }
-                            .invokeOnCompletion {
-                                isSearchOpen = false
-                                trackerScreen.actions.onNewTimer(issue)
-                            }
-                    }
-                )
-            }
-        }
 
-        commitDialogTimer?.let { timer ->
-            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-            val coroutineScope = rememberCoroutineScope()
-            val dismiss = fun() {
-                coroutineScope.launch { sheetState.hide() }.invokeOnCompletion { commitDialogTimer = null }
-            }
-            GenericModalBottomSheet(
-                onDismissRequest = { commitDialogTimer = null },
-                sheetState = sheetState,
-                header = {
-                    SheetHeader(
-                        title = stringResource(Res.string.timer),
-                        onClose = dismiss
+                    is AppWindowSheet.CommitDialog -> CommitScreenUi(
+                        screen = koinInject(
+                            parameters = { parametersOf(CommitArgs(appWindowSheet.timer)) }
+                        ),
+                        onDismissRequest = actions::onDismissSheet
                     )
                 }
-            ) {
-                CommitScreenUi(
-                    screen = koinInject(parameters = { parametersOf(CommitArgs(timer)) }),
-                    onDismiss = dismiss
-                )
             }
         }
     }

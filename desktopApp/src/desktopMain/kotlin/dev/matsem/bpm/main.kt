@@ -25,7 +25,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import bpm_tracker.desktopapp.generated.resources.Res
 import bpm_tracker.desktopapp.generated.resources.launcher_icon
-import dev.matsem.bpm.feature.app.ui.AppUi
+import dev.matsem.bpm.feature.app.ui.AppWindowUi
 import dev.matsem.bpm.injection.AppInjection
 import org.jetbrains.compose.reload.DevelopmentEntryPoint
 import org.jetbrains.compose.resources.painterResource
@@ -95,7 +95,7 @@ fun ApplicationScope.MainApplication() {
         }
     ) {
         DevelopmentEntryPoint {
-            AppUi()
+            AppWindowUi()
         }
     }
 }
