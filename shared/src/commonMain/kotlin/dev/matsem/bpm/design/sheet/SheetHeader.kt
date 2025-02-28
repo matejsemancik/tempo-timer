@@ -31,7 +31,7 @@ fun SheetHeader(
                 onClick = onClose,
             ) {
                 Icon(
-                    Icons.Rounded.Close, 
+                    Icons.Rounded.Close,
                     contentDescription = stringResource(Res.string.close)
                 )
             }
@@ -55,7 +55,7 @@ fun SheetHeader(
                 onClick = onClose,
             ) {
                 Icon(
-                    Icons.Rounded.Close, 
+                    Icons.Rounded.Close,
                     contentDescription = stringResource(Res.string.close)
                 )
             }

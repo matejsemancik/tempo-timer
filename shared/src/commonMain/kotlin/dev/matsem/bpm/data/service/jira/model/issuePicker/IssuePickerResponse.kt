@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class IssuePickerResponse(
 
     @SerialName("sections")
-    val sections: List<IssuePickerSection>
+    val sections: List<IssuePickerSection>,
 )

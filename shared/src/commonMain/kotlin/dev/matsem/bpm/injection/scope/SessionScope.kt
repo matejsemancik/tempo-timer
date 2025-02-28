@@ -18,7 +18,7 @@ interface SessionScope {
 }
 
 internal class SessionScopeImpl(
-    private val applicationPersistence: ApplicationPersistence
+    private val applicationPersistence: ApplicationPersistence,
 ) : SessionScope {
 
     companion object {

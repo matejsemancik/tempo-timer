@@ -10,7 +10,7 @@ interface JiraApiManager {
         query: String,
         currentJql: String,
         showSubTasks: Boolean,
-        showSubTaskParents: Boolean
+        showSubTaskParents: Boolean,
     ): IssuePickerResponse
 }
 
@@ -30,7 +30,7 @@ internal class JiraApiManagerImpl(
         query: String,
         currentJql: String,
         showSubTasks: Boolean,
-        showSubTaskParents: Boolean
+        showSubTaskParents: Boolean,
     ): IssuePickerResponse = sessionScoped { api ->
         api.searchIssues(query, currentJql, showSubTasks, showSubTaskParents)
     }

@@ -7,5 +7,5 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class TrackerState(
     val favouriteIssues: ImmutableList<Issue> = persistentListOf(),
-    val timers: ImmutableList<Timer> = persistentListOf()
+    val timers: ImmutableList<Timer> = persistentListOf(),
 )

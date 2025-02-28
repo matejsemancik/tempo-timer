@@ -12,7 +12,7 @@ import dev.matsem.bpm.design.tooling.VerticalSpacer
 fun LabeledTextField(
     label: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(modifier) {
         Text(text = label, style = BpmTheme.typography.labelLarge)

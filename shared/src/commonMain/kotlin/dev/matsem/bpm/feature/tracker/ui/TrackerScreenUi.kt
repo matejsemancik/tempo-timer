@@ -68,7 +68,7 @@ fun TrackerScreenUi(
     )
 
     EventEffect(screen.events) { event ->
-        when(event) {
+        when (event) {
             is TrackerEvent.OpenCommitDialog -> openCommitDialog(event.timer)
         }
     }
@@ -78,7 +78,7 @@ fun TrackerScreenUi(
 fun TrackerScreenUi(
     state: TrackerState,
     actions: TrackerActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier,
@@ -109,7 +109,7 @@ fun TrackerScreenUi(
 fun FavouritesSection(
     issues: ImmutableList<Issue>,
     actions: TrackerActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)) {
         Text(
@@ -137,7 +137,7 @@ fun FavouritesSection(
 fun TrackersSection(
     timers: ImmutableList<Timer>,
     actions: TrackerActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column {
         Text(

@@ -63,7 +63,7 @@ fun SearchScreenUi(
 fun SearchScreenUi(
     state: SearchState,
     actions: SearchActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val focusRequester = remember { FocusRequester() }
 

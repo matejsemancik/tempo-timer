@@ -16,5 +16,5 @@ data class JiraUser(
     val avatarUrls: AvatarUrlsBean,
 
     @SerialName("displayName")
-    val displayName: String
+    val displayName: String,
 )

@@ -14,7 +14,7 @@ data class DaySchedule(
     val requiredSeconds: Long,
 
     @SerialName("type")
-    val type: Type
+    val type: Type,
 ) {
 
     enum class Type {

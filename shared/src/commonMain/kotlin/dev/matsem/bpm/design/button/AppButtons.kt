@@ -19,7 +19,7 @@ fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    isLoading: Boolean = false
+    isLoading: Boolean = false,
 ) {
     Button(
         onClick = onClick,
@@ -37,7 +37,7 @@ fun AppOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    isLoading: Boolean = false
+    isLoading: Boolean = false,
 ) {
     OutlinedButton(
         onClick = onClick,

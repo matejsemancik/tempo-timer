@@ -30,7 +30,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun LargeIssueTitleRow(
     issue: Issue,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp)
+    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     Row(
         modifier = modifier.padding(contentPadding), verticalAlignment = Alignment.CenterVertically

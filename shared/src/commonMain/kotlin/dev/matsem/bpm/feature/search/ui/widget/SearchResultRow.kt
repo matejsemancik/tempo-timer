@@ -39,7 +39,7 @@ fun SearchResultRow(
     contentPadding: PaddingValues = PaddingValues(0.dp),
     onClick: () -> Unit,
     onFavouriteClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()

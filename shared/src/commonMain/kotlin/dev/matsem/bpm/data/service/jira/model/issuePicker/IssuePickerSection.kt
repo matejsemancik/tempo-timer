@@ -16,5 +16,5 @@ data class IssuePickerSection(
     val sub: String? = null,
 
     @SerialName("issues")
-    val issues: List<SuggestedIssue>
+    val issues: List<SuggestedIssue>,
 )

@@ -16,5 +16,5 @@ data class Credentials(
     val jiraApiToken: String,
 
     @SerialName("tempo_token")
-    val tempoApiToken: String
+    val tempoApiToken: String,
 )

@@ -9,7 +9,7 @@ data class Timer(
     val id: Int,
     val issue: Issue,
     val createdAt: Instant,
-    val state: TimerState = TimerState()
+    val state: TimerState = TimerState(),
 )
 
 /**
@@ -20,7 +20,7 @@ data class Timer(
  */
 data class TimerState(
     val finishedDuration: Duration = 0.seconds,
-    val lastStartedAt: Instant? = null
+    val lastStartedAt: Instant? = null,
 ) {
     val isRunning: Boolean
         get() = lastStartedAt != null

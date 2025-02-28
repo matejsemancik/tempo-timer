@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class AvatarUrlsBean(
 
     @SerialName("48x48")
-    val largestUrl: String
+    val largestUrl: String,
 )

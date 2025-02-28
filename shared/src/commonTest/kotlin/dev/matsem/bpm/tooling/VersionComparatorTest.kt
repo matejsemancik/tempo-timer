@@ -76,7 +76,7 @@ class VersionComparatorTest {
         assertTrue(VersionComparator.isUpdateAvailable("invalid", "0.0.1"))
         assertFalse(VersionComparator.isUpdateAvailable("0.0.1", "invalid"))
         assertFalse(VersionComparator.isUpdateAvailable("invalid", "invalid"))
-        
+
         // Partial version strings are considered invalid
         assertTrue(VersionComparator.isUpdateAvailable("1.2", "1.2.3"))
     }
@@ -85,7 +85,7 @@ class VersionComparatorTest {
     fun `isUpdateAvailable handles equal versions correctly`() {
         assertFalse(VersionComparator.isUpdateAvailable("1.0.0", "1.0.0"))
         assertFalse(VersionComparator.isUpdateAvailable("1.2.3", "1.2.3"))
-        
+
         // Even with different suffixes, they are considered equal
         assertFalse(VersionComparator.isUpdateAvailable("1.0.0-beta", "1.0.0-alpha"))
         assertFalse(VersionComparator.isUpdateAvailable("1.0.0-rc.1", "1.0.0+build.123"))

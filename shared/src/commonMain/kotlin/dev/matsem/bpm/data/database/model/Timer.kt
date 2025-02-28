@@ -50,5 +50,5 @@ data class TimerComplete(
         parentColumn = "jira_issue_id",
         entityColumn = "id"
     )
-    val issue: JiraIssue
+    val issue: JiraIssue,
 )

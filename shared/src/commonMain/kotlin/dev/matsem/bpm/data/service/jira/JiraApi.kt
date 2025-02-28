@@ -15,6 +15,6 @@ interface JiraApi {
         @Query("query") query: String,
         @Query("currentJQL") currentJql: String,
         @Query("showSubTasks") showSubTasks: Boolean,
-        @Query("showSubTaskParents") showSubTaskParents: Boolean
+        @Query("showSubTaskParents") showSubTaskParents: Boolean,
     ): IssuePickerResponse
 }

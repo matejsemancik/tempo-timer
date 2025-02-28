@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 15 # Windows is such a special snowflake 🙂
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write

@@ -1,7 +1,7 @@
 package dev.matsem.bpm.injection.module
 
-import dev.matsem.bpm.feature.app.presentation.AppWindowModel
 import dev.matsem.bpm.feature.app.presentation.AppWindow
+import dev.matsem.bpm.feature.app.presentation.AppWindowModel
 import dev.matsem.bpm.feature.commit.presentation.CommitModel
 import dev.matsem.bpm.feature.commit.presentation.CommitScreen
 import dev.matsem.bpm.feature.search.presentation.SearchModel

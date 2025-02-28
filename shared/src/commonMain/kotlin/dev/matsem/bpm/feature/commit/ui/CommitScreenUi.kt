@@ -58,7 +58,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun CommitScreenUi(
     screen: CommitScreen,
     onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val state by screen.state.collectAsStateWithLifecycle()
     CommitScreenUi(
@@ -68,8 +68,8 @@ fun CommitScreenUi(
     )
 
     EventEffect(screen.events) { event ->
-        when(event) {
-           CommitEvent.Dismiss -> onDismissRequest()
+        when (event) {
+            CommitEvent.Dismiss -> onDismissRequest()
         }
     }
 }
@@ -78,7 +78,7 @@ fun CommitScreenUi(
 fun CommitScreenUi(
     state: CommitState,
     actions: CommitActions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val focusRequester = remember { FocusRequester() }
 

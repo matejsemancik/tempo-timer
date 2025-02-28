@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 
 val ColorScheme.favourite: Color
     @Composable
-    get() = when(isSystemInDarkTheme()) {
+    get() = when (isSystemInDarkTheme()) {
         true -> Color(0xffd19917)
         false -> Color(0xfff2b21d)
     }
