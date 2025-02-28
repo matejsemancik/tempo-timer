@@ -17,6 +17,7 @@ dataStore = "1.1.2"
 androidx-room = "2.7.0-alpha13"
 androidx-sqlite = "2.5.0-alpha13"
 appDirs = "1.3.0"
+markdownRenderer = "0.31.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -49,6 +50,7 @@ coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.re
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 
 appDirs = { module = "net.harawata:appdirs", version.ref = "appDirs" }
+markdownRenderer = { module = "com.mikepenz:multiplatform-markdown-renderer-m3", version.ref = "markdownRenderer" }
 
 [plugins]
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }

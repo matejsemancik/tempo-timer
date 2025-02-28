@@ -12,6 +12,7 @@
     <string name="new_timer">New timer</string>
     <string name="pick_issue">Pick an issue</string>
     <string name="timer">Timer</string>
+    <string name="new_version_banner_md">✨ New version available! [Download on GitHub](%1$s)</string>
     
     <!-- Commit/Timer -->
     <string name="duration_label">⏳ Duration</string>
@@ -23,7 +24,7 @@
     <!-- Settings -->
     <string name="credentials_title">🔐 Credentials</string>
     <string name="credentials_description">Sign In by providing necessary credentials.</string>
-    <string name="credentials_instructions">Jira API token is used to sync your profile and search issues. Tempo API token is used to synchronize worklogs with Tempo.\nInstructions on how to generate TBD.</string>
+    <string name="credentials_instructions_md">Jira API token is used to sync your profile and search issues. Tempo API token is used to synchronize worklogs with Tempo. [Instructions here](https://github.com/matejsemancik/tempo-timer?tab=readme-ov-file#getting-started).</string>
     <string name="jira_url">Jira URL</string>
     <string name="jira_email">Atlassian account e-mail</string>
     <string name="jira_email_placeholder">you@corporate.org</string>
