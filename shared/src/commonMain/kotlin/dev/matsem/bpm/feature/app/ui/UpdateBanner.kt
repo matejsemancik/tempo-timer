@@ -41,7 +41,7 @@ import dev.matsem.bpm.tooling.Constants
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun NewVersionRow(
+fun UpdateBanner(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
 ) {
