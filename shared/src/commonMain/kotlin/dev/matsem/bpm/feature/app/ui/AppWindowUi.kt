@@ -121,7 +121,11 @@ fun AppWindowUi(
                         enter = slideInVertically { it },
                         exit = slideOutVertically { it }
                     ) {
-                        UpdateBanner(Modifier.fillMaxWidth(), onDismiss = actions::onUpdateBannerDismissClick)
+                        UpdateBanner(
+                            modifier = Modifier.fillMaxWidth(), 
+                            appVersion = state.latestAppVersion,
+                            onDismiss = actions::onUpdateBannerDismissClick
+                        )
                     }
                     BottomAppBar(
                         actions = {

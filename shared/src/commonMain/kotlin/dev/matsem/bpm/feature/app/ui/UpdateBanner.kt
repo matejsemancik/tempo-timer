@@ -35,6 +35,7 @@ import bpm_tracker.shared.generated.resources.new_version_banner_md
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.markdownColor
 import com.mikepenz.markdown.m3.markdownTypography
+import dev.matsem.bpm.data.repo.model.AppVersion
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.tooling.Constants
@@ -43,6 +44,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun UpdateBanner(
     modifier: Modifier = Modifier,
+    appVersion: AppVersion? = null,
     onDismiss: () -> Unit,
 ) {
     val transition = rememberInfiniteTransition(label = "gradient")
@@ -54,6 +56,9 @@ fun UpdateBanner(
             repeatMode = RepeatMode.Restart,
         )
     )
+
+    // Use appVersion.releaseUrl if available, otherwise fall back to Constants.LatestReleaseUrl
+    val releaseUrl = appVersion?.releaseUrl ?: Constants.LatestReleaseUrl
 
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Row(
@@ -73,7 +78,7 @@ fun UpdateBanner(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Markdown(
-                content = stringResource(Res.string.new_version_banner_md, Constants.LatestReleaseUrl),
+                content = stringResource(Res.string.new_version_banner_md, releaseUrl),
                 modifier = Modifier,
                 typography = markdownTypography(
                     text = BpmTheme.typography.bodyMedium,

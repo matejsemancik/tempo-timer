@@ -2,10 +2,14 @@ package dev.matsem.bpm.injection.module
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import dev.matsem.bpm.data.repo.model.Credentials
+import dev.matsem.bpm.data.service.github.GitHubApi
+import dev.matsem.bpm.data.service.github.GitHubApiManager
+import dev.matsem.bpm.data.service.github.GitHubApiManagerImpl
 import dev.matsem.bpm.data.service.jira.JiraApi
 import dev.matsem.bpm.data.service.jira.JiraApiManager
 import dev.matsem.bpm.data.service.jira.JiraApiManagerImpl
 import dev.matsem.bpm.data.service.plugin.ContentNegotiationPlugin
+import dev.matsem.bpm.data.service.plugin.GitHubHeadersPlugin
 import dev.matsem.bpm.data.service.plugin.JiraAuthPlugin
 import dev.matsem.bpm.data.service.plugin.LoggingPlugin
 import dev.matsem.bpm.data.service.plugin.TempoAuthPlugin
@@ -17,6 +21,7 @@ import dev.matsem.bpm.tooling.Constants
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.logging.LogLevel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
@@ -36,12 +41,41 @@ private fun httpClientPluginsModule() = module {
     factory { (email: String, apiToken: String) -> JiraAuthPlugin(email, apiToken) }
     factory { (apiToken: String) -> TempoAuthPlugin(apiToken) }
     factory { TempoDefaultHeadersPlugin() }
+    factoryOf(::GitHubHeadersPlugin)
 }
 
 private fun apiClientsModule() = module {
 
     singleOf(::JiraApiManagerImpl) bind JiraApiManager::class
     singleOf(::TempoApiManagerImpl) bind TempoApiManager::class
+    singleOf(::GitHubApiManagerImpl) bind GitHubApiManager::class
+
+    // GitHub API doesn't need session scope or credentials
+    // GitHub HTTP client
+    single<HttpClient>(named<GitHubApi>()) {
+        val plugins = listOf(
+            get<ContentNegotiationPlugin>(),
+            get<GitHubHeadersPlugin>(),
+            get<LoggingPlugin>(parameters = { parametersOf(LogLevel.BODY) })
+        )
+
+        get<HttpClient>(parameters = { parametersOf(plugins) })
+    }
+
+    // GitHub Ktorfit
+    single<Ktorfit>(named<GitHubApi>()) {
+        Ktorfit.Builder()
+            .baseUrl(Constants.GitHubApiUrl)
+            .httpClient(get<HttpClient>(named<GitHubApi>()))
+            .build()
+    }
+
+    // GitHub API
+    single<GitHubApi> {
+        val ktorfit: Ktorfit = get(named<GitHubApi>())
+        @Suppress("DEPRECATION")
+        ktorfit.create()
+    }
 
     scope<Credentials> {
 

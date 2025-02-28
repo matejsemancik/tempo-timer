@@ -1,5 +1,6 @@
 package dev.matsem.bpm.feature.app.presentation
 
+import dev.matsem.bpm.data.repo.model.AppVersion
 import dev.matsem.bpm.data.repo.model.Timer
 
 sealed interface AppWindowSheet {
@@ -10,5 +11,6 @@ sealed interface AppWindowSheet {
 
 data class AppWindowState(
     val newVersionBannerVisible: Boolean = false,
+    val latestAppVersion: AppVersion? = null,
     val sheet: AppWindowSheet? = null,
 )
