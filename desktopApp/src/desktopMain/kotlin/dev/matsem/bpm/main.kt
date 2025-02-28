@@ -27,6 +27,7 @@ import bpm_tracker.desktopapp.generated.resources.Res
 import bpm_tracker.desktopapp.generated.resources.launcher_icon
 import dev.matsem.bpm.feature.app.ui.AppUi
 import dev.matsem.bpm.injection.AppInjection
+import org.jetbrains.compose.reload.DevelopmentEntryPoint
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.KoinContext
 import java.awt.Desktop
@@ -93,6 +94,8 @@ fun ApplicationScope.MainApplication() {
             }
         }
     ) {
-        AppUi()
+        DevelopmentEntryPoint {
+            AppUi()
+        }
     }
 }

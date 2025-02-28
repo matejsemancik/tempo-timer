@@ -12,6 +12,9 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+
+        // https://github.com/JetBrains/compose-hot-reload?tab=readme-ov-file#add-repository
+        maven("https://packages.jetbrains.team/maven/p/firework/dev")
     }
 }
 
@@ -25,7 +28,14 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+
+        // https://github.com/JetBrains/compose-hot-reload?tab=readme-ov-file#add-repository
+        maven("https://packages.jetbrains.team/maven/p/firework/dev")
     }
+}
+
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
 include(":desktopApp")
