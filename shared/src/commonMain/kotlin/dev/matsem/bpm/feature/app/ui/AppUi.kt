@@ -1,6 +1,10 @@
 package dev.matsem.bpm.feature.app.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -71,6 +75,7 @@ fun AppUi() {
     var isSettingsOpen by rememberSaveable { mutableStateOf(false) }
     var isSearchOpen by rememberSaveable { mutableStateOf(false) }
     var commitDialogTimer: Timer? by rememberSaveable { mutableStateOf(null) }
+    var updateBannerVisible by remember { mutableStateOf(false) }
 
     val trackerScreen: TrackerScreen = koinInject()
     val platform: Platform = koinInject()
@@ -108,47 +113,56 @@ fun AppUi() {
                 }
             },
             bottomBar = {
-                BottomAppBar(
-                    actions = {
-                        IconButton(
-                            onClick = { darkMode = !darkMode })
-                        {
-                            Icon(
-                                if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
-                                contentDescription = stringResource(Res.string.toggle_dark_mode),
-                            )
-                        }
-
-                        IconButton(
-                            onClick = { isSettingsOpen = true }
-                        ) {
-                            Icon(
-                                Icons.Filled.Settings,
-                                contentDescription = stringResource(Res.string.settings),
-                            )
-                        }
-                        Text(
-                            "${stringResource(Res.string.app_name)} (${platform.getVersionString()})",
-                            style = BpmTheme.typography.labelMedium,
-                            color = BpmTheme.colorScheme.outline,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
-                        )
-                    },
-                    floatingActionButton = {
-                        ExtendedFloatingActionButton(
-                            onClick = { isSearchOpen = true },
-                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                        ) {
-                            Icon(Icons.Rounded.Add, contentDescription = stringResource(Res.string.new_timer))
-                            HorizontalSpacer(Grid.d1)
-                            Text(
-                                text = stringResource(Res.string.new_timer),
-                                style = BpmTheme.typography.bodyMedium.centeredVertically()
-                            )
-                        }
+                Column {
+                    AnimatedVisibility(
+                        visible = updateBannerVisible,
+                        enter = slideInVertically { it },
+                        exit = slideOutVertically { it }
+                    ) {
+                        NewVersionRow(Modifier.fillMaxWidth(), onDismiss = { updateBannerVisible = false })
                     }
-                )
+                    BottomAppBar(
+                        actions = {
+                            IconButton(
+                                onClick = { darkMode = !darkMode })
+                            {
+                                Icon(
+                                    if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
+                                    contentDescription = stringResource(Res.string.toggle_dark_mode),
+                                )
+                            }
+
+                            IconButton(
+                                onClick = { isSettingsOpen = true }
+                            ) {
+                                Icon(
+                                    Icons.Filled.Settings,
+                                    contentDescription = stringResource(Res.string.settings),
+                                )
+                            }
+                            Text(
+                                "${stringResource(Res.string.app_name)} (${platform.getVersionString()})",
+                                style = BpmTheme.typography.labelMedium,
+                                color = BpmTheme.colorScheme.outline,
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = Grid.d3)
+                            )
+                        },
+                        floatingActionButton = {
+                            ExtendedFloatingActionButton(
+                                onClick = { isSearchOpen = true },
+                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                            ) {
+                                Icon(Icons.Rounded.Add, contentDescription = stringResource(Res.string.new_timer))
+                                HorizontalSpacer(Grid.d1)
+                                Text(
+                                    text = stringResource(Res.string.new_timer),
+                                    style = BpmTheme.typography.bodyMedium.centeredVertically()
+                                )
+                            }
+                        }
+                    )
+                }
             }
         ) { contentPadding ->
             TrackerScreenUi(
