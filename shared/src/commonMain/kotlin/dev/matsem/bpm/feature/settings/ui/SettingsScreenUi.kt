@@ -16,10 +16,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bpm_tracker.shared.generated.resources.Res
 import bpm_tracker.shared.generated.resources.credentials_description
-import bpm_tracker.shared.generated.resources.credentials_instructions
+import bpm_tracker.shared.generated.resources.credentials_instructions_md
 import bpm_tracker.shared.generated.resources.credentials_title
 import bpm_tracker.shared.generated.resources.jira_api_token
 import bpm_tracker.shared.generated.resources.jira_email
@@ -29,6 +30,8 @@ import bpm_tracker.shared.generated.resources.sign_in
 import bpm_tracker.shared.generated.resources.sign_out
 import bpm_tracker.shared.generated.resources.tempo_api_token
 import coil3.compose.AsyncImage
+import com.mikepenz.markdown.m3.Markdown
+import com.mikepenz.markdown.m3.markdownTypography
 import dev.matsem.bpm.data.repo.model.User
 import dev.matsem.bpm.design.button.AppButton
 import dev.matsem.bpm.design.button.AppOutlinedButton
@@ -90,11 +93,13 @@ private fun SignedOutSection(
             style = BpmTheme.typography.bodyMedium,
         )
         VerticalSpacer(Grid.d1)
-        Text(
-            text = stringResource(Res.string.credentials_instructions),
-            style = BpmTheme.typography.labelMedium,
+        Markdown(
+            content = stringResource(Res.string.credentials_instructions_md),
+            typography = markdownTypography(
+                paragraph = BpmTheme.typography.labelMedium,
+                link = BpmTheme.typography.labelMedium.copy(textDecoration = TextDecoration.Underline)
+            )
         )
-
         VerticalSpacer(Grid.d2)
         LabeledTextField(stringResource(Res.string.jira_url)) {
             AppTextField(

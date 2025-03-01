@@ -1,5 +1,7 @@
 package dev.matsem.bpm.injection.module
 
+import dev.matsem.bpm.feature.app.presentation.AppWindowModel
+import dev.matsem.bpm.feature.app.presentation.AppWindow
 import dev.matsem.bpm.feature.commit.presentation.CommitModel
 import dev.matsem.bpm.feature.commit.presentation.CommitScreen
 import dev.matsem.bpm.feature.search.presentation.SearchModel
@@ -14,6 +16,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal fun featureModule() = module {
+    singleOf(::AppWindowModel) bind AppWindow::class
     singleOf(::TrackerModel) bind TrackerScreen::class
     singleOf(::SettingsModel) bind SettingsScreen::class
     singleOf(::SearchModel) bind SearchScreen::class

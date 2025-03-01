@@ -57,7 +57,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun CommitScreenUi(
     screen: CommitScreen,
-    onDismiss: () -> Unit,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state by screen.state.collectAsStateWithLifecycle()
@@ -69,7 +69,7 @@ fun CommitScreenUi(
 
     EventEffect(screen.events) { event ->
         when(event) {
-           CommitEvent.Dismiss -> onDismiss()
+           CommitEvent.Dismiss -> onDismissRequest()
         }
     }
 }

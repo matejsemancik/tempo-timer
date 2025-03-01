@@ -13,6 +13,7 @@ kotlin {
 
     sourceSets {
         val desktopMain by getting
+        val commonTest by getting
 
         commonMain.dependencies {
             // compose
@@ -22,6 +23,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.markdownRenderer)
 
             // kx
             implementation(libs.kotlinx.collections)
@@ -50,6 +52,10 @@ kotlin {
             // database
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+        }
+
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
 
         desktopMain.dependencies {

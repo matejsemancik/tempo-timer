@@ -1,5 +1,7 @@
 package dev.matsem.bpm.injection.module
 
+import dev.matsem.bpm.data.repo.GitHubRepo
+import dev.matsem.bpm.data.repo.GitHubRepoImpl
 import dev.matsem.bpm.data.repo.IssueRepo
 import dev.matsem.bpm.data.repo.IssueRepoImpl
 import dev.matsem.bpm.data.repo.SessionRepo
@@ -17,4 +19,5 @@ internal fun repositoryModule() = module {
     singleOf(::IssueRepoImpl) bind IssueRepo::class
     singleOf(::TimerRepoImpl) bind TimerRepo::class
     singleOf(::WorklogRepoImpl) bind WorklogRepo::class
+    singleOf(::GitHubRepoImpl) bind GitHubRepo::class
 }
