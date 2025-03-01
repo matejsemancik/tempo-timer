@@ -16,7 +16,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 fun BpmTheme(
     isDark: Boolean = isSystemInDarkTheme(),
     dimensions: BpmDimensions = desktopBpmDimensions(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colorScheme = if (isDark) {

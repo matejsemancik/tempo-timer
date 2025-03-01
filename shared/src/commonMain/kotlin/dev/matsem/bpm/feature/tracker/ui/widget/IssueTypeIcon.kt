@@ -7,7 +7,7 @@ import coil3.compose.AsyncImage
 @Composable
 fun IssueTypeIcon(
     url: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AsyncImage(
         model = url,

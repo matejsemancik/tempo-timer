@@ -13,12 +13,12 @@ data class TempoResultsResponse<T : Any>(
     val results: List<T>,
 
     @SerialName("self")
-    val self: String
+    val self: String,
 )
 
 @Serializable
 data class TempoResultsMetadata(
 
     @SerialName("count")
-    val count: Int
+    val count: Int,
 )

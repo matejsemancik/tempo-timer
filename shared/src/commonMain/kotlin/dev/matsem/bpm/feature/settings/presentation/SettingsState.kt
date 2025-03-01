@@ -13,6 +13,6 @@ sealed interface SettingsState {
     ) : SettingsState
 
     data class SignedIn(
-        val user: User
+        val user: User,
     ) : SettingsState
 }

@@ -18,7 +18,7 @@ interface ApplicationPersistence {
 }
 
 internal class ApplicationPersistenceImpl(
-    private val handler: JsonPersistenceHandler
+    private val handler: JsonPersistenceHandler,
 ) : ApplicationPersistence {
 
     companion object {

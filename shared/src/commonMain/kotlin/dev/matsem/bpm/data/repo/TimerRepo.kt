@@ -21,14 +21,19 @@ interface TimerRepo {
 
 internal class TimerRepoImpl(
     private val timerDao: TimerDao,
-    private val clock: Clock
+    private val clock: Clock,
 ) : TimerRepo {
 
     override fun getTimers(): Flow<List<Timer>> =
         timerDao.getTimers().map { timerList -> timerList.map { dbTimber -> dbTimber.toDomainModel() } }
 
     override suspend fun createTimerForIssue(issue: Issue) {
-        val newTimer = Timer_Database(jiraIssueId = issue.id, accumulationMs = 0L, lastStartedAt = clock.now(), createdAt = clock.now())
+        val newTimer = Timer_Database(
+            jiraIssueId = issue.id,
+            accumulationMs = 0L,
+            lastStartedAt = clock.now(),
+            createdAt = clock.now()
+        )
         timerDao.addOrUpdateTimer(newTimer, issue.toDbModel())
     }
 

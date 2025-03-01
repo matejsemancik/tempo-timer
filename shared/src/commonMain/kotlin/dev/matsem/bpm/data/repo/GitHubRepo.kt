@@ -9,9 +9,9 @@ interface GitHubRepo {
 }
 
 class GitHubRepoImpl(
-    private val gitHubApiManager: GitHubApiManager
+    private val gitHubApiManager: GitHubApiManager,
 ) : GitHubRepo {
-    
+
     override suspend fun getLatestAppVersion(): AppVersion {
         return gitHubApiManager.getLatestRelease().toAppVersion()
     }

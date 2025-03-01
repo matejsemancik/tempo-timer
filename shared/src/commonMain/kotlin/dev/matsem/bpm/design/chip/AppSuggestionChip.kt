@@ -11,7 +11,7 @@ import dev.matsem.bpm.design.theme.BpmTheme
 fun AppSuggestionChip(
     label: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     SuggestionChip(
         modifier = modifier,

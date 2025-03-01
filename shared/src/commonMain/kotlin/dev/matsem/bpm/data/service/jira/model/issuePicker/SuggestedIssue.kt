@@ -16,5 +16,5 @@ data class SuggestedIssue(
     val key: String,
 
     @SerialName("summaryText")
-    val summary: String
+    val summary: String,
 )

@@ -33,14 +33,14 @@ data class Worklog(
     val billableSeconds: Long? = null,
 
     @SerialName("updatedAt")
-    val updatedAt: Instant
+    val updatedAt: Instant,
 ) {
     @Serializable
     data class User(
         @SerialName("accountId")
         val accountId: String,
         @SerialName("self")
-        val self: String
+        val self: String,
     )
 
     @Serializable
@@ -48,6 +48,6 @@ data class Worklog(
         @SerialName("id")
         val id: Long,
         @SerialName("self")
-        val self: String
+        val self: String,
     )
 }

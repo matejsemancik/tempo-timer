@@ -4,7 +4,7 @@
     <string name="close">Close</string>
     <string name="delete">Delete</string>
     <string name="remove">Remove</string>
-    
+
     <!-- App -->
     <string name="app_name">tempo-timer</string>
     <string name="toggle_dark_mode">Toggle dark mode</string>
@@ -13,18 +13,21 @@
     <string name="pick_issue">Pick an issue</string>
     <string name="timer">Timer</string>
     <string name="new_version_banner_md">✨ New version available! [Download on GitHub](%1$s)</string>
-    
+
     <!-- Commit/Timer -->
     <string name="duration_label">⏳ Duration</string>
     <string name="duration_placeholder">e.g. \"1h 20m\"</string>
     <string name="description_label">📜 Description</string>
     <string name="delete_timer">Delete timer</string>
     <string name="log_time">Log Time</string>
-    
+
     <!-- Settings -->
     <string name="credentials_title">🔐 Credentials</string>
     <string name="credentials_description">Sign In by providing necessary credentials.</string>
-    <string name="credentials_instructions_md">Jira API token is used to sync your profile and search issues. Tempo API token is used to synchronize worklogs with Tempo. [Instructions here](https://github.com/matejsemancik/tempo-timer?tab=readme-ov-file#getting-started).</string>
+    <string name="credentials_instructions_md">Jira API token is used to sync your profile and search issues. Tempo API
+        token is used to synchronize worklogs with Tempo. [Instructions
+        here](https://github.com/matejsemancik/tempo-timer?tab=readme-ov-file#getting-started).
+    </string>
     <string name="jira_url">Jira URL</string>
     <string name="jira_email">Atlassian account e-mail</string>
     <string name="jira_email_placeholder">you@corporate.org</string>
@@ -32,13 +35,14 @@
     <string name="tempo_api_token">Tempo API token</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
-    
+
     <!-- Search -->
     <string name="search_placeholder">Issue key, or summary, or try your luck...</string>
-    
+
     <!-- Tracker -->
     <string name="favorites_section">⭐ Favourites</string>
     <string name="timers_section">⏳ Timers</string>
     <string name="no_timers">No running timers</string>
-    <string name="start_timer_instructions">Start a new timer by clicking on Favourite,\nor from menu bar down there 👇</string>
+    <string name="start_timer_instructions">Start a new timer by clicking on Favourite,\nor from menu bar down there 👇
+    </string>
 </resources>

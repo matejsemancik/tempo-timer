@@ -20,7 +20,7 @@ import dev.matsem.bpm.design.input.AppTextField
 internal fun PasswordTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
     AppTextField(
@@ -40,7 +40,7 @@ internal fun PasswordTextField(
 private fun PasswordRevealIcon(
     isPasswordVisible: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         modifier = modifier,

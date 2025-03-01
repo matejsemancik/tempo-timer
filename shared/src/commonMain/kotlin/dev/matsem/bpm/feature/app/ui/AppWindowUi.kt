@@ -122,7 +122,7 @@ fun AppWindowUi(
                         exit = slideOutVertically { it }
                     ) {
                         UpdateBanner(
-                            modifier = Modifier.fillMaxWidth(), 
+                            modifier = Modifier.fillMaxWidth(),
                             appVersion = state.latestAppVersion,
                             onDismiss = actions::onUpdateBannerDismissClick
                         )

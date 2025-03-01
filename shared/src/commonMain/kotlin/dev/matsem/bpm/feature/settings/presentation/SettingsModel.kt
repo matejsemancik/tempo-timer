@@ -27,6 +27,7 @@ internal class SettingsModel(
             }
         }
     }
+
     override val actions: SettingsActions = object : SettingsActions {
 
         override fun onJiraCloudName(input: TextFieldValue) = updateState {

@@ -24,7 +24,7 @@ private const val SearchInputDebounceMs = 250L
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 internal class SearchModel(
-    private val issueRepo: IssueRepo
+    private val issueRepo: IssueRepo,
 ) : BaseModel<SearchState, SearchEvent>(SearchState()), SearchScreen {
 
     override suspend fun onStart() {

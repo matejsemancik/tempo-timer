@@ -12,7 +12,7 @@ data class PageableTempoResponse<T : Any>(
     val results: List<T>,
 
     @SerialName("self")
-    val self: String
+    val self: String,
 )
 
 @Serializable
@@ -31,5 +31,5 @@ data class PageableTempoMetadata(
     val next: String? = null,
 
     @SerialName("previous")
-    val previous: String? = null
+    val previous: String? = null,
 )

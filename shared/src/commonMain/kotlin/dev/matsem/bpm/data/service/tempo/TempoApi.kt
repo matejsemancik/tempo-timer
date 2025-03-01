@@ -19,12 +19,12 @@ interface TempoApi {
         @Query("from") from: LocalDate,
         @Query("to") to: LocalDate,
         @Query("offset") offset: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
     ): PageableTempoResponse<Worklog>
 
     @GET("")
     suspend fun getWorklogs(
-        @Url url: String
+        @Url url: String,
     ): PageableTempoResponse<Worklog>
 
     @POST("worklogs")
