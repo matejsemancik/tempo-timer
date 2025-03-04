@@ -1,5 +1,7 @@
 package dev.matsem.bpm.injection.module
 
+import dev.matsem.bpm.data.operation.UndoStack
+import dev.matsem.bpm.data.operation.UndoStackImpl
 import dev.matsem.bpm.data.repo.GitHubRepo
 import dev.matsem.bpm.data.repo.GitHubRepoImpl
 import dev.matsem.bpm.data.repo.IssueRepo
@@ -20,4 +22,5 @@ internal fun repositoryModule() = module {
     singleOf(::TimerRepoImpl) bind TimerRepo::class
     singleOf(::WorklogRepoImpl) bind WorklogRepo::class
     singleOf(::GitHubRepoImpl) bind GitHubRepo::class
+    singleOf(::UndoStackImpl) bind UndoStack::class
 }

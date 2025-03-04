@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.toAwtImage
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalDensity
@@ -25,11 +24,15 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import bpm_tracker.desktopapp.generated.resources.Res
 import bpm_tracker.desktopapp.generated.resources.launcher_icon
+import dev.matsem.bpm.feature.app.presentation.AppWindow
 import dev.matsem.bpm.feature.app.ui.AppWindowUi
 import dev.matsem.bpm.injection.AppInjection
+import dev.matsem.bpm.tooling.Platform
+import dev.matsem.bpm.tooling.isMetaOrCtrlPressed
 import org.jetbrains.compose.reload.DevelopmentEntryPoint
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.KoinContext
+import org.koin.compose.koinInject
 import java.awt.Desktop
 import java.awt.Taskbar
 import java.awt.desktop.AppReopenedListener
@@ -74,6 +77,9 @@ fun ApplicationScope.MainApplication() {
         }
     }
 
+    val appWindow: AppWindow = koinInject()
+    val platform: Platform = koinInject()
+
     Window(
         state = windowState,
         onCloseRequest = {
@@ -85,8 +91,17 @@ fun ApplicationScope.MainApplication() {
         visible = isOpen,
         onPreviewKeyEvent = { keyEvent ->
             when {
-                keyEvent.type == KeyEventType.KeyDown && keyEvent.isMetaPressed && keyEvent.key == Key.W -> {
+                keyEvent.type != KeyEventType.KeyDown -> {
+                    false
+                }
+
+                keyEvent.isMetaOrCtrlPressed(platform) && keyEvent.key == Key.W -> {
                     isOpen = false
+                    true
+                }
+
+                keyEvent.isMetaOrCtrlPressed(platform) && keyEvent.key == Key.Z -> {
+                    appWindow.actions.onUndo()
                     true
                 }
 
@@ -95,7 +110,7 @@ fun ApplicationScope.MainApplication() {
         }
     ) {
         DevelopmentEntryPoint {
-            AppWindowUi()
+            AppWindowUi(window = appWindow)
         }
     }
 }

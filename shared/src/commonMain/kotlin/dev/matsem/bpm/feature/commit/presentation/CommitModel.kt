@@ -87,7 +87,7 @@ internal class CommitModel(
 
         override fun onDeleteClick() {
             coroutineScope.launch {
-                timerRepo.deleteTimer(args.timer.id)
+                timerRepo.deleteTimer(args.timer)
                 sendEvent(CommitEvent.Dismiss)
             }
         }
@@ -113,7 +113,7 @@ internal class CommitModel(
                         timeSpent = duration,
                         description = state.value.descriptionInput.text.takeIf { it.isNotBlank() }
                     )
-                    timerRepo.deleteTimer(args.timer.id)
+                    timerRepo.deleteTimer(args.timer)
                 }.fold(
                     onSuccess = {
                         sendEvent(CommitEvent.Dismiss)
