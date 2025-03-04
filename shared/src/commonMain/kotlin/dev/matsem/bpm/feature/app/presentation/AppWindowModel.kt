@@ -65,7 +65,7 @@ internal class AppWindowModel(
 
         override fun onUndo() {
             coroutineScope.launch {
-                undoStack.popUndo()
+                undoStack.undo()
             }
         }
     }
