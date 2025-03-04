@@ -25,11 +25,13 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import bpm_tracker.desktopapp.generated.resources.Res
 import bpm_tracker.desktopapp.generated.resources.launcher_icon
+import dev.matsem.bpm.feature.app.presentation.AppWindow
 import dev.matsem.bpm.feature.app.ui.AppWindowUi
 import dev.matsem.bpm.injection.AppInjection
 import org.jetbrains.compose.reload.DevelopmentEntryPoint
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.KoinContext
+import org.koin.compose.koinInject
 import java.awt.Desktop
 import java.awt.Taskbar
 import java.awt.desktop.AppReopenedListener
@@ -74,6 +76,8 @@ fun ApplicationScope.MainApplication() {
         }
     }
 
+    val appWindow: AppWindow = koinInject()
+
     Window(
         state = windowState,
         onCloseRequest = {
@@ -85,8 +89,17 @@ fun ApplicationScope.MainApplication() {
         visible = isOpen,
         onPreviewKeyEvent = { keyEvent ->
             when {
-                keyEvent.type == KeyEventType.KeyDown && keyEvent.isMetaPressed && keyEvent.key == Key.W -> {
+                keyEvent.type != KeyEventType.KeyDown -> {
+                    false
+                }
+
+                keyEvent.isMetaPressed && keyEvent.key == Key.W -> {
                     isOpen = false
+                    true
+                }
+
+                keyEvent.isMetaPressed && keyEvent.key == Key.Z -> {
+                    appWindow.actions.onUndo()
                     true
                 }
 
@@ -95,7 +108,7 @@ fun ApplicationScope.MainApplication() {
         }
     ) {
         DevelopmentEntryPoint {
-            AppWindowUi()
+            AppWindowUi(window = appWindow)
         }
     }
 }

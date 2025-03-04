@@ -3,6 +3,9 @@ package dev.matsem.bpm.data.repo
 import dev.matsem.bpm.data.database.dao.TimerDao
 import dev.matsem.bpm.data.mapping.IssueMapping.toDbModel
 import dev.matsem.bpm.data.mapping.TimerMapping.toDomainModel
+import dev.matsem.bpm.data.operation.UndoStack
+import dev.matsem.bpm.data.operation.Undoable
+import dev.matsem.bpm.data.operation.undoableOperation
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.Timer
 import kotlinx.coroutines.flow.Flow
@@ -16,12 +19,13 @@ interface TimerRepo {
     suspend fun createTimerForIssue(issue: Issue)
     suspend fun resumeTimer(id: Int)
     suspend fun pauseTimer(id: Int)
-    suspend fun deleteTimer(id: Int)
+    suspend fun deleteTimer(timer: Timer): Undoable<Timer>
 }
 
 internal class TimerRepoImpl(
     private val timerDao: TimerDao,
     private val clock: Clock,
+    private val undoStack: UndoStack,
 ) : TimerRepo {
 
     override fun getTimers(): Flow<List<Timer>> =
@@ -64,5 +68,21 @@ internal class TimerRepoImpl(
         timerDao.upsertTimer(newTimer)
     }
 
-    override suspend fun deleteTimer(id: Int) = timerDao.deleteTimer(id)
+    override suspend fun deleteTimer(timer: Timer): Undoable<Timer> = undoableOperation(
+        invoke = {
+            timerDao.deleteTimer(timer.id)
+            timer
+        },
+        undo = { timer ->
+            timerDao.addOrUpdateTimer(
+                timer = Timer_Database(
+                    jiraIssueId = timer.issue.id,
+                    accumulationMs = timer.state.finishedDuration.inWholeMilliseconds,
+                    lastStartedAt = timer.state.lastStartedAt,
+                    createdAt = timer.createdAt,
+                ),
+                jiraIssue = timer.issue.toDbModel()
+            )
+        }
+    ).also { undoStack.push(undoable = it) }
 }

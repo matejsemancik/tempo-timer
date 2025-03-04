@@ -1,6 +1,7 @@
 package dev.matsem.bpm.feature.app.presentation
 
 import dev.matsem.bpm.arch.BaseModel
+import dev.matsem.bpm.data.operation.UndoStack
 import dev.matsem.bpm.data.repo.GitHubRepo
 import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.tooling.Platform
@@ -11,6 +12,7 @@ import org.koin.core.component.KoinComponent
 internal class AppWindowModel(
     private val gitHubRepo: GitHubRepo,
     private val platform: Platform,
+    private val undoStack: UndoStack,
 ) : BaseModel<AppWindowState, Nothing>(
     defaultState = AppWindowState(newVersionBannerVisible = false)
 ), AppWindow, KoinComponent {
@@ -59,6 +61,12 @@ internal class AppWindowModel(
 
         override fun onDismissSheet() = updateState { state ->
             state.copy(sheet = null)
+        }
+
+        override fun onUndo() {
+            coroutineScope.launch {
+                undoStack.popUndo()
+            }
         }
     }
 }
