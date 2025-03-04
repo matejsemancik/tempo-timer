@@ -5,6 +5,9 @@ import dev.matsem.bpm.data.database.model.FavouriteIssue
 import dev.matsem.bpm.data.mapping.CredentialsMapping.toDomainModel
 import dev.matsem.bpm.data.mapping.IssueMapping.toDbModel
 import dev.matsem.bpm.data.mapping.IssueMapping.toDomainModel
+import dev.matsem.bpm.data.operation.UndoStack
+import dev.matsem.bpm.data.operation.Undoable
+import dev.matsem.bpm.data.operation.undoableOperation
 import dev.matsem.bpm.data.persistence.ApplicationPersistence
 import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.SearchResult
@@ -20,7 +23,7 @@ interface IssueRepo {
 
     suspend fun addFavouriteIssue(issue: Issue)
 
-    suspend fun removeFavouriteIssue(issue: Issue)
+    suspend fun removeFavouriteIssue(issue: Issue): Undoable<Issue>
 
     fun getFavouriteIssues(): Flow<List<Issue>>
 }
@@ -29,6 +32,7 @@ internal class IssueRepoImpl(
     private val jiraApiManager: JiraApiManager,
     private val applicationPersistence: ApplicationPersistence,
     private val jiraIssueDao: JiraIssueDao,
+    private val undoStack: UndoStack,
 ) : IssueRepo {
     override fun searchIssues(query: String): Flow<List<SearchResult>> = flow {
         val response = jiraApiManager.searchIssues(
@@ -57,8 +61,15 @@ internal class IssueRepoImpl(
         favourite = FavouriteIssue(jiraIssueId = issue.id)
     )
 
-    override suspend fun removeFavouriteIssue(issue: Issue) =
-        jiraIssueDao.removeFavouriteIssue(jiraIssueId = issue.id)
+    override suspend fun removeFavouriteIssue(issue: Issue) = undoableOperation(
+        invoke = {
+            jiraIssueDao.removeFavouriteIssue(jiraIssueId = issue.id)
+            issue
+        },
+        undo = {
+            addFavouriteIssue(issue)
+        }
+    ).also { undoStack.push(undoable = it) }
 
     override fun getFavouriteIssues(): Flow<List<Issue>> =
         jiraIssueDao.getFavouriteIssues().map { issueList -> issueList.map { issue -> issue.toDomainModel() } }
