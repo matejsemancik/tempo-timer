@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.toAwtImage
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalDensity
@@ -28,6 +27,8 @@ import bpm_tracker.desktopapp.generated.resources.launcher_icon
 import dev.matsem.bpm.feature.app.presentation.AppWindow
 import dev.matsem.bpm.feature.app.ui.AppWindowUi
 import dev.matsem.bpm.injection.AppInjection
+import dev.matsem.bpm.tooling.Platform
+import dev.matsem.bpm.tooling.isMetaOrCtrlPressed
 import org.jetbrains.compose.reload.DevelopmentEntryPoint
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.KoinContext
@@ -77,6 +78,7 @@ fun ApplicationScope.MainApplication() {
     }
 
     val appWindow: AppWindow = koinInject()
+    val platform: Platform = koinInject()
 
     Window(
         state = windowState,
@@ -93,12 +95,12 @@ fun ApplicationScope.MainApplication() {
                     false
                 }
 
-                keyEvent.isMetaPressed && keyEvent.key == Key.W -> {
+                keyEvent.isMetaOrCtrlPressed(platform) && keyEvent.key == Key.W -> {
                     isOpen = false
                     true
                 }
 
-                keyEvent.isMetaPressed && keyEvent.key == Key.Z -> {
+                keyEvent.isMetaOrCtrlPressed(platform) && keyEvent.key == Key.Z -> {
                     appWindow.actions.onUndo()
                     true
                 }
