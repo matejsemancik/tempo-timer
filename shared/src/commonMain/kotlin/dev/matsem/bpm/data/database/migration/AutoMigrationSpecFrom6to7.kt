@@ -32,8 +32,6 @@ class AutoMigrationSpecFrom6to7 : AutoMigrationSpec, KoinComponent {
             }
 
             val issueBrowseUrlPrefix = "${Constants.JiraApiUrl(jiraDomain)}browse/"
-
-            // For each entry in table 'jira_issue', take a 'key' field and set the field 'browse_url' to the string "https://example.com/browse/$key"
             connection.execSQL(
                 "UPDATE jira_issue SET browse_url = '$issueBrowseUrlPrefix' || key"
             )
