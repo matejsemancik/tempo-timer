@@ -5,6 +5,7 @@ data class Issue(
     val key: String,
     val summary: String,
     val iconUrl: String,
+    val browseUrl: String,
 )
 
 val MockIssueKeys = (1..100).map { "MTSM-$it" }
@@ -120,6 +121,7 @@ val MockIssues = MockIssueTitles
             id = index.toLong(),
             key = "MTSM-${index + 1}",
             summary = title,
-            iconUrl = ""
+            iconUrl = "",
+            browseUrl = ""
         )
     }

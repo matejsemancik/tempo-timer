@@ -1,5 +1,6 @@
 package dev.matsem.bpm.data.database
 
+import androidx.room.AutoMigration
 import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -16,7 +17,10 @@ import dev.matsem.bpm.data.database.typeConverter.JsonTypeConverters
 
 @Database(
     entities = [User::class, JiraIssue::class, FavouriteIssue::class, Timer::class],
-    version = 6
+    version = 7,
+    autoMigrations = [
+        AutoMigration(from = 6, to = 7)
+    ]
 )
 @TypeConverters(JsonTypeConverters::class)
 @ConstructedBy(AppDatabaseConstructor::class)
