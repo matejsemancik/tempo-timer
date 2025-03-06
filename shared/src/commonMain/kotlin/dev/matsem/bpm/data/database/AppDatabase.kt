@@ -1,5 +1,6 @@
 package dev.matsem.bpm.data.database
 
+import androidx.room.AutoMigration
 import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -8,6 +9,7 @@ import androidx.room.TypeConverters
 import dev.matsem.bpm.data.database.dao.JiraIssueDao
 import dev.matsem.bpm.data.database.dao.TimerDao
 import dev.matsem.bpm.data.database.dao.UserDao
+import dev.matsem.bpm.data.database.migration.AutoMigrationSpecFrom6to7
 import dev.matsem.bpm.data.database.model.FavouriteIssue
 import dev.matsem.bpm.data.database.model.JiraIssue
 import dev.matsem.bpm.data.database.model.Timer
@@ -16,7 +18,10 @@ import dev.matsem.bpm.data.database.typeConverter.JsonTypeConverters
 
 @Database(
     entities = [User::class, JiraIssue::class, FavouriteIssue::class, Timer::class],
-    version = 6
+    version = 7,
+    autoMigrations = [
+        AutoMigration(from = 6, to = 7, spec = AutoMigrationSpecFrom6to7::class)
+    ]
 )
 @TypeConverters(JsonTypeConverters::class)
 @ConstructedBy(AppDatabaseConstructor::class)
@@ -31,3 +36,4 @@ internal abstract class AppDatabase : RoomDatabase() {
 internal expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
     override fun initialize(): AppDatabase
 }
+

@@ -19,4 +19,7 @@ data class JiraIssue(
 
     @ColumnInfo(name = "icon_url")
     val iconUrl: String,
+
+    @ColumnInfo(name = "browse_url", defaultValue = "")
+    val browseUrl: String,
 )

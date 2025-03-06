@@ -10,6 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.PlatformContext
@@ -42,7 +47,21 @@ fun IssueTitleRow(
         HorizontalSpacer(Grid.d2)
         Column {
             Text(
-                text = issue.key,
+                text = buildAnnotatedString {
+                    append(issue.key)
+                    if (issue.browseUrl.isNotBlank()) {
+                        addLink(
+                            url = LinkAnnotation.Url(
+                                url = issue.browseUrl,
+                                styles = TextLinkStyles(
+                                    hoveredStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+                                ),
+                            ),
+                            start = 0,
+                            end = length
+                        )
+                    }
+                },
                 color = BpmTheme.colorScheme.outline,
                 style = BpmTheme.typography.labelSmall.centeredVertically(),
                 maxLines = 1,
