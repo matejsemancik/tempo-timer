@@ -2,6 +2,7 @@ package dev.matsem.bpm.feature.settings.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.arch.BaseModel
+import dev.matsem.bpm.data.repo.IssueRepo
 import dev.matsem.bpm.data.repo.SessionRepo
 import dev.matsem.bpm.data.repo.model.Credentials
 import dev.matsem.bpm.data.repo.model.User
@@ -9,6 +10,7 @@ import kotlinx.coroutines.launch
 
 internal class SettingsModel(
     private val sessionRepo: SessionRepo,
+    private val issueRepo: IssueRepo,
 ) : BaseModel<SettingsState, Nothing>(DefaultState), SettingsScreen {
 
     companion object {
@@ -86,7 +88,11 @@ internal class SettingsModel(
 
     private fun logout() {
         coroutineScope.launch {
+            println("logout")
+            issueRepo.deleteAllIssues()
+            println("delete all")
             sessionRepo.signOut()
+            println("done")
         }
     }
 }

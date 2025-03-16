@@ -1,6 +1,7 @@
 package dev.matsem.bpm.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
@@ -29,4 +30,7 @@ interface JiraIssueDao {
 
     @Query("SELECT * FROM jira_issue INNER JOIN favourite_issue ON favourite_issue.jira_issue_id = jira_issue.id")
     fun getFavouriteIssues(): Flow<List<JiraIssue>>
+
+    @Query("DELETE FROM jira_issue")
+    suspend fun deleteAllIssues()
 }
