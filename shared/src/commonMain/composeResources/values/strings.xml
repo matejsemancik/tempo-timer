@@ -7,8 +7,8 @@
 
     <!-- App -->
     <string name="bottom_nav_timer">Timer</string>
-    <string name="bottom_nav_logbook">Timer</string>
-    <string name="bottom_nav_settings">Timer</string>
+    <string name="bottom_nav_logbook">Logbook</string>
+    <string name="bottom_nav_settings">Settings</string>
     <string name="app_name">tempo-timer</string>
     <string name="toggle_dark_mode">Toggle dark mode</string>
     <string name="settings">Settings</string>
