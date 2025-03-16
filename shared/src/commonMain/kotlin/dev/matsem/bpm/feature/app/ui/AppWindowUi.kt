@@ -1,5 +1,6 @@
 package dev.matsem.bpm.feature.app.ui
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
@@ -42,9 +42,9 @@ import bpm_tracker.shared.generated.resources.Res
 import bpm_tracker.shared.generated.resources.app_name
 import bpm_tracker.shared.generated.resources.new_timer
 import bpm_tracker.shared.generated.resources.pick_issue
-import bpm_tracker.shared.generated.resources.settings
 import bpm_tracker.shared.generated.resources.timer
 import bpm_tracker.shared.generated.resources.toggle_dark_mode
+import dev.matsem.bpm.design.navigation.BottomNavigationBar
 import dev.matsem.bpm.design.sheet.GenericModalBottomSheet
 import dev.matsem.bpm.design.sheet.SheetHeader
 import dev.matsem.bpm.design.theme.BpmTheme
@@ -52,6 +52,7 @@ import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
 import dev.matsem.bpm.design.tooling.centeredVertically
 import dev.matsem.bpm.feature.app.presentation.AppWindow
+import dev.matsem.bpm.feature.app.presentation.AppWindowContent
 import dev.matsem.bpm.feature.app.presentation.AppWindowSheet
 import dev.matsem.bpm.feature.commit.presentation.CommitArgs
 import dev.matsem.bpm.feature.commit.ui.CommitScreenUi
@@ -129,19 +130,17 @@ fun AppWindowUi(
                     }
                     BottomAppBar(
                         actions = {
+                            HorizontalSpacer(BpmTheme.dimensions.horizontalContentPadding)
+                            BottomNavigationBar(
+                                items = state.navigationItems,
+                                onClick = actions::onNavigationBarClick
+                            )
                             IconButton(
                                 onClick = { darkMode = !darkMode })
                             {
                                 Icon(
                                     if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
                                     contentDescription = stringResource(Res.string.toggle_dark_mode),
-                                )
-                            }
-
-                            IconButton(onClick = actions::onSettingsClick) {
-                                Icon(
-                                    Icons.Filled.Settings,
-                                    contentDescription = stringResource(Res.string.settings),
                                 )
                             }
                             Text(
@@ -153,7 +152,7 @@ fun AppWindowUi(
                         },
                         floatingActionButton = {
                             ExtendedFloatingActionButton(
-                                onClick = actions::onSearchClick,
+                                onClick = actions::onNewTimerClick,
                                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                             ) {
@@ -169,14 +168,24 @@ fun AppWindowUi(
                 }
             }
         ) { contentPadding ->
-            TrackerScreenUi(
-                modifier = Modifier.fillMaxSize().padding(contentPadding),
-                screen = trackerScreen,
-                openCommitDialog = actions::onOpenCommitDialog
-            )
+            AnimatedContent(
+                targetState = state.navigationState.content,
+            ) { content ->
+                when (content) {
+                    AppWindowContent.Timer -> TrackerScreenUi(
+                        modifier = Modifier.fillMaxSize().padding(contentPadding),
+                        screen = trackerScreen,
+                        openCommitDialog = actions::onOpenCommitDialog
+                    )
+
+                    AppWindowContent.Settings -> SettingsScreenUi(
+                        modifier = Modifier.fillMaxSize().padding(contentPadding),
+                    )
+                }
+            }
         }
 
-        state.sheet?.let { appWindowSheet ->
+        state.navigationState.sheet?.let { appWindowSheet ->
             val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
             val coroutineScope = rememberCoroutineScope()
             GenericModalBottomSheet(
@@ -185,7 +194,6 @@ fun AppWindowUi(
                 header = {
                     SheetHeader(
                         title = when (appWindowSheet) {
-                            AppWindowSheet.Settings -> stringResource(Res.string.settings)
                             AppWindowSheet.Search -> stringResource(Res.string.pick_issue)
                             is AppWindowSheet.CommitDialog -> stringResource(Res.string.timer)
                         },
@@ -196,7 +204,6 @@ fun AppWindowUi(
                 }
             ) {
                 when (appWindowSheet) {
-                    AppWindowSheet.Settings -> SettingsScreenUi()
                     AppWindowSheet.Search -> SearchScreenUi(
                         onIssueSelected = { issue ->
                             actions.onDismissSheet()

@@ -6,6 +6,9 @@
     <string name="remove">Remove</string>
 
     <!-- App -->
+    <string name="bottom_nav_timer">Timer</string>
+    <string name="bottom_nav_logbook">Timer</string>
+    <string name="bottom_nav_settings">Timer</string>
     <string name="app_name">tempo-timer</string>
     <string name="toggle_dark_mode">Toggle dark mode</string>
     <string name="settings">Settings</string>
@@ -22,7 +25,9 @@
     <string name="log_time">Log Time</string>
 
     <!-- Settings -->
-    <string name="credentials_title">🔐 Credentials</string>
+    <string name="settings_app_section_title">⚙️ App</string>
+    <string name="settings_account_section_title">👤 Account</string>
+    <string name="settings_credentials_section_title">🔐 Sign In</string>
     <string name="credentials_description">Sign In by providing necessary credentials.</string>
     <string name="credentials_instructions_md">Jira API token is used to sync your profile and search issues. Tempo API
         token is used to synchronize worklogs with Tempo. [Instructions
