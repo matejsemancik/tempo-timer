@@ -1,9 +1,14 @@
 package dev.matsem.bpm.feature.app.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -170,6 +175,28 @@ fun AppWindowUi(
         ) { contentPadding ->
             AnimatedContent(
                 targetState = state.navigationState.content,
+                transitionSpec = {
+                    fun order(content: AppWindowContent) = when (content) {
+                        AppWindowContent.Timer -> 0
+                        AppWindowContent.Settings -> 1
+                    }
+
+                    val slideTowards = if (order(targetState) > order(initialState)) {
+                        AnimatedContentTransitionScope.SlideDirection.Start
+                    } else {
+                        AnimatedContentTransitionScope.SlideDirection.End
+                    }
+
+                    val enterTransition = fadeIn(
+                        animationSpec = tween(220, delayMillis = 90)
+                    ) + slideIntoContainer(towards = slideTowards) { it / 15 }
+
+                    val exitTransition = fadeOut(
+                        animationSpec = tween(90)
+                    ) + slideOutOfContainer(towards = slideTowards) { it / 15 }
+
+                    enterTransition togetherWith exitTransition
+                },
             ) { content ->
                 when (content) {
                     AppWindowContent.Timer -> TrackerScreenUi(
