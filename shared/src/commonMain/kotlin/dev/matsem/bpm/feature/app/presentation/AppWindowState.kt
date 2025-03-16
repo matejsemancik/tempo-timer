@@ -19,6 +19,9 @@ data class AppWindowState(
             NavigationBarItem.Timer(isSelected = navigationState.content == AppWindowContent.Timer),
             NavigationBarItem.Settings(isSelected = navigationState.content == AppWindowContent.Settings),
         )
+
+    val isFabVisible: Boolean
+        get() = navigationState.content == AppWindowContent.Timer
 }
 
 data class AppWindowNavigationState(

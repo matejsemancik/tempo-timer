@@ -53,7 +53,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
 
             packageName = "Tempo Timer"
-            packageVersion = System.getenv("DESKTOP_PACKAGE_VERSION")?.takeIf { it.isNotBlank() } ?: "1.0.0"
+            packageVersion = System.getenv("DESKTOP_PACKAGE_VERSION")?.takeIf { it.isNotBlank() } ?: "1.2.1"
             description = "Desktop client for Tempo Timesheets"
             copyright = "Copyright (c) 2025 Matej Semančík"
             vendor = "matsem.dev"

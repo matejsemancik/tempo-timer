@@ -3,13 +3,17 @@ package dev.matsem.bpm.feature.app.ui
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.input.key.Key
@@ -156,17 +161,26 @@ fun AppWindowUi(
                             )
                         },
                         floatingActionButton = {
-                            ExtendedFloatingActionButton(
-                                onClick = actions::onNewTimerClick,
-                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                            AnimatedVisibility(
+                                visible = state.isFabVisible,
+                                enter = fadeIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)),
+                                exit = fadeOut(animationSpec = spring(stiffness = Spring.StiffnessHigh))
                             ) {
-                                Icon(Icons.Rounded.Add, contentDescription = stringResource(Res.string.new_timer))
-                                HorizontalSpacer(Grid.d1)
-                                Text(
-                                    text = stringResource(Res.string.new_timer),
-                                    style = BpmTheme.typography.bodyMedium.centeredVertically()
-                                )
+                                ExtendedFloatingActionButton(
+                                    onClick = actions::onNewTimerClick,
+                                    containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                                ) {
+                                    Icon(
+                                        Icons.Rounded.Add,
+                                        contentDescription = stringResource(Res.string.new_timer)
+                                    )
+                                    HorizontalSpacer(Grid.d1)
+                                    Text(
+                                        text = stringResource(Res.string.new_timer),
+                                        style = BpmTheme.typography.bodyMedium.centeredVertically()
+                                    )
+                                }
                             }
                         }
                     )
