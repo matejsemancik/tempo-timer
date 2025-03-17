@@ -2,6 +2,7 @@ package dev.matsem.bpm.feature.settings.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,11 +22,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bpm_tracker.shared.generated.resources.Res
 import bpm_tracker.shared.generated.resources.credentials_description
 import bpm_tracker.shared.generated.resources.credentials_instructions_md
-import bpm_tracker.shared.generated.resources.credentials_title
 import bpm_tracker.shared.generated.resources.jira_api_token
 import bpm_tracker.shared.generated.resources.jira_email
 import bpm_tracker.shared.generated.resources.jira_email_placeholder
 import bpm_tracker.shared.generated.resources.jira_url
+import bpm_tracker.shared.generated.resources.settings_account_section_title
+import bpm_tracker.shared.generated.resources.settings_credentials_section_title
 import bpm_tracker.shared.generated.resources.sign_in
 import bpm_tracker.shared.generated.resources.sign_out
 import bpm_tracker.shared.generated.resources.tempo_api_token
@@ -65,12 +67,15 @@ fun SettingsScreenUi(
     actions: SettingsActions,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier.verticalScroll(rememberScrollState())) {
-        when (state) {
-            is SettingsState.SignedOut -> SignedOutSection(state, actions)
-            is SettingsState.SignedIn -> SignedInSection(state, actions)
+    val scrollState = rememberScrollState()
+    Box {
+        Column(modifier.verticalScroll(scrollState)) {
+            VerticalSpacer(Grid.d3)
+            when (state) {
+                is SettingsState.SignedOut -> SignedOutSection(state, actions)
+                is SettingsState.SignedIn -> SignedInSection(state, actions)
+            }
         }
-        VerticalSpacer(Grid.d3)
     }
 }
 
@@ -84,7 +89,7 @@ private fun SignedOutSection(
         modifier = modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
     ) {
         Text(
-            text = stringResource(Res.string.credentials_title),
+            text = stringResource(Res.string.settings_credentials_section_title),
             style = BpmTheme.typography.titleMedium,
         )
         VerticalSpacer(Grid.d1)
@@ -161,36 +166,42 @@ private fun SignedInSection(
     actions: SettingsActions,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AsyncImage(
-            model = state.user.avatarUrl,
-            contentDescription = null,
-            modifier = Modifier
-                .size(Grid.d9)
-                .clip(CircleShape)
-                .background(BpmTheme.colorScheme.inverseOnSurface)
+    Column(modifier = modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)) {
+        Text(
+            stringResource(Res.string.settings_account_section_title),
+            style = BpmTheme.typography.titleMedium,
         )
-        HorizontalSpacer(Grid.d2)
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = state.user.displayName,
-                style = BpmTheme.typography.bodyLarge.centeredVertically(),
-                color = BpmTheme.colorScheme.onSurface
+        VerticalSpacer(Grid.d2)
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                model = state.user.avatarUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(Grid.d9)
+                    .clip(CircleShape)
+                    .background(BpmTheme.colorScheme.inverseOnSurface)
             )
-            VerticalSpacer(Grid.d0_5)
-            Text(
-                text = state.user.email,
-                style = BpmTheme.typography.labelLarge.centeredVertically(),
-                color = BpmTheme.colorScheme.outline
+            HorizontalSpacer(Grid.d2)
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = state.user.displayName,
+                    style = BpmTheme.typography.bodyLarge.centeredVertically(),
+                    color = BpmTheme.colorScheme.onSurface
+                )
+                VerticalSpacer(Grid.d0_5)
+                Text(
+                    text = state.user.email,
+                    style = BpmTheme.typography.labelLarge.centeredVertically(),
+                    color = BpmTheme.colorScheme.outline
+                )
+            }
+            AppOutlinedButton(
+                text = stringResource(Res.string.sign_out),
+                onClick = actions::onLogoutClick,
             )
         }
-        AppOutlinedButton(
-            text = stringResource(Res.string.sign_out),
-            onClick = actions::onLogoutClick,
-        )
     }
 }
 

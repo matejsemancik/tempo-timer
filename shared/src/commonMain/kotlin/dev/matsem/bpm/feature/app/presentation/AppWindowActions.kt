@@ -1,11 +1,12 @@
 package dev.matsem.bpm.feature.app.presentation
 
 import dev.matsem.bpm.data.repo.model.Timer
+import dev.matsem.bpm.design.navigation.NavigationBarItem
 
 interface AppWindowActions {
 
-    fun onSettingsClick()
-    fun onSearchClick()
+    fun onNavigationBarClick(item: NavigationBarItem)
+    fun onNewTimerClick()
     fun onOpenCommitDialog(timer: Timer)
 
     fun onUpdateBannerDismissClick()
@@ -15,8 +16,8 @@ interface AppWindowActions {
 
     companion object {
         fun noOp() = object : AppWindowActions {
-            override fun onSettingsClick() = Unit
-            override fun onSearchClick() = Unit
+            override fun onNavigationBarClick(item: NavigationBarItem) = Unit
+            override fun onNewTimerClick() = Unit
             override fun onOpenCommitDialog(timer: Timer) = Unit
             override fun onUpdateBannerDismissClick() = Unit
             override fun onDismissSheet() = Unit

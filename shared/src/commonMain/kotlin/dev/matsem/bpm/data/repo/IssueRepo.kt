@@ -24,6 +24,8 @@ interface IssueRepo {
     suspend fun removeFavouriteIssue(issue: Issue)
 
     fun getFavouriteIssues(): Flow<List<Issue>>
+
+    suspend fun deleteAllIssues()
 }
 
 internal class IssueRepoImpl(
@@ -70,4 +72,8 @@ internal class IssueRepoImpl(
 
     override fun getFavouriteIssues(): Flow<List<Issue>> =
         jiraIssueDao.getFavouriteIssues().map { issueList -> issueList.map { issue -> issue.toDomainModel() } }
+
+    override suspend fun deleteAllIssues() {
+        jiraIssueDao.deleteAllIssues()
+    }
 }

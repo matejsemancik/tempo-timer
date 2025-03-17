@@ -139,7 +139,7 @@ fun TrackersSection(
     actions: TrackerActions,
     modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column(modifier) {
         Text(
             stringResource(Res.string.timers_section),
             style = BpmTheme.typography.titleMedium,
