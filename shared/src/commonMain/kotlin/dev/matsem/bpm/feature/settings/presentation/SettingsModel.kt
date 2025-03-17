@@ -88,11 +88,8 @@ internal class SettingsModel(
 
     private fun logout() {
         coroutineScope.launch {
-            println("logout")
             issueRepo.deleteAllIssues()
-            println("delete all")
             sessionRepo.signOut()
-            println("done")
         }
     }
 }
