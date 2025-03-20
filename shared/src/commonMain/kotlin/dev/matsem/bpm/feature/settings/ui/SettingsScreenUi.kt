@@ -14,6 +14,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AutoMode
+import androidx.compose.material.icons.rounded.BrightnessAuto
 import androidx.compose.material.icons.rounded.Computer
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
@@ -120,7 +122,7 @@ private fun AppThemeSection(
                     onClick = { actions.onAppThemeModeClick(AppThemeMode.SYSTEM) },
                     label = stringResource(Res.string.app_theme_system),
                     leadingIcon = {
-                        Icon(Icons.Rounded.Computer, contentDescription = null)
+                        Icon(Icons.Rounded.BrightnessAuto, contentDescription = null)
                     })
                 AppFilterChip(
                     selected = state.themeMode == AppThemeMode.LIGHT,
