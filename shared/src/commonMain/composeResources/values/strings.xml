@@ -25,7 +25,10 @@
     <string name="log_time">Log Time</string>
 
     <!-- Settings -->
-    <string name="settings_app_section_title">⚙️ App</string>
+    <string name="settings_theme_section_title">🎨 Theme</string>
+    <string name="app_theme_system">System</string>
+    <string name="app_theme_light">Light</string>
+    <string name="app_theme_dark">Dark</string>
     <string name="settings_account_section_title">👤 Account</string>
     <string name="settings_credentials_section_title">🔐 Sign In</string>
     <string name="credentials_description">Sign In by providing necessary credentials.</string>

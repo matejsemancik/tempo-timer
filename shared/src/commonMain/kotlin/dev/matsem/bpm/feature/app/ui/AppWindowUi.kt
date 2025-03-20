@@ -8,37 +8,27 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.DarkMode
-import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.input.key.Key
@@ -53,7 +43,7 @@ import bpm_tracker.shared.generated.resources.app_name
 import bpm_tracker.shared.generated.resources.new_timer
 import bpm_tracker.shared.generated.resources.pick_issue
 import bpm_tracker.shared.generated.resources.timer
-import bpm_tracker.shared.generated.resources.toggle_dark_mode
+import dev.matsem.bpm.data.repo.model.AppThemeMode
 import dev.matsem.bpm.design.navigation.BottomNavigationBar
 import dev.matsem.bpm.design.sheet.GenericModalBottomSheet
 import dev.matsem.bpm.design.sheet.SheetHeader
@@ -71,6 +61,7 @@ import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
 import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
 import dev.matsem.bpm.tooling.Platform
+import io.github.kdroidfilter.platformtools.darkmodedetector.isSystemInDarkMode
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -86,14 +77,18 @@ fun AppWindowUi(
     val state by window.state.collectAsStateWithLifecycle()
     val actions = window.actions
 
-    val isSystemInDarkTheme = isSystemInDarkTheme() // Stores initial state of dark mode and stores in [darkMode] state.
-    var darkMode by remember { mutableStateOf(isSystemInDarkTheme) }
     val focusManager = LocalFocusManager.current
 
     val trackerScreen: TrackerScreen = koinInject()
     val platform: Platform = koinInject()
 
-    BpmTheme(isDark = darkMode) {
+    val isDarkTheme = when (state.themeMode) {
+        AppThemeMode.SYSTEM -> isSystemInDarkMode()
+        AppThemeMode.LIGHT -> false
+        AppThemeMode.DARK -> true
+    }
+
+    BpmTheme(isDark = isDarkTheme) {
         Scaffold(
             modifier = Modifier.onPreviewKeyEvent { keyEvent ->
                 // Let user use arrow keys on the main screen in addition to TAB key for focusing elements
@@ -145,14 +140,6 @@ fun AppWindowUi(
                                 items = state.navigationItems,
                                 onClick = actions::onNavigationBarClick
                             )
-                            IconButton(
-                                onClick = { darkMode = !darkMode })
-                            {
-                                Icon(
-                                    if (darkMode) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
-                                    contentDescription = stringResource(Res.string.toggle_dark_mode),
-                                )
-                            }
                             Text(
                                 "${stringResource(Res.string.app_name)} (${platform.getVersionString()})",
                                 style = BpmTheme.typography.labelMedium,

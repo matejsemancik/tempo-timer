@@ -3,6 +3,7 @@ package dev.matsem.bpm.feature.app.presentation
 import dev.matsem.bpm.arch.BaseModel
 import dev.matsem.bpm.data.operation.UndoStack
 import dev.matsem.bpm.data.repo.GitHubRepo
+import dev.matsem.bpm.data.repo.PreferenceRepo
 import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.design.navigation.NavigationBarItem
 import dev.matsem.bpm.tooling.Platform
@@ -14,12 +15,14 @@ internal class AppWindowModel(
     private val gitHubRepo: GitHubRepo,
     private val platform: Platform,
     private val undoStack: UndoStack,
+    private val preferenceRepo: PreferenceRepo,
 ) : BaseModel<AppWindowState, Nothing>(
     defaultState = AppWindowState(newVersionBannerVisible = false)
 ), AppWindow, KoinComponent {
 
-    init {
+    override suspend fun onStart() {
         checkForUpdates()
+        observeAppThemeMode()
     }
 
     private fun checkForUpdates() {
@@ -36,6 +39,14 @@ internal class AppWindowModel(
                     )
                 }
             }.onFailure { error -> print(error) }
+        }
+    }
+
+    private fun observeAppThemeMode() = coroutineScope.launch {
+        preferenceRepo.observeAppThemeMode().collect { mode ->
+            updateState { state ->
+                state.copy(themeMode = mode)
+            }
         }
     }
 

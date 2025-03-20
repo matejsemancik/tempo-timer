@@ -57,7 +57,6 @@ compose.desktop {
             description = "Desktop client for Tempo Timesheets"
             copyright = "Copyright (c) 2025 Matej Semančík"
             vendor = "matsem.dev"
-            licenseFile.set(rootProject.file("LICENSE"))
 
             // https://github.com/JetBrains/compose-multiplatform/issues/2686
             modules("jdk.unsupported")

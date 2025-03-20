@@ -14,6 +14,12 @@ interface ApplicationPersistence {
 
     suspend fun deleteCredentials()
 
+    suspend fun saveDarkMode(darkMode: Boolean)
+
+    fun observeDarkMode(): Flow<Boolean?>
+
+    suspend fun clearDarkMode()
+
     suspend fun clear()
 }
 
@@ -23,6 +29,7 @@ internal class ApplicationPersistenceImpl(
 
     companion object {
         private val CredentialsKey = stringPreferencesKey("credentials")
+        private val DarkModeKey = stringPreferencesKey("dark_mode")
     }
 
     override suspend fun saveCredentials(credentials: Credentials) = handler.save(CredentialsKey, credentials)
@@ -32,6 +39,12 @@ internal class ApplicationPersistenceImpl(
     override suspend fun observeCredentials(): Flow<Credentials?> = handler.observe(CredentialsKey)
 
     override suspend fun deleteCredentials() = handler.delete(CredentialsKey)
+
+    override suspend fun saveDarkMode(darkMode: Boolean) = handler.save(DarkModeKey, darkMode)
+
+    override suspend fun clearDarkMode() = handler.delete(DarkModeKey)
+
+    override fun observeDarkMode(): Flow<Boolean?> = handler.observe(DarkModeKey)
 
     override suspend fun clear() = handler.clear()
 }

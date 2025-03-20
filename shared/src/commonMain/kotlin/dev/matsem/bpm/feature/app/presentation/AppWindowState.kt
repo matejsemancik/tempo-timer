@@ -1,5 +1,6 @@
 package dev.matsem.bpm.feature.app.presentation
 
+import dev.matsem.bpm.data.repo.model.AppThemeMode
 import dev.matsem.bpm.data.repo.model.AppVersion
 import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.design.navigation.NavigationBarItem
@@ -13,6 +14,7 @@ data class AppWindowState(
         content = AppWindowContent.Timer,
         sheet = null
     ),
+    val themeMode: AppThemeMode = AppThemeMode.SYSTEM,
 ) {
     val navigationItems: ImmutableList<NavigationBarItem>
         get() = persistentListOf(

@@ -6,6 +6,8 @@ import dev.matsem.bpm.data.repo.GitHubRepo
 import dev.matsem.bpm.data.repo.GitHubRepoImpl
 import dev.matsem.bpm.data.repo.IssueRepo
 import dev.matsem.bpm.data.repo.IssueRepoImpl
+import dev.matsem.bpm.data.repo.PreferenceRepo
+import dev.matsem.bpm.data.repo.PreferenceRepoImpl
 import dev.matsem.bpm.data.repo.SessionRepo
 import dev.matsem.bpm.data.repo.SessionRepoImpl
 import dev.matsem.bpm.data.repo.TimerRepo
@@ -22,5 +24,7 @@ internal fun repositoryModule() = module {
     singleOf(::TimerRepoImpl) bind TimerRepo::class
     singleOf(::WorklogRepoImpl) bind WorklogRepo::class
     singleOf(::GitHubRepoImpl) bind GitHubRepo::class
+    singleOf(::PreferenceRepoImpl) bind PreferenceRepo::class
+
     singleOf(::UndoStackImpl) bind UndoStack::class
 }

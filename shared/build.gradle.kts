@@ -52,6 +52,9 @@ kotlin {
             // database
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+
+            // other
+            implementation(libs.platformTools.darkModeDetector)
         }
 
         commonTest.dependencies {

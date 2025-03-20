@@ -3,7 +3,9 @@ package dev.matsem.bpm.feature.settings.presentation
 import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.arch.BaseModel
 import dev.matsem.bpm.data.repo.IssueRepo
+import dev.matsem.bpm.data.repo.PreferenceRepo
 import dev.matsem.bpm.data.repo.SessionRepo
+import dev.matsem.bpm.data.repo.model.AppThemeMode
 import dev.matsem.bpm.data.repo.model.Credentials
 import dev.matsem.bpm.data.repo.model.User
 import kotlinx.coroutines.launch
@@ -11,53 +13,77 @@ import kotlinx.coroutines.launch
 internal class SettingsModel(
     private val sessionRepo: SessionRepo,
     private val issueRepo: IssueRepo,
+    private val preferenceRepo: PreferenceRepo,
 ) : BaseModel<SettingsState, Nothing>(DefaultState), SettingsScreen {
 
     companion object {
-        private val DefaultState: SettingsState = SettingsState.SignedIn(User("", "", "", ""))
+        private val DefaultState: SettingsState = SettingsState(
+            accountState = SettingsState.AccountState.SignedIn(
+                user = User("", "", "", "")
+            ),
+            themeMode = AppThemeMode.SYSTEM
+        )
     }
 
     override suspend fun onStart() {
         coroutineScope.launch {
             sessionRepo.getUser().collect { user ->
-                updateState {
-                    when (user) {
-                        null -> SettingsState.SignedOut()
-                        else -> SettingsState.SignedIn(user)
+                updateState { state ->
+                    val accountState = when (user) {
+                        null -> SettingsState.AccountState.SignedOut()
+                        else -> SettingsState.AccountState.SignedIn(user)
                     }
+
+                    state.copy(accountState = accountState)
+                }
+            }
+        }
+        coroutineScope.launch {
+            preferenceRepo.observeAppThemeMode().collect { mode ->
+                updateState { state ->
+                    state.copy(themeMode = mode)
                 }
             }
         }
     }
 
     override val actions: SettingsActions = object : SettingsActions {
-
-        override fun onJiraCloudName(input: TextFieldValue) = updateState {
-            when (it) {
-                is SettingsState.SignedOut -> it.copy(jiraCloudName = input)
-                is SettingsState.SignedIn -> it
+        override fun onAppThemeModeClick(mode: AppThemeMode) {
+            coroutineScope.launch {
+                preferenceRepo.saveAppThemeMode(mode)
             }
         }
 
-        override fun onJiraEmailInput(input: TextFieldValue) = updateState {
-            when (it) {
-                is SettingsState.SignedOut -> it.copy(jiraEmail = input)
-                is SettingsState.SignedIn -> it
+        override fun onJiraCloudName(input: TextFieldValue) = updateState { state ->
+            val accountState = when (val accountState = state.accountState) {
+                is SettingsState.AccountState.SignedOut -> accountState.copy(jiraCloudName = input)
+                is SettingsState.AccountState.SignedIn -> accountState
             }
+            state.copy(accountState = accountState)
         }
 
-        override fun onJiraApiKeyInput(input: TextFieldValue) = updateState {
-            when (it) {
-                is SettingsState.SignedOut -> it.copy(jiraApiToken = input)
-                is SettingsState.SignedIn -> it
+        override fun onJiraEmailInput(input: TextFieldValue) = updateState { state ->
+            val accountState = when (val accountState = state.accountState) {
+                is SettingsState.AccountState.SignedOut -> accountState.copy(jiraEmail = input)
+                is SettingsState.AccountState.SignedIn -> accountState
             }
+            state.copy(accountState = accountState)
         }
 
-        override fun onTempoApiKeyInput(input: TextFieldValue) = updateState {
-            when (it) {
-                is SettingsState.SignedIn -> it
-                is SettingsState.SignedOut -> it.copy(tempoApiToken = input)
+        override fun onJiraApiKeyInput(input: TextFieldValue) = updateState { state ->
+            val accountState = when (val accountState = state.accountState) {
+                is SettingsState.AccountState.SignedOut -> accountState.copy(jiraApiToken = input)
+                is SettingsState.AccountState.SignedIn -> accountState
             }
+            state.copy(accountState = accountState)
+        }
+
+        override fun onTempoApiKeyInput(input: TextFieldValue) = updateState { state ->
+            val accountState = when (val accountState = state.accountState) {
+                is SettingsState.AccountState.SignedOut -> accountState.copy(tempoApiToken = input)
+                is SettingsState.AccountState.SignedIn -> accountState
+            }
+            state.copy(accountState = accountState)
         }
 
         override fun onLoginClick() = login()
@@ -67,20 +93,20 @@ internal class SettingsModel(
 
     private fun login() {
         coroutineScope.launch {
-            val currentState = state.value as? SettingsState.SignedOut ?: return@launch
-            updateState { currentState.copy(isLoading = true) }
+            val accountState = state.value.accountState as? SettingsState.AccountState.SignedOut ?: return@launch
+            updateState { state -> state.copy(accountState = accountState.copy(isLoading = true)) }
             runCatching {
                 sessionRepo
                     .signIn(
                         Credentials(
-                            jiraDomain = currentState.jiraCloudName.text.trim(),
-                            email = currentState.jiraEmail.text.trim(),
-                            jiraApiToken = currentState.jiraApiToken.text.trim(),
-                            tempoApiToken = currentState.tempoApiToken.text.trim()
+                            jiraDomain = accountState.jiraCloudName.text.trim(),
+                            email = accountState.jiraEmail.text.trim(),
+                            jiraApiToken = accountState.jiraApiToken.text.trim(),
+                            tempoApiToken = accountState.tempoApiToken.text.trim()
                         )
                     )
             }.onFailure {
-                updateState { currentState.copy(isLoading = false) }
+                updateState { state -> state.copy(accountState = accountState.copy(isLoading = false)) }
                 println(it)
             }
         }
