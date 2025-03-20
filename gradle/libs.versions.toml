@@ -18,6 +18,7 @@ androidx-room = "2.7.0-rc01"
 androidx-sqlite = "2.5.0-alpha13"
 appDirs = "1.3.0"
 markdownRenderer = "0.31.0"
+platformTools = "0.2.9"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -51,6 +52,7 @@ coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 
 appDirs = { module = "net.harawata:appdirs", version.ref = "appDirs" }
 markdownRenderer = { module = "com.mikepenz:multiplatform-markdown-renderer-m3", version.ref = "markdownRenderer" }
+platformTools-darkModeDetector = { module = "io.github.kdroidfilter:platformtools.darkmodedetector", version.ref = "platformTools" }
 
 [plugins]
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }

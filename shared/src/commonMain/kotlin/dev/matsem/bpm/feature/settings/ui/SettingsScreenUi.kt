@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,15 +13,26 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Computer
+import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.LightMode
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bpm_tracker.shared.generated.resources.Res
+import bpm_tracker.shared.generated.resources.app_theme_dark
+import bpm_tracker.shared.generated.resources.app_theme_light
+import bpm_tracker.shared.generated.resources.app_theme_system
 import bpm_tracker.shared.generated.resources.credentials_description
 import bpm_tracker.shared.generated.resources.credentials_instructions_md
 import bpm_tracker.shared.generated.resources.jira_api_token
@@ -28,15 +41,18 @@ import bpm_tracker.shared.generated.resources.jira_email_placeholder
 import bpm_tracker.shared.generated.resources.jira_url
 import bpm_tracker.shared.generated.resources.settings_account_section_title
 import bpm_tracker.shared.generated.resources.settings_credentials_section_title
+import bpm_tracker.shared.generated.resources.settings_theme_section_title
 import bpm_tracker.shared.generated.resources.sign_in
 import bpm_tracker.shared.generated.resources.sign_out
 import bpm_tracker.shared.generated.resources.tempo_api_token
 import coil3.compose.AsyncImage
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.markdownTypography
+import dev.matsem.bpm.data.repo.model.AppThemeMode
 import dev.matsem.bpm.data.repo.model.User
 import dev.matsem.bpm.design.button.AppButton
 import dev.matsem.bpm.design.button.AppOutlinedButton
+import dev.matsem.bpm.design.chip.AppFilterChip
 import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.input.LabeledTextField
 import dev.matsem.bpm.design.theme.BpmTheme
@@ -71,9 +87,55 @@ fun SettingsScreenUi(
     Box {
         Column(modifier.verticalScroll(scrollState)) {
             VerticalSpacer(Grid.d3)
-            when (state) {
-                is SettingsState.SignedOut -> SignedOutSection(state, actions)
-                is SettingsState.SignedIn -> SignedInSection(state, actions)
+            AppThemeSection(state, actions)
+            VerticalSpacer(Grid.d3)
+            when (val accountState = state.accountState) {
+                is SettingsState.AccountState.SignedOut -> SignedOutSection(accountState, actions)
+                is SettingsState.AccountState.SignedIn -> SignedInSection(accountState, actions)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun AppThemeSection(
+    state: SettingsState,
+    actions: SettingsActions,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)) {
+        Text(
+            stringResource(Res.string.settings_theme_section_title),
+            style = BpmTheme.typography.titleMedium,
+        )
+        VerticalSpacer(Grid.d2)
+        CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(Grid.d1_5),
+                verticalArrangement = Arrangement.spacedBy(Grid.d1_5)
+            ) {
+                AppFilterChip(
+                    selected = state.themeMode == AppThemeMode.SYSTEM,
+                    onClick = { actions.onAppThemeModeClick(AppThemeMode.SYSTEM) },
+                    label = stringResource(Res.string.app_theme_system),
+                    leadingIcon = {
+                        Icon(Icons.Rounded.Computer, contentDescription = null)
+                    })
+                AppFilterChip(
+                    selected = state.themeMode == AppThemeMode.LIGHT,
+                    onClick = { actions.onAppThemeModeClick(AppThemeMode.LIGHT) },
+                    label = stringResource(Res.string.app_theme_light),
+                    leadingIcon = {
+                        Icon(Icons.Rounded.LightMode, contentDescription = null)
+                    })
+                AppFilterChip(
+                    selected = state.themeMode == AppThemeMode.DARK,
+                    onClick = { actions.onAppThemeModeClick(AppThemeMode.DARK) },
+                    label = stringResource(Res.string.app_theme_dark),
+                    leadingIcon = {
+                        Icon(Icons.Rounded.DarkMode, contentDescription = null)
+                    })
             }
         }
     }
@@ -81,7 +143,7 @@ fun SettingsScreenUi(
 
 @Composable
 private fun SignedOutSection(
-    state: SettingsState.SignedOut,
+    state: SettingsState.AccountState.SignedOut,
     actions: SettingsActions,
     modifier: Modifier = Modifier,
 ) {
@@ -99,8 +161,7 @@ private fun SignedOutSection(
         )
         VerticalSpacer(Grid.d1)
         Markdown(
-            content = stringResource(Res.string.credentials_instructions_md),
-            typography = markdownTypography(
+            content = stringResource(Res.string.credentials_instructions_md), typography = markdownTypography(
                 paragraph = BpmTheme.typography.labelMedium,
                 link = BpmTheme.typography.labelMedium.copy(textDecoration = TextDecoration.Underline)
             )
@@ -148,8 +209,7 @@ private fun SignedOutSection(
 
         VerticalSpacer(Grid.d3)
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
         ) {
             AppButton(
                 text = stringResource(Res.string.sign_in),
@@ -162,7 +222,7 @@ private fun SignedOutSection(
 
 @Composable
 private fun SignedInSection(
-    state: SettingsState.SignedIn,
+    state: SettingsState.AccountState.SignedIn,
     actions: SettingsActions,
     modifier: Modifier = Modifier,
 ) {
@@ -178,10 +238,7 @@ private fun SignedInSection(
             AsyncImage(
                 model = state.user.avatarUrl,
                 contentDescription = null,
-                modifier = Modifier
-                    .size(Grid.d9)
-                    .clip(CircleShape)
-                    .background(BpmTheme.colorScheme.inverseOnSurface)
+                modifier = Modifier.size(Grid.d9).clip(CircleShape).background(BpmTheme.colorScheme.inverseOnSurface)
             )
             HorizontalSpacer(Grid.d2)
             Column(modifier = Modifier.weight(1f)) {
@@ -210,7 +267,7 @@ private fun SignedInSection(
 fun SettingsScreenUiPreview_SignedOut() {
     Showcase {
         SettingsScreenUi(
-            SettingsState.SignedOut(),
+            SettingsState(accountState = SettingsState.AccountState.SignedOut(), themeMode = AppThemeMode.DARK),
             SettingsActions.noOp(),
             Modifier.fillMaxWidth()
         )
@@ -222,16 +279,18 @@ fun SettingsScreenUiPreview_SignedOut() {
 fun SettingsScreenUiPreview_SignedIn() {
     Showcase {
         SettingsScreenUi(
-            SettingsState.SignedIn(
-                User(
-                    accountId = "emanuel",
-                    email = "emanuel@bacigala.sk",
-                    displayName = "Emanuel Bacigala",
-                    avatarUrl = ""
-                )
+            SettingsState(
+                accountState = SettingsState.AccountState.SignedIn(
+                    User(
+                        accountId = "emanuel",
+                        email = "emanuel@bacigala.sk",
+                        displayName = "Emanuel Bacigala",
+                        avatarUrl = ""
+                    )
+                ),
+                themeMode = AppThemeMode.DARK
             ),
-            SettingsActions.noOp(),
-            Modifier.fillMaxWidth()
+            SettingsActions.noOp(), Modifier.fillMaxWidth()
         )
     }
 }
