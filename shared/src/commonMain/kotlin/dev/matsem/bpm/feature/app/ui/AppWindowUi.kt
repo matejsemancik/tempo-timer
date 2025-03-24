@@ -56,6 +56,7 @@ import dev.matsem.bpm.feature.app.presentation.AppWindowContent
 import dev.matsem.bpm.feature.app.presentation.AppWindowSheet
 import dev.matsem.bpm.feature.commit.presentation.CommitArgs
 import dev.matsem.bpm.feature.commit.ui.CommitScreenUi
+import dev.matsem.bpm.feature.logbook.ui.LogbookScreenUi
 import dev.matsem.bpm.feature.search.ui.SearchScreenUi
 import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
 import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
@@ -179,7 +180,8 @@ fun AppWindowUi(
                 transitionSpec = {
                     fun order(content: AppWindowContent) = when (content) {
                         AppWindowContent.Timer -> 0
-                        AppWindowContent.Settings -> 1
+                        AppWindowContent.Logbook -> 1
+                        AppWindowContent.Settings -> 2
                     }
 
                     val slideTowards = if (order(targetState) > order(initialState)) {
@@ -204,6 +206,10 @@ fun AppWindowUi(
                         modifier = Modifier.fillMaxSize().padding(contentPadding),
                         screen = trackerScreen,
                         openCommitDialog = actions::onOpenCommitDialog
+                    )
+
+                    AppWindowContent.Logbook -> LogbookScreenUi(
+                        modifier = Modifier.fillMaxSize().padding(contentPadding),
                     )
 
                     AppWindowContent.Settings -> SettingsScreenUi(

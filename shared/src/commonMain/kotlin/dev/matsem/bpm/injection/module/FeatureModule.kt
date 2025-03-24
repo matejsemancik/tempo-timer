@@ -4,6 +4,8 @@ import dev.matsem.bpm.feature.app.presentation.AppWindow
 import dev.matsem.bpm.feature.app.presentation.AppWindowModel
 import dev.matsem.bpm.feature.commit.presentation.CommitModel
 import dev.matsem.bpm.feature.commit.presentation.CommitScreen
+import dev.matsem.bpm.feature.logbook.presentation.LogbookModel
+import dev.matsem.bpm.feature.logbook.presentation.LogbookScreen
 import dev.matsem.bpm.feature.search.presentation.SearchModel
 import dev.matsem.bpm.feature.search.presentation.SearchScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsModel
@@ -18,6 +20,7 @@ import org.koin.dsl.module
 internal fun featureModule() = module {
     singleOf(::AppWindowModel) bind AppWindow::class
     singleOf(::TrackerModel) bind TrackerScreen::class
+    singleOf(::LogbookModel) bind LogbookScreen::class
     singleOf(::SettingsModel) bind SettingsScreen::class
     singleOf(::SearchModel) bind SearchScreen::class
     factoryOf(::CommitModel) bind CommitScreen::class
