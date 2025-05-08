@@ -19,7 +19,7 @@ data class AppWindowState(
     val navigationItems: ImmutableList<NavigationBarItem>
         get() = persistentListOf(
             NavigationBarItem.Timer(isSelected = navigationState.content == AppWindowContent.Timer),
-            NavigationBarItem.Logbook(isSelected = navigationState.content == AppWindowContent.Logbook),
+//            NavigationBarItem.Logbook(isSelected = navigationState.content == AppWindowContent.Logbook),
             NavigationBarItem.Settings(isSelected = navigationState.content == AppWindowContent.Settings),
         )
 
