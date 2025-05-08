@@ -51,6 +51,7 @@ Tempo Timer is a desktop client for Tempo Timesheets built with Kotlin Multiplat
    - Use components from the `design` package
    - Follow Material 3 design guidelines
    - Separate UI from business logic
+   - Root modifiers in components should never apply additional layout modifiers (padding, size modifiers)
 
 3. **Testing**:
    - Write tests for all business logic

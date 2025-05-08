@@ -14,9 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AutoMode
 import androidx.compose.material.icons.rounded.BrightnessAuto
-import androidx.compose.material.icons.rounded.Computer
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material3.Icon
@@ -57,6 +55,7 @@ import dev.matsem.bpm.design.button.AppOutlinedButton
 import dev.matsem.bpm.design.chip.AppFilterChip
 import dev.matsem.bpm.design.input.AppTextField
 import dev.matsem.bpm.design.input.LabeledTextField
+import dev.matsem.bpm.design.layout.SectionWithTitle
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
@@ -106,16 +105,15 @@ private fun AppThemeSection(
     actions: SettingsActions,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)) {
-        Text(
-            stringResource(Res.string.settings_theme_section_title),
-            style = BpmTheme.typography.titleMedium,
-        )
-        VerticalSpacer(Grid.d2)
+    SectionWithTitle(
+        title = stringResource(Res.string.settings_theme_section_title),
+        modifier = modifier
+    ) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(Grid.d1_5),
-                verticalArrangement = Arrangement.spacedBy(Grid.d1_5)
+                verticalArrangement = Arrangement.spacedBy(Grid.d1_5),
+                modifier = Modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
             ) {
                 AppFilterChip(
                     selected = state.themeMode == AppThemeMode.SYSTEM,
@@ -149,75 +147,73 @@ private fun SignedOutSection(
     actions: SettingsActions,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
+    SectionWithTitle(
+        title = stringResource(Res.string.settings_credentials_section_title),
+        modifier = modifier
     ) {
-        Text(
-            text = stringResource(Res.string.settings_credentials_section_title),
-            style = BpmTheme.typography.titleMedium,
-        )
-        VerticalSpacer(Grid.d1)
-        Text(
-            text = stringResource(Res.string.credentials_description),
-            style = BpmTheme.typography.bodyMedium,
-        )
-        VerticalSpacer(Grid.d1)
-        Markdown(
-            content = stringResource(Res.string.credentials_instructions_md), typography = markdownTypography(
-                paragraph = BpmTheme.typography.labelMedium,
-                link = BpmTheme.typography.labelMedium.copy(textDecoration = TextDecoration.Underline)
+        Column(Modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)) {
+            Text(
+                text = stringResource(Res.string.credentials_description),
+                style = BpmTheme.typography.bodyMedium,
             )
-        )
-        VerticalSpacer(Grid.d2)
-        LabeledTextField(stringResource(Res.string.jira_url)) {
-            AppTextField(
-                value = state.jiraCloudName,
-                onValueChange = actions::onJiraCloudName,
-                prefix = "https://",
-                suffix = ".atlassian.net",
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
+            VerticalSpacer(Grid.d1)
+            Markdown(
+                content = stringResource(Res.string.credentials_instructions_md), typography = markdownTypography(
+                    paragraph = BpmTheme.typography.labelMedium,
+                    link = BpmTheme.typography.labelMedium.copy(textDecoration = TextDecoration.Underline)
+                )
             )
-        }
+            VerticalSpacer(Grid.d2)
+            LabeledTextField(stringResource(Res.string.jira_url)) {
+                AppTextField(
+                    value = state.jiraCloudName,
+                    onValueChange = actions::onJiraCloudName,
+                    prefix = "https://",
+                    suffix = ".atlassian.net",
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
 
-        VerticalSpacer(Grid.d2)
-        LabeledTextField(stringResource(Res.string.jira_email)) {
-            AppTextField(
-                value = state.jiraEmail,
-                onValueChange = actions::onJiraEmailInput,
-                singleLine = true,
-                placeholder = stringResource(Res.string.jira_email_placeholder),
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+            VerticalSpacer(Grid.d2)
+            LabeledTextField(stringResource(Res.string.jira_email)) {
+                AppTextField(
+                    value = state.jiraEmail,
+                    onValueChange = actions::onJiraEmailInput,
+                    singleLine = true,
+                    placeholder = stringResource(Res.string.jira_email_placeholder),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
 
-        VerticalSpacer(Grid.d2)
-        LabeledTextField(stringResource(Res.string.jira_api_token)) {
-            PasswordTextField(
-                value = state.jiraApiToken,
-                onValueChange = actions::onJiraApiKeyInput,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+            VerticalSpacer(Grid.d2)
+            LabeledTextField(stringResource(Res.string.jira_api_token)) {
+                PasswordTextField(
+                    value = state.jiraApiToken,
+                    onValueChange = actions::onJiraApiKeyInput,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
 
-        VerticalSpacer(Grid.d2)
-        LabeledTextField(stringResource(Res.string.tempo_api_token)) {
-            PasswordTextField(
-                value = state.tempoApiToken,
-                onValueChange = actions::onTempoApiKeyInput,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+            VerticalSpacer(Grid.d2)
+            LabeledTextField(stringResource(Res.string.tempo_api_token)) {
+                PasswordTextField(
+                    value = state.tempoApiToken,
+                    onValueChange = actions::onTempoApiKeyInput,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
 
-        VerticalSpacer(Grid.d3)
-        Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
-        ) {
-            AppButton(
-                text = stringResource(Res.string.sign_in),
-                isLoading = state.isLoading,
-                onClick = actions::onLoginClick,
-            )
+            VerticalSpacer(Grid.d3)
+            Row(
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+            ) {
+                AppButton(
+                    text = stringResource(Res.string.sign_in),
+                    isLoading = state.isLoading,
+                    onClick = actions::onLoginClick,
+                )
+            }
         }
     }
 }
@@ -228,14 +224,13 @@ private fun SignedInSection(
     actions: SettingsActions,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)) {
-        Text(
-            stringResource(Res.string.settings_account_section_title),
-            style = BpmTheme.typography.titleMedium,
-        )
-        VerticalSpacer(Grid.d2)
+    SectionWithTitle(
+        title = stringResource(Res.string.settings_account_section_title),
+        modifier = modifier
+    ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
         ) {
             AsyncImage(
                 model = state.user.avatarUrl,

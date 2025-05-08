@@ -36,6 +36,7 @@ import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.MockIssues
 import dev.matsem.bpm.data.repo.model.MockTimers
 import dev.matsem.bpm.data.repo.model.Timer
+import dev.matsem.bpm.design.layout.SectionWithTitle
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.Showcase
@@ -111,16 +112,14 @@ fun FavouritesSection(
     actions: TrackerActions,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)) {
-        Text(
-            stringResource(Res.string.favorites_section),
-            style = BpmTheme.typography.titleMedium,
-            modifier = Modifier.fillMaxWidth()
-        )
-        VerticalSpacer(Grid.d2)
+    SectionWithTitle(
+        title = stringResource(Res.string.favorites_section),
+        modifier = modifier
+    ) {
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(Grid.d1_5),
-            verticalArrangement = Arrangement.spacedBy(Grid.d1_5)
+            verticalArrangement = Arrangement.spacedBy(Grid.d1_5),
+            modifier = Modifier.padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
         ) {
             for (issue in issues) {
                 FavouriteIssueChip(
@@ -139,13 +138,10 @@ fun TrackersSection(
     actions: TrackerActions,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier) {
-        Text(
-            stringResource(Res.string.timers_section),
-            style = BpmTheme.typography.titleMedium,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = BpmTheme.dimensions.horizontalContentPadding)
-        )
-        VerticalSpacer(Grid.d2)
+    SectionWithTitle(
+        title = stringResource(Res.string.timers_section),
+        modifier = modifier
+    ) {
         Crossfade(timers.isEmpty()) { isEmpty ->
             if (isEmpty) {
                 Column(
