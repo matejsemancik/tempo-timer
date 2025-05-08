@@ -7,7 +7,10 @@ import de.jensklingenberg.ktorfit.http.Path
 import de.jensklingenberg.ktorfit.http.Query
 import de.jensklingenberg.ktorfit.http.Url
 import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
+import dev.matsem.bpm.data.service.tempo.model.DaySchedule
 import dev.matsem.bpm.data.service.tempo.model.PageableTempoResponse
+import dev.matsem.bpm.data.service.tempo.model.PeriodsResponse
+import dev.matsem.bpm.data.service.tempo.model.TempoResultsResponse
 import dev.matsem.bpm.data.service.tempo.model.Worklog
 import kotlinx.datetime.LocalDate
 
@@ -29,4 +32,16 @@ interface TempoApi {
 
     @POST("worklogs")
     suspend fun createWorklog(@Body body: CreateWorklogBody): Worklog
+
+    @GET("periods")
+    suspend fun getPeriods(
+        @Query("from") from: LocalDate,
+        @Query("to") to: LocalDate,
+    ): PeriodsResponse
+
+    @GET("user-schedule")
+    suspend fun getUserSchedule(
+        @Query("from") from: LocalDate,
+        @Query("to") to: LocalDate,
+    ): TempoResultsResponse<DaySchedule>
 }

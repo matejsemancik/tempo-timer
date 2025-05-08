@@ -1,6 +1,8 @@
 package dev.matsem.bpm.data.service.tempo
 
 import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
+import dev.matsem.bpm.data.service.tempo.model.DaySchedule
+import dev.matsem.bpm.data.service.tempo.model.TimesheetApprovalPeriod
 import dev.matsem.bpm.data.service.tempo.model.Worklog
 import dev.matsem.bpm.injection.scope.SessionScope
 import kotlinx.coroutines.flow.flow
@@ -17,6 +19,8 @@ interface TempoApiManager {
     ): List<Worklog>
 
     suspend fun createWorklog(body: CreateWorklogBody): Worklog
+    suspend fun getPeriod(date: LocalDate): TimesheetApprovalPeriod?
+    suspend fun getUserSchedule(from: LocalDate, to: LocalDate): List<DaySchedule>
 }
 
 internal class TempoApiManagerImpl(
@@ -27,11 +31,15 @@ internal class TempoApiManagerImpl(
         private const val DefaultLimit = 50
     }
 
-    private suspend fun <T : Any> sessionScoped(block: suspend (api: TempoApi) -> T): T {
+    private suspend fun <T : Any?> sessionScoped(block: suspend (api: TempoApi) -> T): T {
         return block(sessionScope.getTempoApi())
     }
 
-    override suspend fun getAllWorklogs(jiraAccountId: String, from: LocalDate, to: LocalDate): List<Worklog> =
+    override suspend fun getAllWorklogs(
+        jiraAccountId: String,
+        from: LocalDate,
+        to: LocalDate,
+    ): List<Worklog> =
         sessionScoped { api ->
             flow {
                 var nextUrl: String? = null
@@ -56,5 +64,16 @@ internal class TempoApiManagerImpl(
 
     override suspend fun createWorklog(body: CreateWorklogBody) = sessionScoped { api ->
         api.createWorklog(body)
+    }
+
+    override suspend fun getPeriod(date: LocalDate): TimesheetApprovalPeriod? = sessionScoped { api ->
+        api.getPeriods(from = date, to = date).periods.firstOrNull()
+    }
+
+    override suspend fun getUserSchedule(
+        from: LocalDate,
+        to: LocalDate,
+    ): List<DaySchedule> = sessionScoped { api ->
+        api.getUserSchedule(from = from, to = to).results
     }
 }
