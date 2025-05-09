@@ -11,7 +11,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -59,6 +61,7 @@ import dev.matsem.bpm.feature.commit.ui.CommitScreenUi
 import dev.matsem.bpm.feature.logbook.ui.LogbookScreenUi
 import dev.matsem.bpm.feature.search.ui.SearchScreenUi
 import dev.matsem.bpm.feature.settings.ui.SettingsScreenUi
+import dev.matsem.bpm.feature.stats.ui.StatsWidgetUi
 import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
 import dev.matsem.bpm.feature.tracker.ui.TrackerScreenUi
 import dev.matsem.bpm.tooling.Platform
@@ -132,6 +135,23 @@ fun AppWindowUi(
                             modifier = Modifier.fillMaxWidth(),
                             appVersion = state.latestAppVersion,
                             onDismiss = actions::onUpdateBannerDismissClick
+                        )
+                    }
+                    AnimatedVisibility(
+                        visible = state.isStatsVisible,
+                        enter = slideInVertically { it } + fadeIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)),
+                        exit = fadeOut(animationSpec = spring(stiffness = Spring.StiffnessHigh))
+                    ) {
+                        StatsWidgetUi(
+                            contentPadding = PaddingValues(
+                                start = BpmTheme.dimensions.horizontalContentPadding,
+                                end = BpmTheme.dimensions.horizontalContentPadding,
+                                top = Grid.d2,
+                                bottom = Grid.d1
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(BpmTheme.colorScheme.surfaceContainer)
                         )
                     }
                     BottomAppBar(

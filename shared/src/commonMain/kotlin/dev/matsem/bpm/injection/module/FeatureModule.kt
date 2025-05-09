@@ -10,6 +10,8 @@ import dev.matsem.bpm.feature.search.presentation.SearchModel
 import dev.matsem.bpm.feature.search.presentation.SearchScreen
 import dev.matsem.bpm.feature.settings.presentation.SettingsModel
 import dev.matsem.bpm.feature.settings.presentation.SettingsScreen
+import dev.matsem.bpm.feature.stats.presentation.StatsModel
+import dev.matsem.bpm.feature.stats.presentation.StatsWidget
 import dev.matsem.bpm.feature.tracker.presentation.TrackerModel
 import dev.matsem.bpm.feature.tracker.presentation.TrackerScreen
 import org.koin.core.module.dsl.factoryOf
@@ -23,5 +25,6 @@ internal fun featureModule() = module {
     singleOf(::LogbookModel) bind LogbookScreen::class
     singleOf(::SettingsModel) bind SettingsScreen::class
     singleOf(::SearchModel) bind SearchScreen::class
+    singleOf(::StatsModel) bind StatsWidget::class
     factoryOf(::CommitModel) bind CommitScreen::class
 }

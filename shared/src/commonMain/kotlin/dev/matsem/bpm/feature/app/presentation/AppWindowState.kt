@@ -25,6 +25,13 @@ data class AppWindowState(
 
     val isFabVisible: Boolean
         get() = navigationState.content == AppWindowContent.Timer
+
+    val isStatsVisible: Boolean
+        get() = when (navigationState.content) {
+            AppWindowContent.Timer -> true
+            AppWindowContent.Logbook -> true
+            AppWindowContent.Settings -> false
+        }
 }
 
 data class AppWindowNavigationState(

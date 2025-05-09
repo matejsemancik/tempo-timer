@@ -53,4 +53,8 @@
     <string name="no_timers">No running timers</string>
     <string name="start_timer_instructions">Start a new timer by clicking on Favourite,\nor from menu bar down there 👇
     </string>
+
+    <!-- Stats -->
+    <string name="stats_weekly">Week: </string>
+    <string name="stats_period">Current period: </string>
 </resources>

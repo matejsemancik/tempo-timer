@@ -19,7 +19,7 @@ interface TempoApiManager {
     ): List<Worklog>
 
     suspend fun createWorklog(body: CreateWorklogBody): Worklog
-    suspend fun getPeriod(date: LocalDate): TimesheetApprovalPeriod?
+    suspend fun getApprovalPeriod(at: LocalDate): TimesheetApprovalPeriod?
     suspend fun getUserSchedule(from: LocalDate, to: LocalDate): List<DaySchedule>
 }
 
@@ -66,8 +66,8 @@ internal class TempoApiManagerImpl(
         api.createWorklog(body)
     }
 
-    override suspend fun getPeriod(date: LocalDate): TimesheetApprovalPeriod? = sessionScoped { api ->
-        api.getPeriods(from = date, to = date).periods.firstOrNull()
+    override suspend fun getApprovalPeriod(at: LocalDate): TimesheetApprovalPeriod? = sessionScoped { api ->
+        api.getPeriods(from = at, to = at).periods.firstOrNull()
     }
 
     override suspend fun getUserSchedule(
