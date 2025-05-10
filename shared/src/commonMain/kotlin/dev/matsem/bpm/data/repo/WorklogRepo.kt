@@ -8,10 +8,14 @@ import dev.matsem.bpm.data.repo.model.WorkStats
 import dev.matsem.bpm.data.service.tempo.TempoApiManager
 import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
 import dev.matsem.bpm.tooling.dropNanos
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
@@ -42,6 +46,7 @@ internal class WorklogRepoImpl(
     private val clock: Clock,
 ) : WorklogRepo {
 
+    private val repoScope = MainScope() + SupervisorJob()
     private val workStats = MutableStateFlow(emptyList<WorkStats>())
 
     override suspend fun createWorklog(
@@ -61,10 +66,12 @@ internal class WorklogRepoImpl(
             timeSpentSeconds = timeSpent.inWholeSeconds,
             description = description
         )
+
         tempoApiManager.createWorklog(requestBody).also {
             println("Worklog created: $it")
         }
-        runCatching { syncWorkStats() }
+
+        repoScope.launch { runCatching { syncWorkStats() } }
     }
 
     override suspend fun syncWorkStats() {
