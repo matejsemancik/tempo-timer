@@ -58,7 +58,7 @@ fun StatsWidgetUi(
                 pageIndex = nextPage
             },
             transitionSpec = {
-                slideInVertically { -it } togetherWith slideOutVertically { it }
+                slideInVertically { it } togetherWith slideOutVertically { -it }
             },
             contentAlignment = Alignment.TopStart
         ) { workStats ->
