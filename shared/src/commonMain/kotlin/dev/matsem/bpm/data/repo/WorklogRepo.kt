@@ -1,15 +1,17 @@
 package dev.matsem.bpm.data.repo
 
 import dev.matsem.bpm.data.database.dao.UserDao
+import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.PeriodWorkStats
 import dev.matsem.bpm.data.repo.model.WeeklyWorkStats
-import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.WorkStats
 import dev.matsem.bpm.data.service.tempo.TempoApiManager
 import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
 import dev.matsem.bpm.tooling.dropNanos
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
@@ -30,6 +32,7 @@ interface WorklogRepo {
         description: String?,
     )
 
+    suspend fun syncWorkStats()
     fun getWorkStats(): Flow<List<WorkStats>>
 }
 
@@ -38,6 +41,8 @@ internal class WorklogRepoImpl(
     private val userDao: UserDao,
     private val clock: Clock,
 ) : WorklogRepo {
+
+    private val workStats = MutableStateFlow(emptyList<WorkStats>())
 
     override suspend fun createWorklog(
         jiraIssue: Issue,
@@ -56,12 +61,13 @@ internal class WorklogRepoImpl(
             timeSpentSeconds = timeSpent.inWholeSeconds,
             description = description
         )
-        val worklog = tempoApiManager.createWorklog(requestBody)
-        println("Worklog created: $worklog")
+        tempoApiManager.createWorklog(requestBody).also {
+            println("Worklog created: $it")
+        }
+        runCatching { syncWorkStats() }
     }
 
-    // TODO react to worklog changes
-    override fun getWorkStats(): Flow<List<WorkStats>> = flow {
+    override suspend fun syncWorkStats() {
         val dateNow = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         val currentApprovalPeriod = tempoApiManager.getApprovalPeriod(dateNow)
         val currentWeek: Pair<LocalDate, LocalDate> = dateNow.let { date ->
@@ -105,8 +111,10 @@ internal class WorklogRepoImpl(
             }
         }
 
-        emit(listOfNotNull(weeklyWorkStats, periodWorkStats))
+        workStats.update { listOfNotNull(weeklyWorkStats, periodWorkStats) }
     }
+
+    override fun getWorkStats(): Flow<List<WorkStats>> = workStats.asStateFlow()
 
     /**
      * Retrieves the required and tracked durations for a user within a specified date range.

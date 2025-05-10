@@ -4,6 +4,7 @@ import dev.matsem.bpm.arch.BaseModel
 import dev.matsem.bpm.data.operation.UndoStack
 import dev.matsem.bpm.data.repo.GitHubRepo
 import dev.matsem.bpm.data.repo.PreferenceRepo
+import dev.matsem.bpm.data.repo.WorklogRepo
 import dev.matsem.bpm.data.repo.model.Timer
 import dev.matsem.bpm.design.navigation.NavigationBarItem
 import dev.matsem.bpm.tooling.Platform
@@ -16,6 +17,7 @@ internal class AppWindowModel(
     private val platform: Platform,
     private val undoStack: UndoStack,
     private val preferenceRepo: PreferenceRepo,
+    private val worklogRepo: WorklogRepo,
 ) : BaseModel<AppWindowState, Nothing>(
     defaultState = AppWindowState(newVersionBannerVisible = false)
 ), AppWindow, KoinComponent {
@@ -23,6 +25,7 @@ internal class AppWindowModel(
     override suspend fun onStart() {
         checkForUpdates()
         observeAppThemeMode()
+        syncWorkStats()
     }
 
     private fun checkForUpdates() {
@@ -49,6 +52,8 @@ internal class AppWindowModel(
             }
         }
     }
+
+    private fun syncWorkStats() = coroutineScope.launch { runCatching { worklogRepo.syncWorkStats() } }
 
     override val actions: AppWindowActions = object : AppWindowActions {
 
