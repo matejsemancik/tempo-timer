@@ -1,10 +1,10 @@
 package dev.matsem.bpm.data.repo
 
 import dev.matsem.bpm.data.database.dao.UserDao
-import dev.matsem.bpm.data.repo.model.CurrentPeriodStats
-import dev.matsem.bpm.data.repo.model.CurrentWeekStats
+import dev.matsem.bpm.data.repo.model.PeriodWorkStats
+import dev.matsem.bpm.data.repo.model.WeeklyWorkStats
 import dev.matsem.bpm.data.repo.model.Issue
-import dev.matsem.bpm.data.repo.model.Stats
+import dev.matsem.bpm.data.repo.model.WorkStats
 import dev.matsem.bpm.data.service.tempo.TempoApiManager
 import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
 import dev.matsem.bpm.tooling.dropNanos
@@ -30,7 +30,7 @@ interface WorklogRepo {
         description: String?,
     )
 
-    fun getAllStats(): Flow<List<Stats>>
+    fun getWorkStats(): Flow<List<WorkStats>>
 }
 
 internal class WorklogRepoImpl(
@@ -61,7 +61,7 @@ internal class WorklogRepoImpl(
     }
 
     // TODO react to worklog changes
-    override fun getAllStats(): Flow<List<Stats>> = flow {
+    override fun getWorkStats(): Flow<List<WorkStats>> = flow {
         val dateNow = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         val currentApprovalPeriod = tempoApiManager.getApprovalPeriod(dateNow)
         val currentWeek: Pair<LocalDate, LocalDate> = dateNow.let { date ->
@@ -85,8 +85,8 @@ internal class WorklogRepoImpl(
             start to end
         }
 
-        val currentWeekStats = getStatsForDates(currentWeek.first, currentWeek.second).let {
-            CurrentWeekStats(
+        val weeklyWorkStats = getStatsForDates(currentWeek.first, currentWeek.second).let {
+            WeeklyWorkStats(
                 dateStart = currentWeek.first,
                 dateEnd = currentWeek.second,
                 requiredDuration = it.first,
@@ -94,9 +94,9 @@ internal class WorklogRepoImpl(
             )
         }
 
-        val currentPeriodStats = currentApprovalPeriod?.let { approvalPeriod ->
+        val periodWorkStats = currentApprovalPeriod?.let { approvalPeriod ->
             getStatsForDates(approvalPeriod.from, approvalPeriod.to).let {
-                CurrentPeriodStats(
+                PeriodWorkStats(
                     dateStart = approvalPeriod.from,
                     dateEnd = approvalPeriod.to,
                     requiredDuration = it.first,
@@ -105,7 +105,7 @@ internal class WorklogRepoImpl(
             }
         }
 
-        emit(listOfNotNull(currentWeekStats, currentPeriodStats))
+        emit(listOfNotNull(weeklyWorkStats, periodWorkStats))
     }
 
     /**

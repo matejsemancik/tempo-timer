@@ -4,7 +4,7 @@ import kotlinx.datetime.LocalDate
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-sealed interface Stats {
+sealed interface WorkStats {
     val dateStart: LocalDate
     val dateEnd: LocalDate
     val requiredDuration: Duration
@@ -17,16 +17,16 @@ sealed interface Stats {
         get() = (trackedDuration - requiredDuration).coerceAtLeast(0.seconds)
 }
 
-data class CurrentWeekStats(
+data class WeeklyWorkStats(
     override val dateStart: LocalDate,
     override val dateEnd: LocalDate,
     override val requiredDuration: Duration,
     override val trackedDuration: Duration,
-) : Stats
+) : WorkStats
 
-data class CurrentPeriodStats(
+data class PeriodWorkStats(
     override val dateStart: LocalDate,
     override val dateEnd: LocalDate,
     override val requiredDuration: Duration,
     override val trackedDuration: Duration,
-) : Stats
+) : WorkStats

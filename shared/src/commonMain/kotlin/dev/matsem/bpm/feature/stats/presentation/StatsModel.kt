@@ -18,8 +18,8 @@ internal class StatsModel(
     override suspend fun onStart() {
         coroutineScope.launch {
             runCatching {
-                worklogRepo.getAllStats().collect { stats ->
-                    updateState { it.copy(allStats = stats.toImmutableList()) }
+                worklogRepo.getWorkStats().collect { workStats ->
+                    updateState { it.copy(allWorkStats = workStats.toImmutableList()) }
                 }
             }
         }

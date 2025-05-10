@@ -29,9 +29,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bpm_tracker.shared.generated.resources.Res
 import bpm_tracker.shared.generated.resources.stats_period
 import bpm_tracker.shared.generated.resources.stats_weekly
-import dev.matsem.bpm.data.repo.model.CurrentPeriodStats
-import dev.matsem.bpm.data.repo.model.CurrentWeekStats
-import dev.matsem.bpm.data.repo.model.Stats
+import dev.matsem.bpm.data.repo.model.PeriodWorkStats
+import dev.matsem.bpm.data.repo.model.WeeklyWorkStats
+import dev.matsem.bpm.data.repo.model.WorkStats
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.HorizontalSpacer
@@ -48,85 +48,49 @@ fun StatsWidgetUi(
 ) {
     val state by widget.state.collectAsStateWithLifecycle()
 
-    if (state.allStats.count() > 0) {
+    if (state.allWorkStats.count() > 0) {
         var pageIndex by remember { mutableStateOf(0) }
-        val stat = state.allStats[pageIndex]
+        val workStats = state.allWorkStats[pageIndex]
         AnimatedContent(
-            targetState = stat,
+            targetState = workStats,
             modifier = modifier.clickable {
-                val nextPage = (pageIndex + 1) % state.allStats.count()
+                val nextPage = (pageIndex + 1) % state.allWorkStats.count()
                 pageIndex = nextPage
             },
             transitionSpec = {
                 slideInVertically { -it } togetherWith slideOutVertically { it }
             },
             contentAlignment = Alignment.TopStart
-        ) { stat ->
+        ) { workStats ->
             Row(
                 modifier = Modifier.padding(contentPadding),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stat.title,
+                    text = workStats.title,
                     style = BpmTheme.typography.bodySmall,
                     color = BpmTheme.colorScheme.onSurface
                 )
                 HorizontalSpacer(Grid.d4)
                 LinearProgressIndicator(
-                    color = when (stat.percent) {
+                    color = when (workStats.percent) {
                         1f -> BpmTheme.customColorScheme.success
                         else -> ProgressIndicatorDefaults.linearColor
                     },
-                    progress = { stat.percent },
+                    progress = { workStats.percent },
                     modifier = Modifier.weight(1f).padding(end = Grid.d2)
                 )
             }
         }
     }
-
-//    VerticalPager(
-//        horizontalAlignment = Alignment.Start,
-//        modifier = modifier
-//            .clickable {
-//                val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
-//                coroutineScope.launch {
-//                    pagerState.animateScrollToPage(nextPage)
-//                }
-//            },
-//        state = pagerState,
-//        userScrollEnabled = false,
-//        contentPadding = contentPadding,
-//        pageSize = PageSize.Fill,
-//        snapPosition = SnapPosition.Center,
-//    ) { page ->
-//        val stat = state.allStats[page]
-//        Row(
-//            verticalAlignment = Alignment.CenterVertically,
-//        ) {
-//            Text(
-//                text = stat.title,
-//                style = BpmTheme.typography.bodySmall,
-//                color = BpmTheme.colorScheme.onSurface
-//            )
-//            HorizontalSpacer(Grid.d4)
-//            LinearProgressIndicator(
-//                color = when (stat.percent) {
-//                    1f -> BpmTheme.customColorScheme.success
-//                    else -> ProgressIndicatorDefaults.linearColor
-//                },
-//                progress = { stat.percent },
-//                modifier = Modifier.weight(1f).padding(end = Grid.d2)
-//            )
-//        }
-//    }
 }
 
-private val Stats.title: AnnotatedString
+private val WorkStats.title: AnnotatedString
     @Composable
     get() {
         val title = when (this) {
-            is CurrentPeriodStats -> stringResource(Res.string.stats_period)
-            is CurrentWeekStats -> stringResource(Res.string.stats_weekly)
+            is PeriodWorkStats -> stringResource(Res.string.stats_period)
+            is WeeklyWorkStats -> stringResource(Res.string.stats_weekly)
         }
         return buildAnnotatedString {
             append(title)
@@ -141,4 +105,3 @@ private val Stats.title: AnnotatedString
             }
         }
     }
-
