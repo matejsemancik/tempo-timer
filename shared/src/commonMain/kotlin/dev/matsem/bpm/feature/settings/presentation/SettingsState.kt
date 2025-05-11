@@ -3,7 +3,6 @@ package dev.matsem.bpm.feature.settings.presentation
 import androidx.compose.ui.text.input.TextFieldValue
 import dev.matsem.bpm.data.repo.model.AppThemeMode
 import dev.matsem.bpm.data.repo.model.User
-import io.ktor.websocket.FrameParser
 
 data class SettingsState(
     val accountState: AccountState,
