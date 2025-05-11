@@ -55,6 +55,7 @@
     </string>
 
     <!-- Stats -->
+    <string name="stats_today">Today: </string>
     <string name="stats_weekly">This week: </string>
     <string name="stats_period">Current period: </string>
 </resources>

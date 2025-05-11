@@ -26,4 +26,12 @@ internal object DurationFormatter {
 
         return listOfNotNull(hours, minutes, seconds).joinToString(separator = " ") { it }
     }
+
+    fun Duration.formatForWorkStats(): String {
+        if (inWholeSeconds == 0L) {
+            return "0h"
+        }
+
+        return formatForTextInput()
+    }
 }

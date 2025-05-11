@@ -10,4 +10,7 @@ data class TimesheetApprovalPeriod(
     val from: LocalDate,
     @SerialName("to")
     val to: LocalDate,
-)
+) {
+    val dateRange: ClosedRange<LocalDate>
+        get() = from..to
+}

@@ -17,7 +17,6 @@ internal class AppWindowModel(
     private val platform: Platform,
     private val undoStack: UndoStack,
     private val preferenceRepo: PreferenceRepo,
-    private val worklogRepo: WorklogRepo,
 ) : BaseModel<AppWindowState, Nothing>(
     defaultState = AppWindowState(newVersionBannerVisible = false)
 ), AppWindow, KoinComponent {
@@ -25,7 +24,6 @@ internal class AppWindowModel(
     override suspend fun onStart() {
         checkForUpdates()
         observeAppThemeMode()
-        syncWorkStats()
     }
 
     private fun checkForUpdates() {
@@ -52,8 +50,6 @@ internal class AppWindowModel(
             }
         }
     }
-
-    private fun syncWorkStats() = coroutineScope.launch { runCatching { worklogRepo.syncWorkStats() } }
 
     override val actions: AppWindowActions = object : AppWindowActions {
 

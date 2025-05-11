@@ -14,13 +14,12 @@ interface TempoApiManager {
 
     suspend fun getAllWorklogs(
         jiraAccountId: String,
-        from: LocalDate,
-        to: LocalDate,
+        dateRange: ClosedRange<LocalDate>,
     ): List<Worklog>
 
     suspend fun createWorklog(body: CreateWorklogBody): Worklog
     suspend fun getApprovalPeriod(at: LocalDate): TimesheetApprovalPeriod?
-    suspend fun getUserSchedule(from: LocalDate, to: LocalDate): List<DaySchedule>
+    suspend fun getUserSchedule(dateRange: ClosedRange<LocalDate>): List<DaySchedule>
 }
 
 internal class TempoApiManagerImpl(
@@ -37,8 +36,7 @@ internal class TempoApiManagerImpl(
 
     override suspend fun getAllWorklogs(
         jiraAccountId: String,
-        from: LocalDate,
-        to: LocalDate,
+        dateRange: ClosedRange<LocalDate>,
     ): List<Worklog> =
         sessionScoped { api ->
             flow {
@@ -47,8 +45,8 @@ internal class TempoApiManagerImpl(
                     val response = when {
                         nextUrl == null -> api.getWorklogs(
                             jiraAccountId = jiraAccountId,
-                            from = from,
-                            to = to,
+                            from = dateRange.start,
+                            to = dateRange.endInclusive,
                             offset = 0,
                             limit = DefaultLimit
                         )
@@ -70,10 +68,7 @@ internal class TempoApiManagerImpl(
         api.getPeriods(from = at, to = at).periods.firstOrNull()
     }
 
-    override suspend fun getUserSchedule(
-        from: LocalDate,
-        to: LocalDate,
-    ): List<DaySchedule> = sessionScoped { api ->
-        api.getUserSchedule(from = from, to = to).results
+    override suspend fun getUserSchedule(dateRange: ClosedRange<LocalDate>): List<DaySchedule> = sessionScoped { api ->
+        api.getUserSchedule(from = dateRange.start, to = dateRange.endInclusive).results
     }
 }

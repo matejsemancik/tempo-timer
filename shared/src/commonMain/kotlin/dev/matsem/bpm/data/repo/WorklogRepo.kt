@@ -2,11 +2,11 @@ package dev.matsem.bpm.data.repo
 
 import dev.matsem.bpm.data.database.dao.UserDao
 import dev.matsem.bpm.data.repo.model.Issue
-import dev.matsem.bpm.data.repo.model.PeriodWorkStats
-import dev.matsem.bpm.data.repo.model.WeeklyWorkStats
 import dev.matsem.bpm.data.repo.model.WorkStats
 import dev.matsem.bpm.data.service.tempo.TempoApiManager
 import dev.matsem.bpm.data.service.tempo.model.CreateWorklogBody
+import dev.matsem.bpm.data.service.tempo.model.DaySchedule
+import dev.matsem.bpm.data.service.tempo.model.Worklog
 import dev.matsem.bpm.tooling.dropNanos
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
@@ -27,8 +27,21 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
+/**
+ * Interface for managing worklogs and retrieving related work statistics.
+ * This repository provides functionalities to create a worklog, sync work statistics,
+ * and observe the current work statistics such as tracked and required durations.
+ */
 interface WorklogRepo {
 
+    /**
+     * Creates a worklog for a specific Jira issue with the provided details.
+     *
+     * @param jiraIssue The Jira issue to associate the worklog with.
+     * @param createdAt The timestamp when the worklog entry was created.
+     * @param timeSpent The time duration spent on the Jira issue.
+     * @param description An optional description for the worklog.
+     */
     suspend fun createWorklog(
         jiraIssue: Issue,
         createdAt: Instant,
@@ -36,7 +49,24 @@ interface WorklogRepo {
         description: String?,
     )
 
+    /**
+     * Updates the work statistics by synchronizing them with the latest available data.
+     * This function is typically used for ensuring that the worklog and its associated statistics
+     * (such as tracked and required work durations) are up-to-date. It may fetch necessary data
+     * from persistent storage or external sources and process it accordingly.
+     *
+     * Note that the result of this synchronization is not directly returned but rather contributes
+     * to the state managed by the repository.
+     */
     suspend fun syncWorkStats()
+
+    /**
+     * Retrieves a stream of work statistics for tracking purposes. The emitted flow contains a list of
+     * `WorkStats` objects, which represent work tracking data for specific periods (daily, weekly, or current period).
+     *
+     * @return A Flow emitting lists of work statistics, with each `WorkStats` containing details such as
+     * required work duration, tracked duration, type of statistics (e.g., daily or weekly), and coverage date range.
+     */
     fun getWorkStats(): Flow<List<WorkStats>>
 }
 
@@ -75,9 +105,13 @@ internal class WorklogRepoImpl(
     }
 
     override suspend fun syncWorkStats() {
+        val user = userDao.get() ?: error("No user")
         val dateNow = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-        val currentApprovalPeriod = tempoApiManager.getApprovalPeriod(dateNow)
-        val currentWeek: Pair<LocalDate, LocalDate> = dateNow.let { date ->
+        val currentApprovalPeriod = tempoApiManager.getApprovalPeriod(dateNow) ?: run {
+            println("No active approval period")
+            return
+        }
+        val currentWeek: ClosedRange<LocalDate> = dateNow.let { date ->
             // Find the current week's Monday (beginning of the week)
             val monday = date.minus(
                 date.dayOfWeek.ordinal,
@@ -89,59 +123,72 @@ internal class WorklogRepoImpl(
 
             // Cap end-of-week date to the end of a worklog approval period
             val start = monday
-            val end = if (currentApprovalPeriod != null && sunday > currentApprovalPeriod.to) {
+            val end = if (sunday > currentApprovalPeriod.to) {
                 currentApprovalPeriod.to
             } else {
                 sunday
             }
 
-            start to end
+            start..end
         }
 
-        val weeklyWorkStats = getStatsForDates(currentWeek.first, currentWeek.second).let {
-            WeeklyWorkStats(
-                dateStart = currentWeek.first,
-                dateEnd = currentWeek.second,
-                requiredDuration = it.first,
-                trackedDuration = it.second
-            )
-        }
+        val workSchedule = tempoApiManager.getUserSchedule(dateRange = currentApprovalPeriod.dateRange)
+        val allWorklogs = tempoApiManager.getAllWorklogs(
+            jiraAccountId = user.accountId,
+            dateRange = currentApprovalPeriod.dateRange,
+        )
 
-        val periodWorkStats = currentApprovalPeriod?.let { approvalPeriod ->
-            getStatsForDates(approvalPeriod.from, approvalPeriod.to).let {
-                PeriodWorkStats(
-                    dateStart = approvalPeriod.from,
-                    dateEnd = approvalPeriod.to,
-                    requiredDuration = it.first,
-                    trackedDuration = it.second
-                )
-            }
-        }
+        val todayWorkStats = getStatsForDates(
+            type = WorkStats.Type.Today,
+            dateRange = dateNow..dateNow,
+            workSchedule = workSchedule,
+            worklogs = allWorklogs
+        )
 
-        workStats.update { listOfNotNull(weeklyWorkStats, periodWorkStats) }
+        val thisWeekWorkStats = getStatsForDates(
+            type = WorkStats.Type.ThisWeek,
+            dateRange = currentWeek,
+            workSchedule = workSchedule,
+            worklogs = allWorklogs
+        )
+
+        val currentPeriodWorkStats = getStatsForDates(
+            type = WorkStats.Type.CurrentPeriod,
+            dateRange = currentApprovalPeriod.dateRange,
+            workSchedule = workSchedule,
+            worklogs = allWorklogs
+        )
+
+        workStats.update { listOf(todayWorkStats, thisWeekWorkStats, currentPeriodWorkStats) }
     }
 
     override fun getWorkStats(): Flow<List<WorkStats>> = workStats.asStateFlow()
 
     /**
-     * Retrieves the required and tracked durations for a user within a specified date range.
+     * Calculates work statistics for a specified date range.
      *
-     * @param from The starting date of the range for which statistics are to be retrieved.
-     * @param to The ending date of the range for which statistics are to be retrieved.
-     * @return A [Pair] containing two [Duration] values. The first represents the required work duration,
-     * and the second represents the tracked work duration within the specified date range.
+     * @param type The type of work statistics, indicating whether it's for Today, ThisWeek, or CurrentPeriod.
+     * @param dateRange The range of dates for which the statistics are calculated.
+     * @param workSchedule A list of day schedules containing required work durations for specific dates.
+     * @param worklogs A list of worklogs containing tracked work durations and their creation dates.
+     * @return A `WorkStats` object containing the calculated statistics, including required and tracked durations within the specified date range.
      */
-    private suspend fun getStatsForDates(from: LocalDate, to: LocalDate): Pair<Duration, Duration> {
-        val requiredDuration = tempoApiManager.getUserSchedule(from = from, to = to)
-            .sumOf { it.requiredSeconds }.seconds
+    private fun getStatsForDates(
+        type: WorkStats.Type,
+        dateRange: ClosedRange<LocalDate>,
+        workSchedule: List<DaySchedule>,
+        worklogs: List<Worklog>,
+    ): WorkStats {
+        val requiredDuration = workSchedule
+            .filter { it.date in dateRange }
+            .sumOf { it.requiredSeconds }
+            .seconds
 
-        val user = userDao.get() ?: error("No User")
-        val trackedDuration = tempoApiManager.getAllWorklogs(
-            jiraAccountId = user.accountId,
-            from = from,
-            to = to
-        ).sumOf { it.timeSpentSeconds }.seconds
+        val trackedDuration = worklogs
+            .filter { it.createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).date in dateRange }
+            .sumOf { it.timeSpentSeconds }
+            .seconds
 
-        return requiredDuration to trackedDuration
+        return WorkStats(type, dateRange, requiredDuration, trackedDuration)
     }
 }
