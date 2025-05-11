@@ -1,12 +1,8 @@
 package dev.matsem.bpm.feature.stats.ui
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.AnimationVector
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.TwoWayConverter
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateIntAsState
-import androidx.compose.animation.core.animateValueAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -20,10 +16,8 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
@@ -45,8 +39,6 @@ import dev.matsem.bpm.feature.stats.presentation.StatsWidget
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForWorkStats
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun StatsWidgetUi(
@@ -62,16 +54,12 @@ fun StatsWidgetUi(
         onPauseOrDispose {}
     }
 
-    if (state.allWorkStats.count() > 0) {
-        var pageIndex by remember { mutableStateOf(0) }
-        val workStats = state.allWorkStats[pageIndex]
+    val workStats = state.displayedStats
+    if (workStats != null) {
         AnimatedContent(
             targetState = workStats,
             contentKey = { it.type },
-            modifier = modifier.clickable {
-                val nextPage = (pageIndex + 1) % state.allWorkStats.count()
-                pageIndex = nextPage
-            },
+            modifier = modifier.clickable { actions.onClick() },
             transitionSpec = {
                 slideInVertically { it } togetherWith slideOutVertically { -it }
             },

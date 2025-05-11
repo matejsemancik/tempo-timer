@@ -6,4 +6,8 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class StatsState(
     internal val allWorkStats: ImmutableList<WorkStats> = persistentListOf(),
-)
+    internal val selectedIndex: Int? = null,
+) {
+    val displayedStats: WorkStats?
+        get() = selectedIndex?.let { allWorkStats.getOrNull(selectedIndex) }
+}
