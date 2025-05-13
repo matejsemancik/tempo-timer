@@ -77,6 +77,7 @@ fun StatsWidgetUi(
                     color = BpmTheme.colorScheme.onSurface,
                 )
                 VerticalSpacer(Grid.d1)
+                // TODO segmented progress indicator
                 LinearProgressIndicator(
                     color = when (workStats.percent) {
                         1f -> BpmTheme.customColorScheme.success
@@ -100,14 +101,13 @@ private val WorkStats.title: AnnotatedString
         }
         return buildAnnotatedString {
             append(title)
-            if (trackedDuration > requiredDuration) {
-                append(requiredDuration.formatForWorkStats())
-                append(' ')
+            if (trackedDuration >= requiredDuration) {
                 withStyle(SpanStyle(color = BpmTheme.customColorScheme.success)) {
-                    append("+${overtime.formatForWorkStats()}")
+                    append(trackedDuration.formatForWorkStats())
                 }
             } else {
-                append("${trackedDuration.formatForWorkStats()} / ${requiredDuration.formatForWorkStats()}")
+                append(trackedDuration.formatForWorkStats())
             }
+            append(" / ${requiredDuration.formatForWorkStats()}")
         }
     }
