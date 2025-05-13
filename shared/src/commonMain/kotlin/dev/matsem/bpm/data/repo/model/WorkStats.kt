@@ -31,7 +31,4 @@ data class WorkStats(
             }
             return (trackedDuration.inWholeSeconds / requiredDuration.inWholeSeconds.toFloat()).coerceIn(0f..1f)
         }
-
-    val overtime: Duration
-        get() = (trackedDuration - requiredDuration).coerceAtLeast(0.seconds)
 }

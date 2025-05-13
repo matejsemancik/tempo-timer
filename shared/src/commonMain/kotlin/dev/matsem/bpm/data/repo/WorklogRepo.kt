@@ -138,6 +138,7 @@ internal class WorklogRepoImpl(
             dateRange = currentApprovalPeriod.dateRange,
         )
 
+        // TODO cap required duration to current period's remaining required duration
         val todayWorkStats = getStatsForDates(
             type = WorkStats.Type.Today,
             dateRange = dateNow..dateNow,
@@ -145,6 +146,7 @@ internal class WorklogRepoImpl(
             worklogs = allWorklogs
         )
 
+        // TODO cap required duration to current period's remaining required duration
         val thisWeekWorkStats = getStatsForDates(
             type = WorkStats.Type.ThisWeek,
             dateRange = currentWeek,
