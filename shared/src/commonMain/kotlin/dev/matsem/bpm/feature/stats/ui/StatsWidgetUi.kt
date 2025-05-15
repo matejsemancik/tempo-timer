@@ -101,7 +101,7 @@ private val WorkStats.title: AnnotatedString
         }
         return buildAnnotatedString {
             append(title)
-            if (trackedDuration >= requiredDuration) {
+            if (trackedDuration > requiredDuration) {
                 withStyle(SpanStyle(color = BpmTheme.customColorScheme.success)) {
                     append(trackedDuration.formatForWorkStats())
                 }
