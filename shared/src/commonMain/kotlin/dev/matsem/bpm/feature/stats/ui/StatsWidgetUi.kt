@@ -77,7 +77,6 @@ fun StatsWidgetUi(
                     color = BpmTheme.colorScheme.onSurface,
                 )
                 VerticalSpacer(Grid.d1)
-                // TODO segmented progress indicator
                 LinearProgressIndicator(
                     color = when (workStats.percent) {
                         1f -> BpmTheme.customColorScheme.success
