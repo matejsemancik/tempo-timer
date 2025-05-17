@@ -74,6 +74,7 @@ internal class WorklogRepoImpl(
     private val tempoApiManager: TempoApiManager,
     private val userDao: UserDao,
     private val clock: Clock,
+    private val systemTimeZone: TimeZone,
 ) : WorklogRepo {
 
     private val repoScope = MainScope() + SupervisorJob()
@@ -90,9 +91,9 @@ internal class WorklogRepoImpl(
             jiraAccountId = user.accountId,
             jiraIssueId = jiraIssue.id,
             // The current system default time zone is our best bet rn.
-            startedAtDate = createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).date,
+            startedAtDate = createdAt.toLocalDateTime(systemTimeZone).date,
             // The current system default time zone is our best bet rn.
-            startedAtTime = createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).time.dropNanos(),
+            startedAtTime = createdAt.toLocalDateTime(systemTimeZone).time.dropNanos(),
             timeSpentSeconds = timeSpent.inWholeSeconds,
             description = description
         )
@@ -106,7 +107,7 @@ internal class WorklogRepoImpl(
 
     override suspend fun syncWorkStats() {
         val user = userDao.get() ?: error("No user")
-        val dateNow = clock.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        val dateNow = clock.now().toLocalDateTime(systemTimeZone).date
         val currentApprovalPeriod = tempoApiManager.getApprovalPeriod(dateNow) ?: run {
             println("No active approval period")
             return
@@ -187,7 +188,7 @@ internal class WorklogRepoImpl(
             .seconds
 
         val trackedDuration = worklogs
-            .filter { it.createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).date in dateRange }
+            .filter { it.createdAt.toLocalDateTime(systemTimeZone).date in dateRange }
             .sumOf { it.timeSpentSeconds }
             .seconds
 
