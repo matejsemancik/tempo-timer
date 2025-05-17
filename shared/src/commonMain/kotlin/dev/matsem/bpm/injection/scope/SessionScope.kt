@@ -13,7 +13,6 @@ interface SessionScope {
 
     fun closeScope()
     suspend fun getJiraApi(): JiraApi
-
     suspend fun getTempoApi(): TempoApi
 }
 

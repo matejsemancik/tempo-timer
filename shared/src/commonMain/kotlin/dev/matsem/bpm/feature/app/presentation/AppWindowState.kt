@@ -19,11 +19,19 @@ data class AppWindowState(
     val navigationItems: ImmutableList<NavigationBarItem>
         get() = persistentListOf(
             NavigationBarItem.Timer(isSelected = navigationState.content == AppWindowContent.Timer),
+//            NavigationBarItem.Logbook(isSelected = navigationState.content == AppWindowContent.Logbook),
             NavigationBarItem.Settings(isSelected = navigationState.content == AppWindowContent.Settings),
         )
 
     val isFabVisible: Boolean
         get() = navigationState.content == AppWindowContent.Timer
+
+    val isStatsVisible: Boolean
+        get() = when (navigationState.content) {
+            AppWindowContent.Timer -> true
+            AppWindowContent.Logbook -> true
+            AppWindowContent.Settings -> false
+        }
 }
 
 data class AppWindowNavigationState(
@@ -33,6 +41,7 @@ data class AppWindowNavigationState(
 
 sealed interface AppWindowContent {
     data object Timer : AppWindowContent
+    data object Logbook : AppWindowContent
     data object Settings : AppWindowContent
 }
 

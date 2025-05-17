@@ -18,6 +18,12 @@ fun BpmTheme(
     dimensions: BpmDimensions = desktopBpmDimensions(),
     content: @Composable () -> Unit,
 ) {
+    val customColors = if (isDark) {
+        darkBpmColors()
+    } else {
+        lightBpmColors()
+    }
+
     MaterialTheme(
         colorScheme = if (isDark) {
             darkColorScheme()
@@ -26,7 +32,8 @@ fun BpmTheme(
         },
     ) {
         CompositionLocalProvider(
-            LocalBpmDimensions provides dimensions
+            LocalBpmDimensions provides dimensions,
+            LocalBpmColors provides customColors
         ) {
             content()
         }
@@ -39,6 +46,11 @@ object BpmTheme {
         @Composable
         @ReadOnlyComposable
         get() = MaterialTheme.colorScheme
+
+    val customColorScheme: BpmColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalBpmColors.current
 
     val typography: Typography
         @Composable
@@ -57,3 +69,4 @@ object BpmTheme {
 }
 
 val LocalBpmDimensions = staticCompositionLocalOf<BpmDimensions> { error("BpmDimensions not provided") }
+val LocalBpmColors = staticCompositionLocalOf<BpmColors> { error("BpmColors not provided") }
