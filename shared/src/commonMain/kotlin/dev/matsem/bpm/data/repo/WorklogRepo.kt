@@ -188,7 +188,7 @@ internal class WorklogRepoImpl(
             .seconds
 
         val trackedDuration = worklogs
-            .filter { it.createdAt.toLocalDateTime(systemTimeZone).date in dateRange }
+            .filter { it.startDate in dateRange }
             .sumOf { it.timeSpentSeconds }
             .seconds
 
