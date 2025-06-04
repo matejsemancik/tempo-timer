@@ -1,17 +1,17 @@
 [versions]
 androidx-lifecycle = "2.8.4"
-compose-multiplatform = "1.7.3"
-compose-hotReload = "1.0.0-alpha01"
+compose-multiplatform = "1.8.0"
+compose-hotReload = "1.0.0-alpha09"
 junit = "4.13.2"
-kotlin = "2.1.20-RC"
-ksp = "2.1.20-RC-1.0.31"
+kotlin = "2.1.20"
+ksp = "2.1.20-1.0.31"
 kotlinx-coroutines = "1.10.1"
 kotlinx-collections = "0.3.8"
 kotlinx-datetime = "0.6.1"
 kotlinx-serialization = "2.1.0"
-ktorfit = "2.4.0"
+ktorfit = "2.5.0"
 koin = "4.1.0-Beta5"
-ktor = "3.0.1"
+ktor = "3.1.3"
 coil = "3.0.4"
 dataStore = "1.1.2"
 androidx-room = "2.7.0-rc01"
@@ -32,6 +32,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "androidx-sqlite" }
 
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
