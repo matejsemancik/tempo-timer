@@ -1,0 +1,158 @@
+{
+  "self": "https://api.tempo.io/4/user-schedule?from=2025-06-01&to=2025-06-30",
+  "metadata": {
+    "count": 30
+  },
+  "results": [
+    {
+      "date": "2025-06-01",
+      "requiredSeconds": 0,
+      "type": "NON_WORKING_DAY"
+    },
+    {
+      "date": "2025-06-02",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-03",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-04",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-05",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-06",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-07",
+      "requiredSeconds": 0,
+      "type": "NON_WORKING_DAY"
+    },
+    {
+      "date": "2025-06-08",
+      "requiredSeconds": 0,
+      "type": "NON_WORKING_DAY"
+    },
+    {
+      "date": "2025-06-09",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-10",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-11",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-12",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-13",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-14",
+      "requiredSeconds": 0,
+      "type": "NON_WORKING_DAY"
+    },
+    {
+      "date": "2025-06-15",
+      "requiredSeconds": 0,
+      "type": "NON_WORKING_DAY"
+    },
+    {
+      "date": "2025-06-16",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-17",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-18",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-19",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-20",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-21",
+      "requiredSeconds": 0,
+      "type": "NON_WORKING_DAY"
+    },
+    {
+      "date": "2025-06-22",
+      "requiredSeconds": 0,
+      "type": "NON_WORKING_DAY"
+    },
+    {
+      "date": "2025-06-23",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-24",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-25",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-26",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-27",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    },
+    {
+      "date": "2025-06-28",
+      "requiredSeconds": 0,
+      "type": "NON_WORKING_DAY"
+    },
+    {
+      "date": "2025-06-29",
+      "requiredSeconds": 0,
+      "type": "NON_WORKING_DAY"
+    },
+    {
+      "date": "2025-06-30",
+      "requiredSeconds": 28800,
+      "type": "WORKING_DAY"
+    }
+  ]
+}

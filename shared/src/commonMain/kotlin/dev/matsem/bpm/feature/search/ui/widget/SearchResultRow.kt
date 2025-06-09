@@ -28,7 +28,6 @@ import dev.matsem.bpm.data.repo.model.MockSearchResults
 import dev.matsem.bpm.data.repo.model.SearchResult
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
-import dev.matsem.bpm.design.theme.favourite
 import dev.matsem.bpm.design.tooling.Showcase
 import dev.matsem.bpm.feature.tracker.ui.widget.IssueTitleRow
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -72,9 +71,13 @@ fun SearchResultRow(
                     }
                 ) { isFavourite ->
                     if (isFavourite) {
-                        Icon(Icons.Rounded.Star, contentDescription = null, tint = BpmTheme.colorScheme.favourite)
+                        Icon(Icons.Rounded.Star, contentDescription = null, tint = BpmTheme.customColorScheme.favourite)
                     } else {
-                        Icon(Icons.Rounded.StarBorder, contentDescription = null, tint = BpmTheme.colorScheme.favourite)
+                        Icon(
+                            Icons.Rounded.StarBorder,
+                            contentDescription = null,
+                            tint = BpmTheme.customColorScheme.favourite
+                        )
                     }
                 }
             }

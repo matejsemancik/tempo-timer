@@ -57,7 +57,7 @@ internal class AppWindowModel(
                 navigationState = state.navigationState.copy(
                     content = when (item) {
                         is NavigationBarItem.Timer -> AppWindowContent.Timer
-                        is NavigationBarItem.Logbook -> TODO("https://github.com/matejsemancik/tempo-timer/issues/7")
+                        is NavigationBarItem.Logbook -> AppWindowContent.Logbook
                         is NavigationBarItem.Settings -> AppWindowContent.Settings
                     }
                 )
