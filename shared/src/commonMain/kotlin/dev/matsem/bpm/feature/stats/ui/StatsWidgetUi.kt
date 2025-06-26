@@ -108,7 +108,7 @@ fun StatsWidgetUi(
 private val WorkStats.aheadOrBehindText: AnnotatedString?
     @Composable
     get() {
-        if (trackingDelta == Duration.ZERO) {
+        if (type != Type.CurrentPeriod || trackingDelta == Duration.ZERO) {
             return null
         }
 
@@ -134,9 +134,9 @@ private val WorkStats.title: AnnotatedString
     @Composable
     get() {
         val title = when (this.type) {
-            WorkStats.Type.Today -> stringResource(Res.string.stats_today)
-            WorkStats.Type.ThisWeek -> stringResource(Res.string.stats_weekly)
-            WorkStats.Type.CurrentPeriod -> stringResource(Res.string.stats_period)
+            Type.Today -> stringResource(Res.string.stats_today)
+            Type.ThisWeek -> stringResource(Res.string.stats_weekly)
+            Type.CurrentPeriod -> stringResource(Res.string.stats_period)
         }
         return buildAnnotatedString {
             append(title)
