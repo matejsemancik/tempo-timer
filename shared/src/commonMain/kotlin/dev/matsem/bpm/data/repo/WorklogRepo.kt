@@ -133,7 +133,8 @@ internal class WorklogRepoImpl(
             start..end
         }
 
-        val workSchedule = tempoApiManager.getUserSchedule(dateRange = currentApprovalPeriod.dateRange)
+        val workSchedule =
+            tempoApiManager.getUserSchedule(dateRange = currentApprovalPeriod.dateRange)
         val allWorklogs = tempoApiManager.getAllWorklogs(
             jiraAccountId = user.accountId,
             dateRange = currentApprovalPeriod.dateRange,
@@ -163,7 +164,13 @@ internal class WorklogRepoImpl(
             dateNow = dateNow,
         )
 
-        workStats.update { listOf(todayWorkStats, thisWeekWorkStats, currentPeriodWorkStats) }
+        workStats.update {
+            listOf(
+                currentPeriodWorkStats,
+                thisWeekWorkStats,
+                todayWorkStats
+            )
+        }
     }
 
     override fun getWorkStats(): Flow<List<WorkStats>> = workStats.asStateFlow()
