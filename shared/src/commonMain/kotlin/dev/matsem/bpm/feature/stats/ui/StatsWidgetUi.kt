@@ -108,7 +108,7 @@ fun StatsWidgetUi(
 private val WorkStats.aheadOrBehindText: AnnotatedString?
     @Composable
     get() {
-        if (type != Type.CurrentPeriod || trackingDelta == Duration.ZERO) {
+        if (trackingDelta == Duration.ZERO) {
             return null
         }
 
@@ -117,10 +117,16 @@ private val WorkStats.aheadOrBehindText: AnnotatedString?
             else -> Res.string.stats_behind to -trackingDelta
         }
 
+        val style = when {
+            trackingDelta.isPositive() -> SpanStyle(color = BpmTheme.customColorScheme.success)
+            else -> SpanStyle(color = BpmTheme.customColorScheme.negativeTimeDelta)
+        }
         val text = stringResource(textRes, duration.formatForWorkStats())
 
         return buildAnnotatedString {
-            append(text)
+            withStyle(style) {
+                append(text)
+            }
         }
     }
 
