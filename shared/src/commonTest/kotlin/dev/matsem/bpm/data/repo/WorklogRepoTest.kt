@@ -31,8 +31,7 @@ class WorklogRepoTest {
                     dateRange = LocalDate.parse("2025-06-02")..LocalDate.parse("2025-06-02"),
                     requiredDuration = 8.hours,
                     trackedDuration = 0.hours,
-                    ahead = 0.hours,
-                    behind = 8.hours
+                    trackingDelta = (-8).hours
                 )
             )
             assertContains(
@@ -42,8 +41,7 @@ class WorklogRepoTest {
                     dateRange = LocalDate.parse("2025-06-02")..LocalDate.parse("2025-06-08"),
                     requiredDuration = 40.hours,
                     trackedDuration = 0.hours,
-                    ahead = 0.hours,
-                    behind = 8.hours
+                    trackingDelta = (-8).hours
                 )
             )
             assertContains(
@@ -53,8 +51,7 @@ class WorklogRepoTest {
                     dateRange = LocalDate.parse("2025-06-01")..LocalDate.parse("2025-06-30"),
                     requiredDuration = 168.hours,
                     trackedDuration = 0.hours,
-                    ahead = 0.hours,
-                    behind = 8.hours
+                    trackingDelta = (-8).hours
                 )
             )
         }
@@ -91,8 +88,7 @@ class WorklogRepoTest {
                     dateRange = LocalDate.parse("2025-06-03")..LocalDate.parse("2025-06-03"),
                     requiredDuration = 8.hours,
                     trackedDuration = 0.hours,
-                    ahead = 0.hours,
-                    behind = 8.hours
+                    trackingDelta = (-8).hours
                 )
             )
 
@@ -104,8 +100,7 @@ class WorklogRepoTest {
                     dateRange = LocalDate.parse("2025-06-02")..LocalDate.parse("2025-06-08"),
                     requiredDuration = 40.hours,
                     trackedDuration = 20.hours,
-                    ahead = 4.hours,
-                    behind = 0.hours
+                    trackingDelta = 4.hours
                 )
             )
 
@@ -117,8 +112,7 @@ class WorklogRepoTest {
                     dateRange = LocalDate.parse("2025-06-01")..LocalDate.parse("2025-06-30"),
                     requiredDuration = 168.hours,
                     trackedDuration = 20.hours,
-                    ahead = 4.hours,
-                    behind = 0.hours
+                    trackingDelta = 4.hours
                 )
             )
         }
@@ -155,8 +149,7 @@ class WorklogRepoTest {
                     dateRange = LocalDate.parse("2025-06-03")..LocalDate.parse("2025-06-03"),
                     requiredDuration = 8.hours,
                     trackedDuration = 0.hours,
-                    ahead = 0.hours,
-                    behind = 8.hours
+                    trackingDelta = (-8).hours
                 )
             )
 
@@ -168,8 +161,7 @@ class WorklogRepoTest {
                     dateRange = LocalDate.parse("2025-06-02")..LocalDate.parse("2025-06-08"),
                     requiredDuration = 40.hours,
                     trackedDuration = 10.hours,
-                    ahead = 0.hours,
-                    behind = 6.hours
+                    trackingDelta = (-6).hours
                 )
             )
 
@@ -181,8 +173,7 @@ class WorklogRepoTest {
                     dateRange = LocalDate.parse("2025-06-01")..LocalDate.parse("2025-06-30"),
                     requiredDuration = 168.hours,
                     trackedDuration = 10.hours,
-                    ahead = 0.hours,
-                    behind = 6.hours
+                    trackingDelta = (-6).hours
                 )
             )
         }

@@ -199,10 +199,8 @@ internal class WorklogRepoImpl(
             .sumOf { it.requiredSeconds }
             .seconds
 
-        val diff = trackedDuration - requiredUntilToday
-        val ahead = if (diff > Duration.ZERO) diff else Duration.ZERO
-        val behind = if (diff < Duration.ZERO) diff.absoluteValue else Duration.ZERO
+        val trackingDelta = trackedDuration - requiredUntilToday
 
-        return WorkStats(type, dateRange, requiredDuration, trackedDuration, ahead, behind)
+        return WorkStats(type, dateRange, requiredDuration, trackedDuration, trackingDelta)
     }
 }

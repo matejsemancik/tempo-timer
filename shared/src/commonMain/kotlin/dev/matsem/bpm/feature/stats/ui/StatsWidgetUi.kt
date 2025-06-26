@@ -35,6 +35,7 @@ import bpm_tracker.shared.generated.resources.stats_period
 import bpm_tracker.shared.generated.resources.stats_today
 import bpm_tracker.shared.generated.resources.stats_weekly
 import dev.matsem.bpm.data.repo.model.WorkStats
+import dev.matsem.bpm.data.repo.model.WorkStats.Type
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.VerticalSpacer
@@ -107,11 +108,16 @@ fun StatsWidgetUi(
 private val WorkStats.aheadOrBehindText: AnnotatedString?
     @Composable
     get() {
-        val text = when {
-            ahead > Duration.ZERO -> stringResource(Res.string.stats_ahead, ahead.formatForWorkStats())
-            behind > Duration.ZERO -> stringResource(Res.string.stats_behind, behind.formatForWorkStats())
-            else -> return null
+        if (type != Type.CurrentPeriod || trackingDelta == Duration.ZERO) {
+            return null
         }
+
+        val (textRes, duration) = when {
+            trackingDelta > Duration.ZERO -> Res.string.stats_ahead to trackingDelta
+            else -> Res.string.stats_behind to -trackingDelta
+        }
+
+        val text = stringResource(textRes, duration.formatForWorkStats())
 
         return buildAnnotatedString {
             append(text)

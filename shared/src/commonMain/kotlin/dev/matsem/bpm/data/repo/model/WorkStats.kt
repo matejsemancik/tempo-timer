@@ -11,16 +11,14 @@ import kotlin.time.Duration.Companion.seconds
  * @property dateRange The range of dates the statistics cover.
  * @property requiredDuration The total required duration of work for the specified time range.
  * @property trackedDuration The total duration of work that was tracked within the specified time range.
- * @property ahead The duration by which the tracked work is ahead of the required work by end of today.
- * @property behind The duration by which the tracked work is behind the required work by end of today.
+ * @property trackingDelta The duration by which the tracked work is ahead (positive) or behind (negative) the required work by end of today.
  */
 data class WorkStats(
     val type: Type,
     val dateRange: ClosedRange<LocalDate>,
     val requiredDuration: Duration,
     val trackedDuration: Duration,
-    val ahead: Duration,
-    val behind: Duration,
+    val trackingDelta: Duration,
 ) {
     /**
      * Represents the type of work statistics.
