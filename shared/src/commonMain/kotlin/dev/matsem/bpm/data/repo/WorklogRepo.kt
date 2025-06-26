@@ -143,21 +143,24 @@ internal class WorklogRepoImpl(
             type = WorkStats.Type.Today,
             dateRange = dateNow..dateNow,
             workSchedule = workSchedule,
-            worklogs = allWorklogs
+            worklogs = allWorklogs,
+            dateNow = dateNow,
         )
 
         val thisWeekWorkStats = getStatsForDates(
             type = WorkStats.Type.ThisWeek,
             dateRange = currentWeek,
             workSchedule = workSchedule,
-            worklogs = allWorklogs
+            worklogs = allWorklogs,
+            dateNow = dateNow,
         )
 
         val currentPeriodWorkStats = getStatsForDates(
             type = WorkStats.Type.CurrentPeriod,
             dateRange = currentApprovalPeriod.dateRange,
             workSchedule = workSchedule,
-            worklogs = allWorklogs
+            worklogs = allWorklogs,
+            dateNow = dateNow,
         )
 
         workStats.update { listOf(todayWorkStats, thisWeekWorkStats, currentPeriodWorkStats) }
@@ -179,6 +182,7 @@ internal class WorklogRepoImpl(
         dateRange: ClosedRange<LocalDate>,
         workSchedule: List<DaySchedule>,
         worklogs: List<Worklog>,
+        dateNow: LocalDate,
     ): WorkStats {
         val requiredDuration = workSchedule
             .filter { it.date in dateRange }
@@ -190,6 +194,15 @@ internal class WorklogRepoImpl(
             .sumOf { it.timeSpentSeconds }
             .seconds
 
-        return WorkStats(type, dateRange, requiredDuration, trackedDuration)
+        val requiredUntilToday = workSchedule
+            .filter { it.date in dateRange && it.date <= dateNow }
+            .sumOf { it.requiredSeconds }
+            .seconds
+
+        val diff = trackedDuration - requiredUntilToday
+        val ahead = if (diff > Duration.ZERO) diff else Duration.ZERO
+        val behind = if (diff < Duration.ZERO) diff.absoluteValue else Duration.ZERO
+
+        return WorkStats(type, dateRange, requiredDuration, trackedDuration, ahead, behind)
     }
 }

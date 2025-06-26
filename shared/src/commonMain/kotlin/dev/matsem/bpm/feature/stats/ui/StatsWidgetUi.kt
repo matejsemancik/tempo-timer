@@ -8,8 +8,10 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
@@ -27,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bpm_tracker.shared.generated.resources.Res
+import bpm_tracker.shared.generated.resources.stats_ahead
+import bpm_tracker.shared.generated.resources.stats_behind
 import bpm_tracker.shared.generated.resources.stats_period
 import bpm_tracker.shared.generated.resources.stats_today
 import bpm_tracker.shared.generated.resources.stats_weekly
@@ -38,6 +42,7 @@ import dev.matsem.bpm.feature.stats.presentation.StatsWidget
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForWorkStats
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import kotlin.time.Duration
 
 @Composable
 fun StatsWidgetUi(
@@ -71,11 +76,20 @@ fun StatsWidgetUi(
                 )
             )
             Column(Modifier.padding(contentPadding)) {
-                Text(
-                    text = workStats.title,
-                    style = BpmTheme.typography.bodySmall,
-                    color = BpmTheme.colorScheme.onSurface,
-                )
+                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = workStats.title,
+                        style = BpmTheme.typography.bodySmall,
+                        color = BpmTheme.colorScheme.onSurface,
+                    )
+                    workStats.aheadOrBehindText?.let {
+                        Text(
+                            text = it,
+                            style = BpmTheme.typography.bodySmall,
+                            color = BpmTheme.colorScheme.onSurface,
+                        )
+                    }
+                }
                 VerticalSpacer(Grid.d1)
                 LinearProgressIndicator(
                     color = when (workStats.percent) {
@@ -89,6 +103,20 @@ fun StatsWidgetUi(
         }
     }
 }
+
+private val WorkStats.aheadOrBehindText: AnnotatedString?
+    @Composable
+    get() {
+        val text = when {
+            ahead > Duration.ZERO -> stringResource(Res.string.stats_ahead, ahead.formatForWorkStats())
+            behind > Duration.ZERO -> stringResource(Res.string.stats_behind, behind.formatForWorkStats())
+            else -> return null
+        }
+
+        return buildAnnotatedString {
+            append(text)
+        }
+    }
 
 private val WorkStats.title: AnnotatedString
     @Composable
