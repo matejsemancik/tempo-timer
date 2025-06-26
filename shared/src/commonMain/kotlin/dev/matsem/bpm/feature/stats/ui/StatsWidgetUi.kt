@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bpm_tracker.shared.generated.resources.Res
 import bpm_tracker.shared.generated.resources.stats_ahead
 import bpm_tracker.shared.generated.resources.stats_behind
+import bpm_tracker.shared.generated.resources.stats_caught_up
 import bpm_tracker.shared.generated.resources.stats_period
 import bpm_tracker.shared.generated.resources.stats_today
 import bpm_tracker.shared.generated.resources.stats_weekly
@@ -77,7 +78,10 @@ fun StatsWidgetUi(
                 )
             )
             Column(Modifier.padding(contentPadding)) {
-                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Text(
                         text = workStats.title,
                         style = BpmTheme.typography.bodySmall,
@@ -108,20 +112,21 @@ fun StatsWidgetUi(
 private val WorkStats.aheadOrBehindText: AnnotatedString?
     @Composable
     get() {
-        if (type != Type.CurrentPeriod || trackingDelta == Duration.ZERO) {
+        if (type != Type.CurrentPeriod) {
             return null
         }
 
-        val (textRes, duration) = when {
-            trackingDelta > Duration.ZERO -> Res.string.stats_ahead to trackingDelta
-            else -> Res.string.stats_behind to -trackingDelta
+        val textRes = when {
+            trackingDelta > Duration.ZERO -> Res.string.stats_ahead
+            trackingDelta < Duration.ZERO -> Res.string.stats_behind
+            else -> Res.string.stats_caught_up
         }
 
         val style = when {
-            trackingDelta.isPositive() -> SpanStyle(color = BpmTheme.customColorScheme.success)
+            trackingDelta >= Duration.ZERO -> SpanStyle(color = BpmTheme.customColorScheme.success)
             else -> SpanStyle(color = BpmTheme.customColorScheme.negativeTimeDelta)
         }
-        val text = stringResource(textRes, duration.formatForWorkStats())
+        val text = stringResource(textRes, trackingDelta.absoluteValue.formatForWorkStats())
 
         return buildAnnotatedString {
             withStyle(style) {

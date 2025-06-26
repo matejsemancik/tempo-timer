@@ -60,4 +60,5 @@
     <string name="stats_period">Current period: </string>
     <string name="stats_ahead">+%1$s ahead</string>
     <string name="stats_behind">-%1$s behind</string>
+    <string name="stats_caught_up">Done for today</string>
 </resources>
