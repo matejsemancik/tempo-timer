@@ -133,7 +133,8 @@ internal class WorklogRepoImpl(
             start..end
         }
 
-        val workSchedule = tempoApiManager.getUserSchedule(dateRange = currentApprovalPeriod.dateRange)
+        val workSchedule =
+            tempoApiManager.getUserSchedule(dateRange = currentApprovalPeriod.dateRange)
         val allWorklogs = tempoApiManager.getAllWorklogs(
             jiraAccountId = user.accountId,
             dateRange = currentApprovalPeriod.dateRange,
@@ -143,24 +144,33 @@ internal class WorklogRepoImpl(
             type = WorkStats.Type.Today,
             dateRange = dateNow..dateNow,
             workSchedule = workSchedule,
-            worklogs = allWorklogs
+            worklogs = allWorklogs,
+            dateNow = dateNow,
         )
 
         val thisWeekWorkStats = getStatsForDates(
             type = WorkStats.Type.ThisWeek,
             dateRange = currentWeek,
             workSchedule = workSchedule,
-            worklogs = allWorklogs
+            worklogs = allWorklogs,
+            dateNow = dateNow,
         )
 
         val currentPeriodWorkStats = getStatsForDates(
             type = WorkStats.Type.CurrentPeriod,
             dateRange = currentApprovalPeriod.dateRange,
             workSchedule = workSchedule,
-            worklogs = allWorklogs
+            worklogs = allWorklogs,
+            dateNow = dateNow,
         )
 
-        workStats.update { listOf(todayWorkStats, thisWeekWorkStats, currentPeriodWorkStats) }
+        workStats.update {
+            listOf(
+                currentPeriodWorkStats,
+                thisWeekWorkStats,
+                todayWorkStats
+            )
+        }
     }
 
     override fun getWorkStats(): Flow<List<WorkStats>> = workStats.asStateFlow()
@@ -179,6 +189,7 @@ internal class WorklogRepoImpl(
         dateRange: ClosedRange<LocalDate>,
         workSchedule: List<DaySchedule>,
         worklogs: List<Worklog>,
+        dateNow: LocalDate,
     ): WorkStats {
         val requiredDuration = workSchedule
             .filter { it.date in dateRange }
@@ -190,6 +201,13 @@ internal class WorklogRepoImpl(
             .sumOf { it.timeSpentSeconds }
             .seconds
 
-        return WorkStats(type, dateRange, requiredDuration, trackedDuration)
+        val requiredUntilToday = workSchedule
+            .filter { it.date in dateRange && it.date <= dateNow }
+            .sumOf { it.requiredSeconds }
+            .seconds
+
+        val trackingDelta = trackedDuration - requiredUntilToday
+
+        return WorkStats(type, dateRange, requiredDuration, trackedDuration, trackingDelta)
     }
 }

@@ -8,8 +8,10 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
@@ -27,10 +29,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import bpm_tracker.shared.generated.resources.Res
+import bpm_tracker.shared.generated.resources.stats_ahead
+import bpm_tracker.shared.generated.resources.stats_behind
+import bpm_tracker.shared.generated.resources.stats_caught_up
 import bpm_tracker.shared.generated.resources.stats_period
 import bpm_tracker.shared.generated.resources.stats_today
 import bpm_tracker.shared.generated.resources.stats_weekly
 import dev.matsem.bpm.data.repo.model.WorkStats
+import dev.matsem.bpm.data.repo.model.WorkStats.Type
 import dev.matsem.bpm.design.theme.BpmTheme
 import dev.matsem.bpm.design.theme.Grid
 import dev.matsem.bpm.design.tooling.VerticalSpacer
@@ -38,6 +44,7 @@ import dev.matsem.bpm.feature.stats.presentation.StatsWidget
 import dev.matsem.bpm.feature.tracker.formatting.DurationFormatter.formatForWorkStats
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import kotlin.time.Duration
 
 @Composable
 fun StatsWidgetUi(
@@ -71,11 +78,23 @@ fun StatsWidgetUi(
                 )
             )
             Column(Modifier.padding(contentPadding)) {
-                Text(
-                    text = workStats.title,
-                    style = BpmTheme.typography.bodySmall,
-                    color = BpmTheme.colorScheme.onSurface,
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = workStats.title,
+                        style = BpmTheme.typography.bodySmall,
+                        color = BpmTheme.colorScheme.onSurface,
+                    )
+                    workStats.aheadOrBehindText?.let {
+                        Text(
+                            text = it,
+                            style = BpmTheme.typography.bodySmall,
+                            color = BpmTheme.colorScheme.onSurface,
+                        )
+                    }
+                }
                 VerticalSpacer(Grid.d1)
                 LinearProgressIndicator(
                     color = when (workStats.percent) {
@@ -90,13 +109,39 @@ fun StatsWidgetUi(
     }
 }
 
+private val WorkStats.aheadOrBehindText: AnnotatedString?
+    @Composable
+    get() {
+        if (type != Type.CurrentPeriod) {
+            return null
+        }
+
+        val textRes = when {
+            trackingDelta > Duration.ZERO -> Res.string.stats_ahead
+            trackingDelta < Duration.ZERO -> Res.string.stats_behind
+            else -> Res.string.stats_caught_up
+        }
+
+        val style = when {
+            trackingDelta >= Duration.ZERO -> SpanStyle(color = BpmTheme.customColorScheme.success)
+            else -> SpanStyle(color = BpmTheme.customColorScheme.negativeTimeDelta)
+        }
+        val text = stringResource(textRes, trackingDelta.absoluteValue.formatForWorkStats())
+
+        return buildAnnotatedString {
+            withStyle(style) {
+                append(text)
+            }
+        }
+    }
+
 private val WorkStats.title: AnnotatedString
     @Composable
     get() {
         val title = when (this.type) {
-            WorkStats.Type.Today -> stringResource(Res.string.stats_today)
-            WorkStats.Type.ThisWeek -> stringResource(Res.string.stats_weekly)
-            WorkStats.Type.CurrentPeriod -> stringResource(Res.string.stats_period)
+            Type.Today -> stringResource(Res.string.stats_today)
+            Type.ThisWeek -> stringResource(Res.string.stats_weekly)
+            Type.CurrentPeriod -> stringResource(Res.string.stats_period)
         }
         return buildAnnotatedString {
             append(title)

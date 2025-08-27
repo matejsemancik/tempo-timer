@@ -11,19 +11,31 @@ import kotlin.time.Duration.Companion.seconds
  * @property dateRange The range of dates the statistics cover.
  * @property requiredDuration The total required duration of work for the specified time range.
  * @property trackedDuration The total duration of work that was tracked within the specified time range.
+ * @property trackingDelta The duration by which the tracked work is ahead (positive) or behind (negative) the required work by end of today.
  */
 data class WorkStats(
     val type: Type,
     val dateRange: ClosedRange<LocalDate>,
     val requiredDuration: Duration,
     val trackedDuration: Duration,
+    val trackingDelta: Duration,
 ) {
+    /**
+     * Represents the type of work statistics.
+     */
     enum class Type {
+        /** Statistics for today. */
         Today,
+        /** Statistics for the current week. */
         ThisWeek,
+        /** Statistics for the current work period. */
         CurrentPeriod
     }
 
+    /**
+     * The percentage of tracked work towards the required work, coerced between 0f and 1f.
+     * Returns 0f if the required duration is zero.
+     */
     val percent: Float
         get() {
             if (requiredDuration.inWholeSeconds == 0L) {
@@ -32,3 +44,4 @@ data class WorkStats(
             return (trackedDuration.inWholeSeconds / requiredDuration.inWholeSeconds.toFloat()).coerceIn(0f..1f)
         }
 }
+
