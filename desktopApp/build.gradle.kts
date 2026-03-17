@@ -50,7 +50,7 @@ compose.desktop {
         jvmArgs("-Dapple.awt.application.appearance=system", "-Dapple.awt.enableTemplateImages=true")
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Rpm)
 
             packageName = "Tempo Timer"
             packageVersion = System.getenv("DESKTOP_PACKAGE_VERSION")?.takeIf { it.isNotBlank() } ?: "1.0.0"
@@ -64,7 +64,6 @@ compose.desktop {
             macOS {
                 iconFile.set(project.file("nativeDistributions/macOS/icon.icns"))
                 infoPlist {
-
                 }
                 infoPlist {
                     extraKeysRawXml = project.file("nativeDistributions/macOS/Info.plist").readText()
