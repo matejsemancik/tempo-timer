@@ -35,4 +35,5 @@ jobs:
           files: |
             **/build/compose/binaries/main/dmg/*
             **/build/compose/binaries/main/deb/*
+            **/build/compose/binaries/main/rpm/*
             **/build/compose/binaries/main/msi/*
