@@ -1,7 +1,5 @@
 package dev.matsem.bpm.utils
 
-import java.nio.charset.StandardCharsets
-
 /**
  * Reads a resource file from the `commonTest/resources` directory.
  *

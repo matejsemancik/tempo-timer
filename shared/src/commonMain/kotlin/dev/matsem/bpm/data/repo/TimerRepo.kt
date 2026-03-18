@@ -8,7 +8,7 @@ import dev.matsem.bpm.data.repo.model.Issue
 import dev.matsem.bpm.data.repo.model.Timer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import dev.matsem.bpm.data.database.model.Timer as Timer_Database
 
 interface TimerRepo {

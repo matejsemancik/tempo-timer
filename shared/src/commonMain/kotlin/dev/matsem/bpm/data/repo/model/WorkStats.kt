@@ -2,7 +2,6 @@ package dev.matsem.bpm.data.repo.model
 
 import kotlinx.datetime.LocalDate
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 /**
  * Represents statistics for work tracking within a specified time range.

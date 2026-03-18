@@ -8,4 +8,5 @@ plugins {
     alias(libs.plugins.ktorfit) apply false
     alias(libs.plugins.kotlinx.serialization) apply false
     alias(libs.plugins.androidx.room) apply false
+    alias(libs.plugins.composeHotReload) apply false
 }
