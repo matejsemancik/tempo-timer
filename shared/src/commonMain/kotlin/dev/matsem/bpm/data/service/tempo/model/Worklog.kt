@@ -1,9 +1,9 @@
 package dev.matsem.bpm.data.service.tempo.model
 
-import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class Worklog(

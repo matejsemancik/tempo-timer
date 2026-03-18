@@ -2,9 +2,9 @@ package dev.matsem.bpm.data.database.typeConverter
 
 import androidx.room.TypeConverter
 import kotlinx.serialization.builtins.serializer
-import kotlin.time.Instant
 import kotlinx.serialization.json.Json
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 internal class JsonTypeConverters {

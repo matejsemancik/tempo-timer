@@ -1,9 +1,9 @@
 package dev.matsem.bpm.data.repo.model
 
 import kotlin.time.Clock
-import kotlin.time.Instant
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Instant
 
 data class Timer(
     val id: Int,

@@ -30,7 +30,6 @@ import dev.matsem.bpm.injection.AppInjection
 import dev.matsem.bpm.tooling.Platform
 import dev.matsem.bpm.tooling.isMetaOrCtrlPressed
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import java.awt.Desktop
 import java.awt.Taskbar
