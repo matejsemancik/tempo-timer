@@ -39,9 +39,7 @@ import java.awt.desktop.AppReopenedListener
 fun main() {
     AppInjection.initializeInjection()
     application {
-        KoinContext {
-            MainApplication()
-        }
+        MainApplication()
     }
 }
 

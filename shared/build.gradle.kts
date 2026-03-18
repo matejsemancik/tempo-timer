@@ -76,3 +76,7 @@ dependencies {
 room {
     schemaDirectory(project.layout.projectDirectory.dir("room-schemas"))
 }
+
+ktorfit {
+    compilerPluginVersion.set("2.3.3")
+}

@@ -1,9 +1,12 @@
 package dev.matsem.bpm.data.database.typeConverter
 
 import androidx.room.TypeConverter
-import kotlinx.datetime.Instant
+import kotlinx.serialization.builtins.serializer
+import kotlin.time.Instant
 import kotlinx.serialization.json.Json
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class JsonTypeConverters {
 
     // When implemented using @ProvidedTypeConverter according to documentation, the runtime error is thrown,

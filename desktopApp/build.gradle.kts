@@ -8,11 +8,6 @@ plugins {
     alias(libs.plugins.composeHotReload)
 }
 
-// https://github.com/JetBrains/compose-hot-reload?tab=readme-ov-file#enable-optimizenonskippinggroups
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-}
-
 kotlin {
     jvm("desktop")
 

@@ -1,6 +1,6 @@
 package dev.matsem.bpm.injection.module
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.TimeZone
 import org.koin.dsl.module
 

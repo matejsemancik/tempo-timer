@@ -4,7 +4,7 @@ import dev.matsem.bpm.data.repo.model.WorkStats
 import dev.matsem.bpm.data.service.tempo.model.Worklog
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertContains
